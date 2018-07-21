@@ -1,0 +1,71 @@
+<section id="content">
+    <section class="vbox">
+        <section class="w-f-md" id="bjax-target">
+            <section class="hbox stretch">
+                <!-- side content -->
+                <aside class="aside bg-light dk" id="sidebar">
+                    <section class="vbox animated fadeInUp">
+                        <section class="scrollable hover">
+                            <div class="list-group no-radius no-border no-bg m-t-n-xxs m-b-none auto">
+                                <a href="genres.html" class="list-group-item"> All </a>
+                                <a href="genres.html" class="list-group-item active"> acoustic </a>
+                                <a href="genres.html" class="list-group-item"> ambient </a>
+                                <a href="genres.html" class="list-group-item"> blues </a>
+                                <a href="genres.html" class="list-group-item"> classical </a>
+                                <a href="genres.html" class="list-group-item"> country </a>
+                                <a href="genres.html" class="list-group-item"> electronic </a>
+                                <a href="genres.html" class="list-group-item"> emo </a>
+                                <a href="genres.html" class="list-group-item"> folk </a>
+                                <a href="genres.html" class="list-group-item"> hardcore </a>
+                                <a href="genres.html" class="list-group-item"> hip hop </a>
+                                <a href="genres.html" class="list-group-item"> indie </a>
+                                <a href="genres.html" class="list-group-item"> jazz </a>
+                                <a href="genres.html" class="list-group-item"> latin </a>
+                                <a href="genres.html" class="list-group-item"> metal </a>
+                                <a href="genres.html" class="list-group-item"> pop </a>
+                                <a href="genres.html" class="list-group-item"> pop punk </a>
+                                <a href="genres.html" class="list-group-item"> punk </a>
+                                <a href="genres.html" class="list-group-item"> reggae </a>
+                                <a href="genres.html" class="list-group-item"> rnb </a>
+                                <a href="genres.html" class="list-group-item"> rock </a>
+                                <a href="genres.html" class="list-group-item"> soul </a>
+                                <a href="genres.html" class="list-group-item"> world </a>
+                            </div>
+                        </section>
+                    </section>
+                </aside>
+                <!-- / side content -->
+                <section>
+                    <section class="vbox">
+                        <section class="scrollable padder-lg">
+                            <h2 class="font-thin m-b">Acoustic</h2>
+                            <div class="row row-sm">
+                                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let music of arrayMusic">
+                                    <div class="item">
+                                        <div class="pos-rlt">
+                                            <div class="item-overlay opacity r r-2x bg-black" (click)="player.ChangeSong(music)">
+                                                <div class="center text-center m-t-n">
+                                                    <a><i class="fa fa-play-circle i-2x"></i></a>
+                                                </div>
+                                            </div>
+                                            <a>
+                                                <img src="http://flatfull.com/themes/musik/images/p3.jpg" alt="{{music.name}}" class="r r-2x img-full song-image">
+                                            </a>
+                                        </div>
+                                        <div class="padder-v"><a class="text-ellipsis">{{music.name}}</a>
+                                            <a class="text-ellipsis text-xs text-muted">{{music.artist}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <app-pagination [attr.max_page]="10" [attr.url_page]="'song'" [attr.current_page]="3"></app-pagination>
+                        </section>
+                    </section>
+                </section>
+            </section>
+        </section>
+    </section>
+</section>
+<div class="music-player" [class.music-player--open]="player.play">
+    <app-music-player #player></app-music-player>
+</div>

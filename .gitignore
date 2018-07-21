@@ -1,15 +1,15 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-front/dist
-front/tmp
-front/out-tsc
+client/dist
+client/tmp
+client/out-tsc
 
 # dependencies
-front/node_modules
+client/node_modules
 
 # IDEs and editors
-front/.idea
+client/.idea
 .project
 .classpath
 .c9/
@@ -34,8 +34,8 @@ testem.log
 /typings
 
 # e2e
-front//e2e/*.js
-front//e2e/*.map
+client/e2e/*.js
+client/e2e/*.map
 
 # System Files
 .DS_Store

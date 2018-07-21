@@ -9,7 +9,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         try:
-            model = eval(args[0])
+            model = eval(options['model_name'][0])
             model.objects.all().delete()
         except (NameError,):
             raise NameError("Table not exist.")

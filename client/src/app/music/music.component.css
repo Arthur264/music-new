@@ -1,0 +1,36 @@
+.music-list {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
+.music-list__item {
+    width: 20%;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.music-list__item img {
+    margin-bottom: 10px;
+    height: 100px;
+    width: 100px;
+}
+.music-player{
+    background: #2d2e2f;
+    transform: translateY(100%);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    height: 50px;
+    transition: all .8s;
+}
+.music-player--open{
+    transform: translateY(0);
+}
+
+.song-image{
+    min-height: 147px;
+    object-fit: cover;
+}
