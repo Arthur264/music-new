@@ -35,7 +35,7 @@
                     </section>
                 </aside>
                 <!-- / side content -->
-                <section>
+                <section class='pb-40'>
                     <section class="vbox">
                         <section class="scrollable padder-lg">
                             <h2 class="font-thin m-b">Acoustic</h2>
@@ -53,12 +53,12 @@
                                             </a>
                                         </div>
                                         <div class="padder-v"><a class="text-ellipsis">{{music.name}}</a>
-                                            <a class="text-ellipsis text-xs text-muted">{{music.artist}}</a>
+                                            <a class="text-ellipsis text-xs text-muted">{{music.artist.name}}</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <app-pagination [attr.max_page]="10" [attr.url_page]="'song'" [attr.current_page]="3"></app-pagination>
+                            <app-pagination [max_page]="10" [url_page]="'song'" [current_page]="1" [items]='arrayMusic'></app-pagination>
                         </section>
                     </section>
                 </section>

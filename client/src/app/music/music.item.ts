@@ -1,6 +1,6 @@
 export class MusicItem {
     id: number;
     name: string;
-    artist: string;
+    artist: object;
     url: string;
 }

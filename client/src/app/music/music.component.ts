@@ -9,17 +9,7 @@ import { AppService } from '../app.service';
     styleUrls: ['./music.component.css']
 })
 export class MusicComponent implements OnInit {
-    arrayMusic: MusicItem[];
-    total_pages: Number;
+    arrayMusic: MusicItem[] = [];
     constructor(private appService: AppService) {}
-    ngOnInit() {
-        this.loadMusic();
-    }
-    private loadMusic() {
-        this.appService.get('song').subscribe((res) => {
-            this.arrayMusic = res.results;
-            this.total_pages = res.total_pages;
-        });
-    }
-    // public 
+    ngOnInit() {}
 }

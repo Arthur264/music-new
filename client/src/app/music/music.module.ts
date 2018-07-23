@@ -5,6 +5,7 @@ import { MusicDialogComponent } from './music-dialog/music-dialog.component';
 import { MusicObjectComponent } from './music-object/music-object.component';
 import { MusicPlayerComponent } from './music-player/music-player.component';
 import { RouterModule } from '@angular/router';
+import { PaginationComponent } from '../pagination/pagination.component';
 
 @NgModule({
     imports: [
@@ -18,6 +19,6 @@ import { RouterModule } from '@angular/router';
         MusicDialogComponent
     ],
     bootstrap: [MusicObjectComponent, MusicDialogComponent, MusicPlayerComponent],
-    declarations: [MusicComponent, MusicDialogComponent, MusicObjectComponent, MusicPlayerComponent]
+    declarations: [MusicComponent, MusicDialogComponent, MusicObjectComponent, MusicPlayerComponent, PaginationComponent]
 })
 export class MusicModule {}

@@ -8,13 +8,11 @@ import { AppService } from './app.service';
 import { MusicService } from './music/music.service';
 import { HttpModule } from '@angular/http';
 import { ArtistsComponent } from './artists/artists.component';
-import { PaginationComponent } from './pagination/pagination.component';
 
 @NgModule({
     declarations: [
         AppComponent,
-        ArtistsComponent,
-        PaginationComponent
+        ArtistsComponent
     ],
     imports: [
         HttpModule,

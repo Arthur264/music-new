@@ -13098,10 +13098,12 @@ fieldset[disabled] .btn-dark.active {
 
 .bg-black a {
     color: #9badb9;
+    cursor: pointer;
 }
 
 .bg-black a:hover {
     color: #fff;
+    cursor: pointer;
 }
 
 .bg-black a.list-group-item:hover,
