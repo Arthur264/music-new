@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     'rest_framework',
+    'utils',
+    'user',
     'music'
 ]
 
