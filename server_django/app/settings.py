@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     'rest_framework',
+    'utils',
+    'user',
+    'account',
     'music'
 ]
 
@@ -62,9 +65,11 @@ MIDDLEWARE_CLASSES = (
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    # ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
+    'DEFAULT_PERMISSION_CLASSES': [],
 }
 
 ROOT_URLCONF = 'app.urls'
@@ -94,8 +99,11 @@ AUTH_USER_MODEL = 'user.User'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'musicdb'
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'musicdb',                      
+        'USER': 'artyr264',
+        'PASSWORD': '',
+        'HOST': 'localhost'
     }
 }
 
@@ -122,9 +130,9 @@ CORS_ORIGIN_ALLOW_ALL=True
 CORS_ALLOW_HEADERS = ('content-disposition', 'accept-encoding',
                       'content-type', 'accept', 'origin', 'authorization','cache-control', 'x-requested-with')
                       
-CORS_ORIGIN_WHITELIST = (
-    'http://music-artyr264.c9users.io',
-)
+# CORS_ORIGIN_WHITELIST = (
+#     'http://music-artyr264.c9users.io',
+# )
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 

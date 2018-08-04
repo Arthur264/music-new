@@ -1,2 +1,15 @@
 clean:
-	find . | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
+	find . -regex '.*\(__pycache__\|\.py[co]\)' -delete
+	
+migrate:
+	find . -regex '.*\(__pycache__\|\.py[co]\)' -delete
+	find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+	find . -path "*/migrations/*.pyc"  -delete
+	python manage.py flush
+	
+venv:
+	source ~/.virtualenvs/vent/bin/activate
+	
+start:
+	sudo mysql-ctl start
+	python manage.py runserver $IP:$PORT

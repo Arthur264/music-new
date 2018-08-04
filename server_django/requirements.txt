@@ -1,12 +1,12 @@
 Django==2.0
-pymongo>=2.8
 django-cors-headers==2.2.0
 djangotoolbox>=1.6.0
 django-dbindexer>=1.6.0
 djangorestframework
 markdown
-django-mongodb-engine-py3
 django-filter
-djongo
-mongoengine
+psycopg2
+Pillow
+psycopg2-binary
+mysqlclient
 pytz
