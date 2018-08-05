@@ -43,11 +43,11 @@ class ArtistSerializer(serializers.ModelSerializer):
                 
     
 
-class SongSerializer(serializers.HyperlinkedModelSerializer):
-    artist = ArtistSerializer(read_only=True)
+class SongSerializer(serializers.ModelSerializer):
+    # artist = ArtistSerializer(read_only=True)
     class Meta:
         model = Song
-        fields = ('id', 'name', 'url', 'time','listeners_fm', 'playcount_fm', 'artist_id')
+        fields = ('id', 'name', 'url', 'time','listeners_fm', 'playcount_fm', 'artist')
         
         
 
