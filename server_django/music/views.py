@@ -1,15 +1,32 @@
 import json
+from django.forms.models import model_to_dict
 from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import SongSerializer, ArtistSerializer, SimilarArtistSerializer, TagSerializer
 from rest_framework import viewsets, response
-from .models import Song, Artist
+from .models import Song, Artist, Tag
 from .filters import SongFilter
-from .paginations import LargeResultsSetPagination, SongPagination
+from .paginations import LargeResultsSetPagination, InfoPagination
 
+class TagViewSet(viewsets.ModelViewSet):
+    serializer_class = TagSerializer
+    queryset = Tag.objects.all()
+    lookup_field = 'slug'
+    
+    def retrieve(self,request, slug):
+        instance = self.get_object()
+        serializer_tag = self.get_serializer(instance).data
+
+        paginator = InfoPagination()
+        result_page = paginator.paginate_queryset(instance.artists.all(), request)
+        serializer_artist = ArtistSerializer(result_page, many=True, context={'request': request})
+
+        serializer_tag.update({'items': paginator.get_paginated_data(serializer_artist.data)})
+        return response.Response(serializer_tag)
+        
 class SongViewSet(viewsets.ModelViewSet):
     serializer_class = SongSerializer
     queryset = Song.objects.all()
-    pagination_class = SongPagination
+    pagination_class = InfoPagination
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ['name']
     search_fields = ('name')
@@ -19,11 +36,13 @@ class SongViewSet(viewsets.ModelViewSet):
     def create(self, request):
         serializer_data = request.data
         artist, _ = Artist.objects.get_or_create(name=request.data.get('artist'))
-        serializer_data['artist'] = artist.pk
-        serializer_song = SongSerializer(data=serializer_data, context={'request': request})
-        if not serializer_song.is_valid():
-            return response.Response(serializer_song.errors)
-        return response.Response(serializer_song.data)
+        serializer_data.update({'artist_id': artist.pk})
+        serializer_song = self.serializer_class(data=serializer_data, context={'request': request})
+        
+        if serializer_song.is_valid():
+            serializer_song.save()
+            return response.Response(serializer_song.data)
+        return response.Response(serializer_song.errors)
         
 
 class ArtistViewSet(viewsets.ModelViewSet):
@@ -40,13 +59,13 @@ class ArtistViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         serializer_artist = self.get_serializer(instance).data
 
-        paginator = SongPagination()
+        paginator = InfoPagination()
         song_list = Song.objects.filter(artist_id=serializer_artist['id'])
         song_filter = SongFilter(request.GET, queryset=song_list).queryset
         result_page = paginator.paginate_queryset(song_filter, request)
         serializer_song = SongSerializer(result_page, many=True, context={'request': request})
 
-        serializer_artist.update({'songs': paginator.get_paginated_data(serializer_song.data)})
+        serializer_artist.update({'items': paginator.get_paginated_data(serializer_song.data)})
         return response.Response(serializer_artist)
         
     def create(self, request):

@@ -1,5 +1,7 @@
 from music.models import Song, Artist, Tag, Playlist, SimilarArtist
 from rest_framework import serializers
+from django.db.utils import IntegrityError
+from django.utils.text import slugify
 
 class SimilarArtistSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,7 +11,9 @@ class SimilarArtistSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Tag
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'slug')
+        read_only_fields = ('slug',)
+        lookup_field = 'slug'
         extra_kwargs = {
             'name': {'validators': []},
         }
@@ -26,13 +30,16 @@ class ArtistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Artist
         fields = ('id', 'name', 'image', 'url', 'listeners_fm', 'playcount_fm', 
-                'tag', 'published', 'summary', 'content')
+                'tag', 'published', 'content')
                 
     def create(self, validated_data):
-        tags = validated_data.pop('tag')
+        tags = validated_data.pop('tag', [])
         instance = Artist.objects.create(**validated_data)
         for tag in tags:
-            instance_tag, _ = Tag.objects.get_or_create(name=tag['name'])
+            try:
+                instance_tag, _ = Tag.objects.get_or_create(name=tag['name'])
+            except IntegrityError:
+                instance_tag = Tag.objects.get(slug=slugify(tag['name']))
             instance.tag.add(instance_tag)
         return instance
         
@@ -44,10 +51,11 @@ class ArtistSerializer(serializers.ModelSerializer):
     
 
 class SongSerializer(serializers.ModelSerializer):
-    # artist = ArtistSerializer(read_only=True)
+    artist = ArtistSerializer(read_only=True)
+    artist_id = serializers.PrimaryKeyRelatedField(source='artist',  queryset=Artist.objects.all())
     class Meta:
         model = Song
-        fields = ('id', 'name', 'url', 'time','listeners_fm', 'playcount_fm', 'artist')
+        fields =  ('id', 'name', 'url', 'time','listeners_fm', 'playcount_fm', 'artist', 'artist_id')
         
         
 

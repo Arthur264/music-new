@@ -1,35 +1,67 @@
 import json
+import pandas as pd
 import os
 from django.core.management.base import BaseCommand, CommandError
 from music.models import Song, Artist
+from music.serializers import SongSerializer, ArtistSerializer, SimilarArtistSerializer
 
 class Command(BaseCommand):
-    artist_file = "artist.json"
-    song_file = "song.json"
-
+    
     def handle(self, *args, **options):
+        self.load_artist()
+        self.load_music()
         
-        artict = {}
-        with open(self.artist_file, 'r') as parser_artist:
-            count_artist = 0
-            for i,k in enumerate(parser_artist):
-                data = json.loads(k)
-                new_artict = list(Artist.objects.filter(name=data['name'], image=data['image']).values("id"))[0]
-                # new_artict.save()
-                artict[data['id']] = new_artict['id']
-                count_artist += 1
-            print("Insert artist {}".format(count_artist))
-                
-        with open(self.song_file, 'r') as parser_songs:
-            count_songs = 0
-            for i,k in enumerate(parser_songs):
-                if i < 1611853:
+            
+    def load_artist(self):
+        df_artist = pd.read_json('artist.json')
+        df_artist = df_artist.where((pd.notnull(df_artist)), None)
+        for index, row in df_artist.iterrows():
+            row_dict = row.to_dict()
+            row_dict['tag'] = row_dict.get('tag') or []
+            similars = row_dict.get('similar') or []
+            artist_serializer = ArtistSerializer(data=row_dict)
+            if artist_serializer.is_valid():
+                artist = artist_serializer.save()
+            else:
+                name = artist_serializer.errors.get('name')
+                if name and name[0].code == 'unique':
+                    print('Not unique name', index)
                     continue
-                data = json.loads(k)
-                artict_id = data['artict']
-                new_song = Song(name=data['name'], url=data['url'], time=data['time'], artist_id=int(artict[artict_id]))
-                new_song.save()
-                count_songs += 1
-            print("Insert song {}".format(count_songs))
+                print("Errors:", artist_serializer.errors)
+                import pdb; pdb.set_trace()
+                
+            for similar in similars:
+                similar_artist, _ = Artist.objects.get_or_create(name=similar['name'])
+                similar_serializer = SimilarArtistSerializer(data={"first_artist":artist.pk, "second_artist":similar_artist.pk})
+                if similar_serializer.is_valid():
+                    similar_serializer.save()
+                else:
+                    import pdb; pdb.set_trace()
+                    
+            print('Artist ', index)
+            
+    def load_music(self):
+        df_music = pd.read_json('music.json')
+        df_music = df_music.where((pd.notnull(df_music)), None)
+        for index, row in df_music.iterrows():
+            row_dict = row.to_dict()
+            artist, _ = Artist.objects.get_or_create(name=row_dict['artist'])
+            row_dict.update({'artist_id': artist.pk})
+            serializer_song = SongSerializer(data=row_dict)
+            
+            if serializer_song.is_valid():
+                serializer_song.save()
+                print('Music ', index)
+            else:
+                url = serializer_song.errors.get('url')
+                if url and url[0].code == 'unique':
+                    print('Not unique url', index)
+                    continue
+                name = serializer_song.errors.get('name')
+                if name and name[0].code == 'max_length':
+                    print('Max length name', index)
+                    continue
+                import pdb; pdb.set_trace()
+            
             
                 

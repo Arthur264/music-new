@@ -1,15 +1,20 @@
 from django.db import models
 from user.models import User
+from django.utils.text import slugify
 from utils.models import BaseModel
 
 # Create your models here.
 
 class Tag(models.Model):
     name = models.CharField(max_length=35, unique=True)
-    slug = models.CharField(max_length=35)
+    slug = models.SlugField(max_length=35, unique=True)
 
     def __str__(self):
         return self.name
+        
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        return super(Tag, self).save(*args, **kwargs)
     
 class Artist(BaseModel):
     name = models.CharField(max_length=100, unique=True)
@@ -18,7 +23,6 @@ class Artist(BaseModel):
     playcount_fm = models.IntegerField(null=True, blank=True)
     tag = models.ManyToManyField(Tag, related_name='artists', blank=True)
     published = models.DateField(null=True, blank=True)
-    summary = models.TextField(null=True, blank=True)
     content = models.TextField(null=True, blank=True)
     
     @property

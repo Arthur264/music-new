@@ -7,7 +7,7 @@ class LargeResultsSetPagination(PageNumberPagination):
     max_page_size = 50
     
     
-class SongPagination(LargeResultsSetPagination):
+class InfoPagination(LargeResultsSetPagination):
     def get_paginated_response(self, data):
         return Response({
             'next': self.get_next_link(),

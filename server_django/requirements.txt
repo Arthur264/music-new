@@ -9,4 +9,5 @@ psycopg2
 Pillow
 psycopg2-binary
 mysqlclient
+pandas
 pytz
