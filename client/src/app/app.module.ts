@@ -11,8 +11,7 @@ import { ArtistsComponent } from './artists/artists.component';
 
 @NgModule({
     declarations: [
-        AppComponent,
-        ArtistsComponent
+        AppComponent
     ],
     imports: [
         HttpModule,
@@ -32,8 +31,7 @@ import { ArtistsComponent } from './artists/artists.component';
         }])
     ],
     exports: [
-        AppComponent,
-        ArtistsComponent
+        AppComponent
     ],
     providers: [AppService, MusicService],
     bootstrap: [AppComponent]

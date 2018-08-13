@@ -1,20 +1,32 @@
 import json
 import pandas as pd
+import numpy as np
+from multiprocessing import Pool
 import os
 from django.core.management.base import BaseCommand, CommandError
 from music.models import Song, Artist
 from music.serializers import SongSerializer, ArtistSerializer, SimilarArtistSerializer
 
+                
 class Command(BaseCommand):
+    num_partitions = 4
+    num_cores = 4 
     
-    def handle(self, *args, **options):
-        self.load_artist()
-        self.load_music()
         
-            
-    def load_artist(self):
+    def handle(self, *args, **options):
+        df_music = pd.read_json('music.json')
+        df_music = df_music.where((pd.notnull(df_music)), None)
+        df_music_split = np.array_split(df_music, self.num_partitions)
         df_artist = pd.read_json('artist.json')
         df_artist = df_artist.where((pd.notnull(df_artist)), None)
+        df_artist_split = np.array_split(df_artist, self.num_partitions)
+        
+        with Pool(self.num_cores) as p:
+            p.map(self.load_artist, df_artist_split)
+            p.map(self.load_music, df_music_split)
+        
+    @staticmethod
+    def load_artist(df_artist):
         for index, row in df_artist.iterrows():
             row_dict = row.to_dict()
             row_dict['tag'] = row_dict.get('tag') or []
@@ -28,7 +40,6 @@ class Command(BaseCommand):
                     print('Not unique name', index)
                     continue
                 print("Errors:", artist_serializer.errors)
-                import pdb; pdb.set_trace()
                 
             for similar in similars:
                 similar_artist, _ = Artist.objects.get_or_create(name=similar['name'])
@@ -36,13 +47,12 @@ class Command(BaseCommand):
                 if similar_serializer.is_valid():
                     similar_serializer.save()
                 else:
-                    import pdb; pdb.set_trace()
+                    print(artist_serializer.errors)
                     
             print('Artist ', index)
             
-    def load_music(self):
-        df_music = pd.read_json('music.json')
-        df_music = df_music.where((pd.notnull(df_music)), None)
+    @staticmethod
+    def load_music(df_music):
         for index, row in df_music.iterrows():
             row_dict = row.to_dict()
             artist, _ = Artist.objects.get_or_create(name=row_dict['artist'])
@@ -61,7 +71,8 @@ class Command(BaseCommand):
                 if name and name[0].code == 'max_length':
                     print('Max length name', index)
                     continue
-                import pdb; pdb.set_trace()
+                print(serializer_song.errors)
+    
             
             
                 

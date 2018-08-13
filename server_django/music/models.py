@@ -36,9 +36,14 @@ class Song(BaseModel):
     name  = models.CharField(max_length=100)
     url = models.URLField(unique=True)
     time = models.CharField(max_length=10)
+    image = models.URLField(max_length=500, null=True, blank=True)
     listeners_fm = models.IntegerField(null=True, blank=True)
     playcount_fm = models.IntegerField(null=True, blank=True)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
+    
+    class Meta:
+        unique_together = ('name', 'artist')
+        ordering = ['-playcount_fm']
     
     @property
     def listeners(self):

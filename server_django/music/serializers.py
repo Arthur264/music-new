@@ -9,6 +9,7 @@ class SimilarArtistSerializer(serializers.ModelSerializer):
         fields = ('id', 'first_artist', 'second_artist')
 
 class TagSerializer(serializers.HyperlinkedModelSerializer):
+    # url = serializers.HyperlinkedIdentityField(view_name="app:tag-detail")
     class Meta:
         model = Tag
         fields = ('id', 'name', 'slug')
@@ -55,7 +56,7 @@ class SongSerializer(serializers.ModelSerializer):
     artist_id = serializers.PrimaryKeyRelatedField(source='artist',  queryset=Artist.objects.all())
     class Meta:
         model = Song
-        fields =  ('id', 'name', 'url', 'time','listeners_fm', 'playcount_fm', 'artist', 'artist_id')
+        fields =  ('id', 'name','image', 'url', 'time','listeners_fm', 'playcount_fm', 'artist', 'artist_id')
         
         
 

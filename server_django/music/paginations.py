@@ -14,7 +14,7 @@ class InfoPagination(LargeResultsSetPagination):
             'previous': self.get_previous_link(),
             'count': self.page.paginator.count,
             'total_pages': self.page.paginator.num_pages,
-            'results': data
+            'items': data
         })
     
     def get_paginated_data(self, data):
@@ -22,5 +22,5 @@ class InfoPagination(LargeResultsSetPagination):
             'next': self.get_next_link(),
             'previous': self.get_previous_link(),
             'count': self.page.paginator.count,
-            'results': data
+            'items': data
         }

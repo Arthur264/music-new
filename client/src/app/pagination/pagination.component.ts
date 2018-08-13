@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { CommonModule } from "@angular/common"
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppService } from '../app.service';
 
 @Component({
@@ -8,15 +9,22 @@ import { AppService } from '../app.service';
   styleUrls: ['./pagination.component.css']
 })
 
-export class PaginationComponent implements OnInit {
+export class PaginationComponent implements OnInit, OnDestroy {
   @Input() max_page: number = 10;
   @Input() url_page: string;
   @Input() current_page: number = 1;
   @Input() items: any[] = [];
-  constructor(private appService: AppService) {}
+  private sub: any;
+  constructor(private appService: AppService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.loadData(1);
+    this.sub = this.route
+      .queryParams
+      .subscribe(params => {
+        this.current_page = params['page'] || this.current_page;
+        console.log('current', this.current_page)
+        this.loadData(this.current_page);
+    });
   }
 
   public nextPage() {
@@ -36,11 +44,12 @@ export class PaginationComponent implements OnInit {
       if (this.items) {
         this.items.splice(0, this.items.length);
       };
-      for (let i = 0; i < res.results.length; i++) {
-        this.items.push(res.results[i]);
+      for (let i = 0; i < res.items.length; i++) {
+        this.items.push(res.items[i]);
       }
       this.current_page = page;
       this.max_page = res.total_pages;
+      this.router.navigate([], { queryParams: { 'page': this.current_page } });
     });
   }
   public counter(c, m) {
@@ -74,5 +83,8 @@ export class PaginationComponent implements OnInit {
       l = i;
     }
     return rangeWithDots;
+  }
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }

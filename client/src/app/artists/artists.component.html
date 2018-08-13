@@ -1,18 +1,40 @@
-<!--<div class="container">-->
-<!--<div class="music-list">-->
-<!--<div class="music-list__item" *ngFor="let music of arrayMusic" (click)="player.ChangeSong(music)">-->
-<!--<div class="text-center">-->
-<!--<img class="rounded-circle" src="{{music.img}}" alt="">-->
-<!--</div>-->
-<!--<h4 class="text-center">{{music.author}}</h4>-->
-<!--<h5 class="text-center">{{music.name}}</h5>-->
-
-<!--<audio id="audio"-->
-<!--src="https://dl.last.fm/static/1509640209/131211148/3ad55d1d0d6c5146f8ab140a764bccf232df1a8c97d436fdf2a6df9b301e808d/Death+Grips+-+Get+Got.mp3"-->
-<!--width="640" height="30" controls="" style="display: none;">-->
-<!--</audio>-->
-<!--&lt;!&ndash;{{music.like}}&ndash;&gt;-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
-jgsduyg
+<section id="content">
+    <section class="vbox">
+        <section class="w-f-md" id="bjax-target">
+            <section class="hbox stretch">
+                <aside class="aside bg-light dk" id="sidebar">
+                    <section class="vbox animated fadeInUp">
+                        <section class="scrollable hover">
+                            <div class="list-group no-radius no-border no-bg m-t-n-xxs m-b-none auto">
+                                active
+                                <a class="list-group-item" *ngFor="let tag of arrayTag">{{tag.name}}</a>
+                            </div>
+                        </section>
+                    </section>
+                </aside>
+                <section class='pb-40'>
+                    <section class="vbox">
+                        <section class="scrollable padder-lg">
+                            <h2 class="font-thin m-b">Artists</h2>
+                            <div class="row row-sm">
+                                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let music of arrayMusic">
+                                    <div class="item">
+                                        <div class="pos-rlt">
+                                            <div class="bottom"> <span class="badge bg-info m-l-sm m-b-sm">03:20</span> </div>
+                                            <div class="item-overlay opacity r r-2x bg-black">
+                                                <div class="text-info padder m-t-sm text-sm"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o text-muted"></i> </div>
+                                                <div class="center text-center m-t-n"> <a href="#"><i class="icon-control-play i-2x"></i></a> </div>
+                                                <div class="bottom padder m-b-sm"> <a href="#" class="pull-right"> <i class="fa fa-heart-o"></i> </a> <a href="#"> <i class="fa fa-plus-circle"></i> </a> </div>
+                                            </div> <a href="#"><img src="images/p1.jpg" alt="" class="r r-2x img-full"></a> </div>
+                                        <div class="padder-v"> <a href="#" class="text-ellipsis">Tempered Song</a> <a href="#" class="text-ellipsis text-xs text-muted">Miaow</a> </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--<app-pagination [max_page]="10" [url_page]="'song'" [current_page]="1" [items]='arrayMusic'></app-pagination>-->
+                        </section>
+                    </section>
+                </section>
+            </section>
+        </section>
+    </section>
+</section>

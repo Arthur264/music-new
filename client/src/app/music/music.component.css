@@ -35,3 +35,6 @@
     min-height: 147px;
     object-fit: cover;
 }
+.i-2x{
+    cursor: pointer;
+}

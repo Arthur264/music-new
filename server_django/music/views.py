@@ -9,6 +9,7 @@ from .paginations import LargeResultsSetPagination, InfoPagination
 
 class TagViewSet(viewsets.ModelViewSet):
     serializer_class = TagSerializer
+    pagination_class = InfoPagination
     queryset = Tag.objects.all()
     lookup_field = 'slug'
     
