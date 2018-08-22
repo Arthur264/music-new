@@ -1,6 +1,6 @@
 import { AppService } from '../app.service';
 import { Injectable } from '@angular/core';
-import { MusicItem } from './music.item';
+import { MusicItem } from '../app.item';
 
 @Injectable()
 export class MusicService {

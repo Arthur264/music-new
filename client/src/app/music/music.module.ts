@@ -5,10 +5,12 @@ import { MusicDialogComponent } from './music-dialog/music-dialog.component';
 import { MusicObjectComponent } from './music-object/music-object.component';
 import { MusicPlayerComponent } from './music-player/music-player.component';
 import { RouterModule } from '@angular/router';
-import { PaginationComponent } from '../pagination/pagination.component';
+import { WidgetModule } from '../widget/widget.module';
+import { MusicItemComponent } from './music-item/music-item.component';
 
 @NgModule({
     imports: [
+        WidgetModule,
         CommonModule,
         RouterModule.forChild([{
             path: '',
@@ -19,6 +21,6 @@ import { PaginationComponent } from '../pagination/pagination.component';
         MusicDialogComponent
     ],
     bootstrap: [MusicObjectComponent, MusicDialogComponent, MusicPlayerComponent],
-    declarations: [MusicComponent, MusicDialogComponent, MusicObjectComponent, MusicPlayerComponent, PaginationComponent]
+    declarations: [MusicComponent, MusicDialogComponent, MusicObjectComponent, MusicPlayerComponent, MusicItemComponent]
 })
 export class MusicModule {}

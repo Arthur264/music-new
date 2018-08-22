@@ -6,14 +6,19 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { AppService } from './app.service';
 import { MusicService } from './music/music.service';
+import { MusicModule } from './music/music.module';
 import { HttpModule } from '@angular/http';
-import { ArtistsComponent } from './artists/artists.component';
+import { ArtistsModule } from './artists/artists.module';
+import { WidgetModule } from './widget/widget.module'; 
 
 @NgModule({
     declarations: [
         AppComponent
     ],
     imports: [
+        WidgetModule,
+        MusicModule,
+        ArtistsModule,
         HttpModule,
         FormsModule,
         BrowserModule,
@@ -25,10 +30,13 @@ import { ArtistsComponent } from './artists/artists.component';
         }, {
             path: 'music',
             loadChildren: 'app/music/music.module#MusicModule',
+        },{
+            path: 'account',
+            loadChildren: 'app/account/account.module#AccountModule',
         }, {
             path: 'artists',
             loadChildren: 'app/artists/artists.module#ArtistsModule',
-        }])
+        }]),
     ],
     exports: [
         AppComponent

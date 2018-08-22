@@ -1,19 +1,19 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { CommonModule } from "@angular/common"
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppService } from '../app.service';
+import { AppService } from '../../app.service';
 
 @Component({
-  selector: 'app-pagination',
+  selector: 'pagination',
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.css']
 })
 
 export class PaginationComponent implements OnInit, OnDestroy {
-  @Input() max_page: number = 10;
-  @Input() url_page: string;
-  @Input() current_page: number = 1;
-  @Input() items: any[] = [];
+  @Input() public max_page: number = 10;
+  @Input() public url_page: string;
+  @Input() public current_page: number = 1;
+  @Input() public items: any[] = [];
   private sub: any;
   constructor(private appService: AppService, private router: Router, private route: ActivatedRoute) {}
 
@@ -22,9 +22,8 @@ export class PaginationComponent implements OnInit, OnDestroy {
       .queryParams
       .subscribe(params => {
         this.current_page = params['page'] || this.current_page;
-        console.log('current', this.current_page)
         this.loadData(this.current_page);
-    });
+      });
   }
 
   public nextPage() {

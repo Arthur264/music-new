@@ -9,22 +9,50 @@ from music.serializers import SongSerializer, ArtistSerializer, SimilarArtistSer
 
                 
 class Command(BaseCommand):
-    num_partitions = 4
-    num_cores = 4 
+    num_partitions = 5
+    num_cores = 5
+    folder_name = 'tmp'
     
-        
+    def add_arguments(self, parser):
+        parser.add_argument('read_music_file', type=int, default=1)
+    
     def handle(self, *args, **options):
-        df_music = pd.read_json('music.json')
-        df_music = df_music.where((pd.notnull(df_music)), None)
-        df_music_split = np.array_split(df_music, self.num_partitions)
-        df_artist = pd.read_json('artist.json')
-        df_artist = df_artist.where((pd.notnull(df_artist)), None)
-        df_artist_split = np.array_split(df_artist, self.num_partitions)
+        tasks = []
+        music_files, artist_files = self.get_files(self.folder_name)
         
+        read_music_file = options['read_music_file']
+        
+        tasks.append(self.get_chuck(self.load_artist, artist_files))
+        
+        if read_music_file:
+            tasks.append(self.get_chuck(self.load_music, music_files))
+            
         with Pool(self.num_cores) as p:
-            p.map(self.load_artist, df_artist_split)
-            p.map(self.load_music, df_music_split)
+            for task in tasks:
+                p.map(*task)
+                
+    def get_chuck(self,action, files):
+        tasks = []
+        for file_name in files:
+            df = pd.read_json(file_name)
+            df = df.where((pd.notnull(df)), None)
+            tasks.extend(np.array_split(df, self.num_partitions))
+        return (action, tasks) 
         
+    def get_files(self, folder_name):
+        music_files = []
+        artist_files = []
+        for path, subdirs, files in os.walk(self.folder_name):
+            for file_name in files:
+                file_path = os.path.join(path, file_name)
+                if 'music' in file_path:
+                    music_files.append(file_path)
+                elif 'artist' in file_path:
+                    artist_files.append(file_path)
+                else:
+                    continue
+        return music_files, artist_files
+                
     @staticmethod
     def load_artist(df_artist):
         for index, row in df_artist.iterrows():

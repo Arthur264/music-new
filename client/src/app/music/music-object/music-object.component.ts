@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MusicItem } from '../music.item';
+import { MusicItem } from '../../app.item';
 @Component({
   selector: 'app-music-object',
   templateUrl: './music-object.component.html',

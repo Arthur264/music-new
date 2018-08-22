@@ -1,6 +1,6 @@
 import {Component, OnInit, Input, ViewChild, AfterViewInit} from '@angular/core';
 import {MusicComponent} from '../music.component';
-import {MusicItem} from '../music.item';
+import {MusicItem} from '../../app.item';
 import {AppService} from '../../app.service'; 
 
 @Component({

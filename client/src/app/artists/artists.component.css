@@ -1,0 +1,15 @@
+.artist-item,
+.tag-item {
+    cursor: pointer;
+}
+
+.tag-item::first-letter {
+    text-transform: uppercase;
+}
+
+.tag-item:hover{
+    z-index: 2;
+    color: #fff;
+    background-color: #428bca;
+    border-color: #428bca;
+}

@@ -2,22 +2,10 @@
     <section class="vbox">
         <section class="w-f-md" id="bjax-target">
             <section class="hbox stretch">
-                <!-- side content -->
-                <!--<aside class="aside bg-light dk" id="sidebar">-->
-                <!--    <section class="vbox animated fadeInUp">-->
-                <!--        <section class="scrollable hover">-->
-                <!--            <div class="list-group no-radius no-border no-bg m-t-n-xxs m-b-none auto">-->
-                                 <!--active-->
-                <!--                <a class="list-group-item"  *ngFor="let tag of arrayTag">{{tag.name}}</a>-->
-                <!--            </div>-->
-                <!--        </section>-->
-                <!--    </section>-->
-                <!--</aside>-->
-                <!-- / side content -->
                 <section class='pb-40'>
                     <section class="vbox">
                         <section class="scrollable padder-lg">
-                            <h2 class="font-thin m-b">Acoustic</h2>
+                            <h2 class="font-thin m-b">Songs</h2>
                             <div class="row row-sm">
                                 <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let music of arrayMusic">
                                     <div class="item">
@@ -37,7 +25,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <app-pagination [max_page]="10" [url_page]="'song'" [current_page]="1" [items]='arrayMusic'></app-pagination>
+                            <pagination [max_page]="10" [url_page]="'song'" [current_page]="1" [items]='arrayMusic'></pagination>
                         </section>
                     </section>
                 </section>

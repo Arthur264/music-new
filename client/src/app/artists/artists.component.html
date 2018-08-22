@@ -6,8 +6,7 @@
                     <section class="vbox animated fadeInUp">
                         <section class="scrollable hover">
                             <div class="list-group no-radius no-border no-bg m-t-n-xxs m-b-none auto">
-                                active
-                                <a class="list-group-item" *ngFor="let tag of arrayTag">{{tag.name}}</a>
+                                <a class="list-group-item tag-item" (click)='changeTag(tag, i)' [class.active]="activeTagIndex === i" *ngFor="let tag of arrayTag; let i = index">{{tag.name}}</a>
                             </div>
                         </section>
                     </section>
@@ -17,20 +16,21 @@
                         <section class="scrollable padder-lg">
                             <h2 class="font-thin m-b">Artists</h2>
                             <div class="row row-sm">
-                                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let music of arrayMusic">
-                                    <div class="item">
+                                <a class="col-xs-6 col-sm-4 col-md-3 col-lg-2" [routerLink]="['/music']" [queryParams]="{artist: artist.id}" *ngFor="let artist of arrayArtist">
+                                    <div class="item artist-item">
                                         <div class="pos-rlt">
-                                            <div class="bottom"> <span class="badge bg-info m-l-sm m-b-sm">03:20</span> </div>
-                                            <div class="item-overlay opacity r r-2x bg-black">
-                                                <div class="text-info padder m-t-sm text-sm"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o text-muted"></i> </div>
-                                                <div class="center text-center m-t-n"> <a href="#"><i class="icon-control-play i-2x"></i></a> </div>
-                                                <div class="bottom padder m-b-sm"> <a href="#" class="pull-right"> <i class="fa fa-heart-o"></i> </a> <a href="#"> <i class="fa fa-plus-circle"></i> </a> </div>
-                                            </div> <a href="#"><img src="images/p1.jpg" alt="" class="r r-2x img-full"></a> </div>
-                                        <div class="padder-v"> <a href="#" class="text-ellipsis">Tempered Song</a> <a href="#" class="text-ellipsis text-xs text-muted">Miaow</a> </div>
+                                            <div class="item-overlay opacity r r-2x bg-black"></div>
+                                            <a>
+                                                <img [src]="getArtistImage(artist)" alt="{{artist.name}}" class="r r-2x img-full song-image">
+                                            </a>
+                                        </div>
+                                        <div class="padder-v">
+                                            <a class="text-ellipsis">{{artist.name}}</a>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
-                            <!--<app-pagination [max_page]="10" [url_page]="'song'" [current_page]="1" [items]='arrayMusic'></app-pagination>-->
+                            <pagination [max_page]="10" [url_page]="'artist'" [current_page]="1" [items]='arrayArtist'></pagination>
                         </section>
                     </section>
                 </section>

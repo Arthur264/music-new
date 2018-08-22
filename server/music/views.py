@@ -1,5 +1,6 @@
 import json
 from django.forms.models import model_to_dict
+from django.db.models import Count
 from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import SongSerializer, ArtistSerializer, SimilarArtistSerializer, TagSerializer
 from rest_framework import viewsets, response
@@ -10,7 +11,7 @@ from .paginations import LargeResultsSetPagination, InfoPagination
 class TagViewSet(viewsets.ModelViewSet):
     serializer_class = TagSerializer
     pagination_class = InfoPagination
-    queryset = Tag.objects.all()
+    queryset = Tag.objects.annotate(q_count=Count('artists')).order_by('artists')
     lookup_field = 'slug'
     
     def retrieve(self,request, slug):
@@ -30,7 +31,7 @@ class SongViewSet(viewsets.ModelViewSet):
     pagination_class = InfoPagination
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ['name']
-    search_fields = ('name')
+    search_fields = ('^name')
     ordering_fields = ('name')
     ordering = ('name',)
     
@@ -49,7 +50,7 @@ class SongViewSet(viewsets.ModelViewSet):
 class ArtistViewSet(viewsets.ModelViewSet):
     serializer_class = ArtistSerializer
     queryset = Artist.objects.all()
-    pagination_class = LargeResultsSetPagination
+    pagination_class = InfoPagination
     filter_class = (DjangoFilterBackend,)
     filter_fields = ['name']
     search_fields = ('^name')

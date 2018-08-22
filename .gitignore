@@ -41,3 +41,6 @@ client/e2e/*.map
 .DS_Store
 Thumbs.db
 
+#server
+server/tmp
+

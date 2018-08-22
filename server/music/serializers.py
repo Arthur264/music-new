@@ -32,10 +32,13 @@ class ArtistSerializer(serializers.ModelSerializer):
         model = Artist
         fields = ('id', 'name', 'image', 'url', 'listeners_fm', 'playcount_fm', 
                 'tag', 'published', 'content')
+        extra_kwargs = {
+            'name': {'validators': []},
+        }
                 
     def create(self, validated_data):
         tags = validated_data.pop('tag', [])
-        instance = Artist.objects.create(**validated_data)
+        instance, _ = Artist.objects.update_or_create(name=validated_data.pop('name'), defaults=validated_data)
         for tag in tags:
             try:
                 instance_tag, _ = Tag.objects.get_or_create(name=tag['name'])
@@ -56,7 +59,7 @@ class SongSerializer(serializers.ModelSerializer):
     artist_id = serializers.PrimaryKeyRelatedField(source='artist',  queryset=Artist.objects.all())
     class Meta:
         model = Song
-        fields =  ('id', 'name','image', 'url', 'time','listeners_fm', 'playcount_fm', 'artist', 'artist_id')
+        fields =  ('id', 'name','image', 'url', 'duration', 'time','listeners_fm', 'playcount_fm', 'artist', 'artist_id')
         
         
 

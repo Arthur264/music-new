@@ -25,6 +25,9 @@ class Artist(BaseModel):
     published = models.DateField(null=True, blank=True)
     content = models.TextField(null=True, blank=True)
     
+    class Meta:
+        ordering = ['-listeners_fm']
+    
     @property
     def all_songs(self):
         return Song.objects.filter(artist_id=self.id)
@@ -36,6 +39,7 @@ class Song(BaseModel):
     name  = models.CharField(max_length=100)
     url = models.URLField(unique=True)
     time = models.CharField(max_length=10)
+    duration = models.IntegerField(null=True, blank=True)
     image = models.URLField(max_length=500, null=True, blank=True)
     listeners_fm = models.IntegerField(null=True, blank=True)
     playcount_fm = models.IntegerField(null=True, blank=True)
@@ -43,7 +47,7 @@ class Song(BaseModel):
     
     class Meta:
         unique_together = ('name', 'artist')
-        ordering = ['-playcount_fm']
+        ordering = ['-listeners_fm']
     
     @property
     def listeners(self):
