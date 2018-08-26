@@ -1,4 +1,4 @@
-from users.models import User
+from user.models import User
 from rest_framework import serializers
 from rest_framework.compat import authenticate
 

@@ -2,11 +2,10 @@
 from __future__ import unicode_literals
 from rest_framework import viewsets
 from rest_framework.response import Response
-from helpers.response import ResponseHandler
 from rest_framework.decorators import list_route
 from .permissions import IsAdminOrIsSelf
-from users.models import User
-from users.serializers import UserSerializer
+from user.models import User
+from user.serializers import UserSerializer
 from rest_framework import status
 from .serializers import LoginSerializer, RegisterSerializer
 from rest_framework.authtoken.models import Token
@@ -44,7 +43,7 @@ class AuthViewSet(viewsets.ViewSet):
             'user': user_data.data,
             'token': token.key
         }
-        return ResponseHandler(data=data)
+        return Response(data)
 
     @list_route(methods=['post'],permission_classes=[AllowAny], url_path='register')
     def register(self, request):

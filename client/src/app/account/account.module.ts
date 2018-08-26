@@ -3,11 +3,14 @@ import { CommonModule } from '@angular/common';
 import { AccountComponent } from './account.component';
 import { AccountLoginComponent } from './account-login/account-login.component';
 import { AccountRegisterComponent } from './account-register/account-register.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forChild([{
       path: '',
       component: AccountComponent,

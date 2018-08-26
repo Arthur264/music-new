@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, Validators, FormGroup, FormBuilder, NgForm } from '@angular/forms'
+import { AppService } from '../../app.service';
 
 @Component({
   selector: 'app-account-login',
@@ -6,10 +8,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./account-login.component.css']
 })
 export class AccountLoginComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
+  public loginForm: FormGroup;
+  constructor(private appService: AppService) {
+    this.loginForm = new FormGroup({
+      email: new FormControl('', Validators.email),
+      password: new FormControl('', Validators.required),
+    });
   }
 
+  ngOnInit() {}
+  
+  public loginSubmit(loginData) {
+    if (this.loginForm.valid) {
+      this.appService.post('account/login', loginData.value).subscribe(res => {
+          console.log(res)
+      });
+    }
+    else {
+      return false;
+    }
+  }
 }
