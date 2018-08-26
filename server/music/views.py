@@ -51,9 +51,9 @@ class ArtistViewSet(viewsets.ModelViewSet):
     serializer_class = ArtistSerializer
     queryset = Artist.objects.all()
     pagination_class = InfoPagination
-    filter_class = (DjangoFilterBackend,)
-    filter_fields = ['name']
-    search_fields = ('^name')
+    # filter_class = (DjangoFilterBackend,)
+    # filter_fields = ['name']
+    search_fields = ('name')
     ordering_fields = ('name')
     ordering = ('name',)
     

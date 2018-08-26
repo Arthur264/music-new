@@ -9,7 +9,6 @@ class SimilarArtistSerializer(serializers.ModelSerializer):
         fields = ('id', 'first_artist', 'second_artist')
 
 class TagSerializer(serializers.HyperlinkedModelSerializer):
-    # url = serializers.HyperlinkedIdentityField(view_name="app:tag-detail")
     class Meta:
         model = Tag
         fields = ('id', 'name', 'slug')
@@ -46,13 +45,6 @@ class ArtistSerializer(serializers.ModelSerializer):
                 instance_tag = Tag.objects.get(slug=slugify(tag['name']))
             instance.tag.add(instance_tag)
         return instance
-        
-    def to_representation(self, instance):
-        representation = super(ArtistSerializer, self).to_representation(instance)
-        # representation['tags'] = TagSerializer(instance.tag.all(), many=True).data
-        return representation 
-                
-    
 
 class SongSerializer(serializers.ModelSerializer):
     artist = ArtistSerializer(read_only=True)

@@ -6,19 +6,15 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { AppService } from './app.service';
 import { MusicService } from './music/music.service';
-import { MusicModule } from './music/music.module';
-import { HttpModule } from '@angular/http';
-import { ArtistsModule } from './artists/artists.module';
-import { WidgetModule } from './widget/widget.module'; 
+import { HttpModule } from '@angular/http'; 
+import { ThemeModule } from './@theme/theme.module'; 
 
 @NgModule({
     declarations: [
         AppComponent
     ],
     imports: [
-        WidgetModule,
-        MusicModule,
-        ArtistsModule,
+        ThemeModule,
         HttpModule,
         FormsModule,
         BrowserModule,
