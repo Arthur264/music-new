@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router'
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router'
+import { filter } from 'rxjs/operators';
 
 @Component({
     selector: 'app-root',
@@ -8,10 +9,15 @@ import { Router, ActivatedRoute } from '@angular/router'
 })
 
 export class AppComponent {
-    title = 'app';
+    viewComponent: string = null;
     constructor(private router: Router, private route: ActivatedRoute) {
-        this.router.events.subscribe((event) => {
-           console.log(this.router)
+        this.router.events.pipe(
+            filter(event => event instanceof NavigationEnd)
+        ).subscribe(e => {
+            let routeData = this.route.firstChild.snapshot.data;
+            if (routeData.hasOwnProperty('component')){
+                this.viewComponent = routeData['component'];
+            }
         });
     }
 }

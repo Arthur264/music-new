@@ -29,6 +29,9 @@ import { ThemeModule } from './@theme/theme.module';
         },{
             path: 'account',
             loadChildren: 'app/account/account.module#AccountModule',
+            data:{
+                component: 'account'
+            }
         }, {
             path: 'artists',
             loadChildren: 'app/artists/artists.module#ArtistsModule',
