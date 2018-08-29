@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TagItem, ArtistItem } from '../app.item';
 import { AppService } from '../app.service';
+import { AppConfig } from '../app.config';
+
 @Component({
  selector: 'app-artists',
  templateUrl: './artists.component.html',
@@ -10,7 +12,6 @@ export class ArtistsComponent implements OnInit {
  public arrayTag: TagItem[] = [];
  public arrayArtist: ArtistItem[] = [];
  public activeTagIndex: number = null;
- public defaultSongImage: string = 'https://lastfm-img2.akamaized.net/i/u/174s/c6f59c1e5e7240a4c0d427abd71f3dbb';
 
  constructor(private appService: AppService) {}
  ngOnInit() {
@@ -26,7 +27,7 @@ export class ArtistsComponent implements OnInit {
  }
  public getArtistImage(artist) {
   if (artist.image == null) {
-   return this.defaultSongImage
+   return AppConfig.DEFAULT_ARTIST_IMAGE
   }
   return artist.image
  }

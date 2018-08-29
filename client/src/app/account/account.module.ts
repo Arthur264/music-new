@@ -5,10 +5,13 @@ import { AccountLoginComponent } from './account-login/account-login.component';
 import { AccountRegisterComponent } from './account-register/account-register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { AccountService } from './account.service';
+import { WidgetModule } from '../widget/widget.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    WidgetModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild([{
@@ -30,6 +33,7 @@ import { RouterModule } from '@angular/router';
 
     }])
   ],
+  providers: [AccountService],
   declarations: [AccountComponent, AccountLoginComponent, AccountRegisterComponent]
 })
 export class AccountModule {}

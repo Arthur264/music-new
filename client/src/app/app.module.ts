@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { MusicService } from './music/music.service';
 import { HttpModule } from '@angular/http'; 
 import { ThemeModule } from './@theme/theme.module'; 
+import { AccountService } from './account/account.service';
 
 @NgModule({
     declarations: [
@@ -40,7 +41,7 @@ import { ThemeModule } from './@theme/theme.module';
     exports: [
         AppComponent
     ],
-    providers: [AppService, MusicService],
+    providers: [AppService, MusicService, AccountService],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

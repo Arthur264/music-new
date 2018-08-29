@@ -8,9 +8,6 @@ class LoginSerializer(serializers.ModelSerializer):
         model = User
         fields = ('email', 'password')
         
-    def create(self, validated_data):
-        print("test")
-        
 
 class RegisterSerializer(serializers.ModelSerializer):
 
@@ -23,5 +20,3 @@ class RegisterSerializer(serializers.ModelSerializer):
        user.set_password(validated_data['password'])
        user.save()
        return user
-
-			

@@ -84,6 +84,8 @@ export class PaginationComponent implements OnInit, OnDestroy {
     return rangeWithDots;
   }
   ngOnDestroy() {
-    this.sub.unsubscribe();
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 }

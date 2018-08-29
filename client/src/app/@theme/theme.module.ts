@@ -8,6 +8,6 @@ import { HeaderComponent } from './header/header.component';
     CommonModule
   ],
   declarations: [HeaderSearchComponent, HeaderComponent],
-  exports: [HeaderSearchComponent]
+  exports: [HeaderSearchComponent, HeaderComponent]
 })
 export class ThemeModule { }

@@ -4,3 +4,18 @@
     justify-content: center;
     align-items: center;
 }
+.form-group{
+    position: relative;
+    margin-bottom: 25px;
+}
+.form-error{
+    text-align: center;
+    color: red;
+    position: absolute;
+    bottom: -50%;
+    left: 0;
+    width: 100%;
+}
+.form-error p {
+    margin-bottom: 0;
+}

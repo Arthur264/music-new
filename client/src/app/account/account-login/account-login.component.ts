@@ -1,27 +1,32 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, FormGroup, FormBuilder, NgForm } from '@angular/forms'
+import { FormControl, Validators, FormGroup, FormBuilder, NgForm } from '@angular/forms';
 import { AppService } from '../../app.service';
+import { AccountService } from '../account.service';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-account-login',
   templateUrl: './account-login.component.html',
-  styleUrls: ['./account-login.component.css']
+  styleUrls: ['../account.component.css']
 })
 export class AccountLoginComponent implements OnInit {
   public loginForm: FormGroup;
-  constructor(private appService: AppService) {
+  constructor(private appService: AppService, private accountService: AccountService, private router: Router) {
     this.loginForm = new FormGroup({
-      email: new FormControl('', Validators.email),
+      username: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required),
     });
   }
 
   ngOnInit() {}
-  
+
   public loginSubmit(loginData) {
     if (this.loginForm.valid) {
-      this.appService.post('account/login', loginData.value).subscribe(res => {
-          console.log(res)
+      this.appService.post('auth/login', loginData.value).subscribe((res) => {
+        this.accountService.save(res)
+        this.router.navigate(['music']);
+      }, (err) => {
+        
       });
     }
     else {

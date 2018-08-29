@@ -38,7 +38,6 @@ class UserViewSet(viewsets.ModelViewSet):
             data = Friends.objects.filter(Q(user=user) | Q(friend=user)).filter(status=True)
             return Response(serializers.serialize('json', data))
         else:
-            # print("id", request.user.id)
             serializer = FriendSerializer(data={'user': request.user.pk, 'friend': request.POST['friend']})
             print(serializer)
             if serializer.is_valid():

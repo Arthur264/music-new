@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+import json
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import list_route
@@ -13,7 +14,7 @@ from rest_framework.permissions import AllowAny
 from django.forms.models import model_to_dict
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from django.contrib.auth import authenticate
-import json
+
 # Create your views here.
 
 class AuthViewSet(viewsets.ViewSet):
@@ -38,24 +39,23 @@ class AuthViewSet(viewsets.ViewSet):
             return Response({"error": "Login failed"}, status=status.HTTP_401_UNAUTHORIZED)
 
         token, _ = Token.objects.get_or_create(user=user)
-        user_data = UserSerializer(user)
+        user_serializer = UserSerializer(user)
         data = {
-            'user': user_data.data,
+            'user': user_serializer.data,
             'token': token.key
         }
         return Response(data)
 
-    @list_route(methods=['post'],permission_classes=[AllowAny], url_path='register')
+    @list_route(methods=['post'], permission_classes=[AllowAny], url_path='register')
     def register(self, request):
-        serializer = RegisterSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
+        register_serializer = RegisterSerializer(data=request.data)
+        if register_serializer.is_valid():
+            user = register_serializer.save()
             return Response({
-                'user_id': user.id, 
-                'email': user.email,  
+                'user': UserSerializer(user).data,
                 'token': model_to_dict(user.auth_token)['key']}, status=status.HTTP_201_CREATED)
                 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(register_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @list_route(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='logout')
     def logout(self, request):
