@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TagItem, ArtistItem } from '../app.item';
-import { AppService } from '../app.service';
+import { AppService } from '../_services/app.service';
 import { AppConfig } from '../app.config';
 
 @Component({

@@ -5,7 +5,7 @@ import { AccountLoginComponent } from './account-login/account-login.component';
 import { AccountRegisterComponent } from './account-register/account-register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { AccountService } from './account.service';
+import { AccountService } from '../_services/account.service';
 import { WidgetModule } from '../widget/widget.module';
 
 @NgModule({

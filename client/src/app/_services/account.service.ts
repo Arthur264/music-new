@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AppService } from '../app.service';
+import { AppService } from './app.service';
 import { UserItem } from '../app.item';
 import { AppConfig } from '../app.config';
 
@@ -45,7 +45,7 @@ export class AccountService {
     }
 
     public is_login() {
-        if (this.user != null && this.token != null) {
+        if (this.user != null || this.token != null) {
             return true
         }
         return false

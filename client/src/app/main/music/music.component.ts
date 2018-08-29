@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MusicItem } from '../app.item';
 import { MusicPlayerComponent } from './music-player/music-player.component';
-import { AppService } from '../app.service';
+import { AppService } from '../_services/app.service';
 import { AppConfig } from '../app.config';
 import { ActivatedRoute, Params } from '@angular/router';
 

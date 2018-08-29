@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { CommonModule } from "@angular/common"
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppService } from '../../app.service';
+import { AppService } from '../../_services/app.service';
 
 @Component({
   selector: 'pagination',

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router'
 import { filter } from 'rxjs/operators';
 import { UserItem } from './app.item';
-import { AccountService } from './account/account.service';
+import { AccountService } from './_services/account.service';
 
 @Component({
     selector: 'app-root',

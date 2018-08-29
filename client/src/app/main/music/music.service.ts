@@ -1,4 +1,4 @@
-import { AppService } from '../app.service';
+import { AppService } from '../_services/app.service';
 import { Injectable } from '@angular/core';
 import { MusicItem } from '../app.item';
 

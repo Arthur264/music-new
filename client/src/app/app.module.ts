@@ -2,17 +2,20 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-import { AppService } from './app.service';
+import { AppService } from './_services/app.service';
 import { MusicService } from './music/music.service';
 import { HttpModule } from '@angular/http'; 
 import { ThemeModule } from './@theme/theme.module'; 
-import { AccountService } from './account/account.service';
+import { AccountService } from './_services/account.service';
+import { Routing } from './app.routing';
+import { AuthGuard } from './_guards/index';
+import { MainComponent } from './main/main.component';
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        MainComponent
     ],
     imports: [
         ThemeModule,
@@ -20,28 +23,12 @@ import { AccountService } from './account/account.service';
         FormsModule,
         BrowserModule,
         BrowserAnimationsModule,
-        RouterModule.forRoot([{
-            path: '',
-            redirectTo: '/music',
-            pathMatch: 'full'
-        }, {
-            path: 'music',
-            loadChildren: 'app/music/music.module#MusicModule',
-        },{
-            path: 'account',
-            loadChildren: 'app/account/account.module#AccountModule',
-            data:{
-                component: 'account'
-            }
-        }, {
-            path: 'artists',
-            loadChildren: 'app/artists/artists.module#ArtistsModule',
-        }]),
+        Routing,
     ],
     exports: [
         AppComponent
     ],
-    providers: [AppService, MusicService, AccountService],
+    providers: [AppService, MusicService, AccountService, AuthGuard],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

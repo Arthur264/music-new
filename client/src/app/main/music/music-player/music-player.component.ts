@@ -1,7 +1,7 @@
 import {Component, OnInit, Input, ViewChild, AfterViewInit} from '@angular/core';
 import {MusicComponent} from '../music.component';
 import {MusicItem} from '../../app.item';
-import {AppService} from '../../app.service'; 
+import {AppService} from '../../_services/app.service'; 
 
 @Component({
     selector: 'app-music-player',

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
-import { AccountService } from './account/account.service';
-import { AppSettings } from './app.settings'
+import { AccountService } from './account.service';
+import { AppSettings } from '../app.settings'
 
 @Injectable()
 export class AppService {
