@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { TagItem, ArtistItem } from '../app.item';
-import { AppService } from '../_services/app.service';
-import { AppConfig } from '../app.config';
+import {ArtistInterface} from '../../_interfaces/artist.interface';
+import {TagInterface} from '../../_interfaces/tag.interface';
+import {AppService} from '../../_services/app.service';
+import {AppConfig} from '../../app.config';
 
 @Component({
  selector: 'app-artists',
@@ -9,8 +10,8 @@ import { AppConfig } from '../app.config';
  styleUrls: ['./artists.component.css']
 })
 export class ArtistsComponent implements OnInit {
- public arrayTag: TagItem[] = [];
- public arrayArtist: ArtistItem[] = [];
+ public arrayTag: TagInterface[] = [];
+ public arrayArtist: ArtistInterface[] = [];
  public activeTagIndex: number = null;
 
  constructor(private appService: AppService) {}

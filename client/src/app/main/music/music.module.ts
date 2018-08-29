@@ -5,7 +5,7 @@ import { MusicDialogComponent } from './music-dialog/music-dialog.component';
 import { MusicObjectComponent } from './music-object/music-object.component';
 import { MusicPlayerComponent } from './music-player/music-player.component';
 import { RouterModule } from '@angular/router';
-import { WidgetModule } from '../widget/widget.module';
+import { WidgetModule} from '../../widget/widget.module';
 import { MusicItemComponent } from './music-item/music-item.component';
 
 @NgModule({

@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { AppService } from './app.service';
-import { UserItem } from '../app.item';
 import { AppConfig } from '../app.config';
+import {UserInterface} from '../_interfaces/user.interface';
 
 @Injectable()
 export class AccountService {
-    private _user: UserItem;
+    private _user: UserInterface;
     private _token: string;
 
     constructor() {}
@@ -27,9 +26,9 @@ export class AccountService {
         if (!this._token) {
             this._token = JSON.parse(localStorage.getItem('token'))
         }
-        return this._token
+        return this._token;
     }
-    set user(user_data: UserItem) {
+    set user(user_data: UserInterface) {
         localStorage.setItem('user', JSON.stringify(user_data));
         this._user = user_data
     }
@@ -46,8 +45,8 @@ export class AccountService {
 
     public is_login() {
         if (this.user != null || this.token != null) {
-            return true
+            return true;
         }
-        return false
+        return false;
     }
 }

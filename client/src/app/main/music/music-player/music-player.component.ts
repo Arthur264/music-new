@@ -1,7 +1,6 @@
-import {Component, OnInit, Input, ViewChild, AfterViewInit} from '@angular/core';
-import {MusicComponent} from '../music.component';
-import {MusicItem} from '../../app.item';
-import {AppService} from '../../_services/app.service'; 
+import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
+import {SongInterface} from '../../../_interfaces/song.interface';
+import {AppService} from '../../../_services/app.service';
 
 @Component({
     selector: 'app-music-player',
@@ -17,7 +16,7 @@ export class MusicPlayerComponent implements OnInit, AfterViewInit {
     totalTime: any;
     play: boolean = false;
     volume: boolean = true;
-    arrayMusic: MusicItem[];
+    arrayMusic: SongInterface[];
 
     constructor(private appService: AppService) {
         this.audio = new Audio();
@@ -29,7 +28,6 @@ export class MusicPlayerComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        
         let self = this;
         this.audio.addEventListener('canplay', () => {
             this.totalTime = this.TransformTime(this.audio.duration);
@@ -44,7 +42,7 @@ export class MusicPlayerComponent implements OnInit, AfterViewInit {
     }
 
     private MoveBack(curtime) {
-        this.progress.nativeElement.style.width = String((curtime / this.audio.duration) * 100 + "%");
+        this.progress.nativeElement.style.width = String((curtime / this.audio.duration) * 100 + '%');
     }
 
     private ChangeCurrentTime(timet) {
@@ -113,6 +111,7 @@ export class MusicPlayerComponent implements OnInit, AfterViewInit {
     public PlayStop() {
         this.audio.paused ? this.PlaySong() : this.StopSong();
     }
+
     private loadMusic() {
         this.appService.get('song').subscribe((res) => {
             this.arrayMusic = res.results;

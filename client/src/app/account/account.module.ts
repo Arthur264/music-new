@@ -7,6 +7,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AccountService } from '../_services/account.service';
 import { WidgetModule } from '../widget/widget.module';
+import { InvalidTypeDirective} from '../_directives/invalid-type.directive';
+import { InvalidmessageDirective} from '../_directives/invalidmessage.directive';
 
 @NgModule({
   imports: [
@@ -20,13 +22,13 @@ import { WidgetModule } from '../widget/widget.module';
       children: [{
         path: 'login',
         component: AccountLoginComponent,
-        data:{
+        data: {
           title: 'Login'
         }
       }, {
         path: 'register',
         component: AccountRegisterComponent,
-        data:{
+        data: {
           title: 'Register'
         }
       }]
@@ -34,6 +36,6 @@ import { WidgetModule } from '../widget/widget.module';
     }])
   ],
   providers: [AccountService],
-  declarations: [AccountComponent, AccountLoginComponent, AccountRegisterComponent]
+  declarations: [AccountComponent, AccountLoginComponent, AccountRegisterComponent, InvalidTypeDirective, InvalidmessageDirective]
 })
 export class AccountModule {}

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MusicItem } from '../../app.item';
+import {SongInterface} from '../../../_interfaces/song.interface';
+
 @Component({
   selector: 'app-music-object',
   templateUrl: './music-object.component.html',
@@ -7,6 +8,6 @@ import { MusicItem } from '../../app.item';
 })
 export class MusicObjectComponent {
 
-  @Input() music: MusicItem;
+  @Input() music: SongInterface;
 
 }

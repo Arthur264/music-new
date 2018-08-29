@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MusicItem } from '../app.item';
-import { MusicPlayerComponent } from './music-player/music-player.component';
-import { AppService } from '../_services/app.service';
-import { AppConfig } from '../app.config';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { SongInterface} from '../../_interfaces/song.interface';
+import { AppService } from '../../_services/app.service';
+import { AppConfig } from '../../app.config';
+import { ActivatedRoute} from '@angular/router';
 
 @Component({
     selector: 'app-music',
@@ -11,7 +10,7 @@ import { ActivatedRoute, Params } from '@angular/router';
     styleUrls: ['./music.component.css']
 })
 export class MusicComponent implements OnInit {
-    arrayMusic: MusicItem[] = [];
+    arrayMusic: SongInterface[] = [];
     constructor(private appService: AppService, private activatedRoute: ActivatedRoute) {}
     ngOnInit() {}
     public getSongImage(music) {
