@@ -24,12 +24,9 @@ export class AccountLoginComponent implements OnInit {
     if (this.loginForm.valid) {
       this.appService.post('auth/login', loginData.value).subscribe((res) => {
         this.accountService.save(res)
-        this.router.navigate(['music']);
-      }, (err) => {
-        
-      });
-    }
-    else {
+        this.router.navigate(['dashboard', 'music']);
+      }, (err) => {});
+    } else {
       return false;
     }
   }

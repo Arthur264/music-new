@@ -28,13 +28,12 @@ export class AccountRegisterComponent implements OnInit {
     if (this.registerForm.valid) {
       this.appService.post('auth/register', registerData.value).subscribe((res) => {
         this.accountService.save(res)
-        this.router.navigate(['music']);
+        this.router.navigate(['/dashboard', 'music']);
       }, (err) => {
         this.registerForm.controls = FormsUtils.errorMessages(this.registerForm.controls, err.json())
         console.log(this.registerForm)
       });
-    }
-    else {
+    } else {
       return false;
     }
   }

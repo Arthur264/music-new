@@ -1,6 +1,13 @@
 import { Routes, RouterModule } from '@angular/router';
+import {MainComponent} from './main.component';
 
-const MainRoutes: Routes = [{
+const MainRoutes: Routes = [
+    {
+        path: '',
+        redirectTo: '/music',
+        pathMatch: 'full',
+        component: MainComponent
+    }, {
         path: 'music',
         loadChildren: 'app/main/music/music.module#MusicModule',
     }, {

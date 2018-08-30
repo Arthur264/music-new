@@ -5,11 +5,16 @@ import { AuthGuard } from './_guards/index';
 const AppRoutes: Routes = [
     {
         path: '',
-        canActivate: [AuthGuard],
-        loadChildren: 'app/main/main.module#MainModule',
+        redirectTo: '/dashboard',
+        pathMatch: 'full',
+        canActivate: [AuthGuard]
     }, {
         path: 'account',
         loadChildren: 'app/account/account.module#AccountModule',
+    }, {
+        path: 'dashboard',
+        loadChildren: 'app/main/main.module#MainModule',
+        canActivate: [AuthGuard]
     }
 ];
 
