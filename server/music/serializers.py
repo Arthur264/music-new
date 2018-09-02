@@ -1,7 +1,20 @@
-from music.models import Song, Artist, Tag, Playlist, SimilarArtist
+from music.models import (
+    Song, 
+    Artist, 
+    Tag, 
+    Playlist, 
+    SimilarArtist, 
+    ListenerSong
+)
 from rest_framework import serializers
 from django.db.utils import IntegrityError
 from django.utils.text import slugify
+
+
+class ListenerArtistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ListenerSong
+        fields = ('id', 'user', 'song')
 
 class SimilarArtistSerializer(serializers.ModelSerializer):
     class Meta:
