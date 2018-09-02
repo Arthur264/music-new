@@ -63,7 +63,7 @@ class Song(BaseModel):
 class Playlist(BaseModel):
     name = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    song = models.ManyToManyField(Song)
+    song = models.ManyToManyField(Song, related_name='playlist', blank=True)
     
     def __str__(self):
         return self.name

@@ -19,8 +19,10 @@ class TagSerializer(serializers.HyperlinkedModelSerializer):
         }
         
 class PlaylistSerializer(serializers.HyperlinkedModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
     class Meta:
         model = Playlist
+        depth = 1
         fields = ('id', 'name', 'user', 'song')
         
         
