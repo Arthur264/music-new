@@ -7,17 +7,21 @@ import {MainMenuComponent} from './main-menu/main-menu.component';
 import {AsideComponent} from './aside/aside.component';
 import {ModalModule} from 'ngx-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { AlertComponent } from './alert/alert.component';
+import {AlertComponent} from './alert/alert.component';
+import {AlertModule} from 'ngx-bootstrap';
+import {AlertService} from '../_services/alert.service';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        ModalModule.forRoot()
+        ModalModule.forRoot(),
+        AlertModule.forRoot()
     ],
+    providers: [AlertService],
     declarations: [HeaderSearchComponent, HeaderComponent, PlaylistComponent, MainMenuComponent, AsideComponent, AlertComponent],
-    exports: [HeaderSearchComponent, HeaderComponent, PlaylistComponent, MainMenuComponent]
+    exports: [HeaderSearchComponent, HeaderComponent, PlaylistComponent, MainMenuComponent, AsideComponent, AlertComponent]
 })
 export class ThemeModule {
 }

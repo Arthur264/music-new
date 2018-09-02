@@ -3,6 +3,7 @@ import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AppService} from '../../_services/app.service';
 import {PlaylistInterface} from '../../_interfaces/playlist.interface';
+import {AlertService} from '../../_services/alert.service';
 
 
 @Component({
@@ -15,13 +16,14 @@ export class PlaylistComponent implements OnInit {
     public playlistItems: PlaylistInterface[] = [];
     public modalRef: BsModalRef;
 
-    constructor(private modalService: BsModalService, private appService: AppService) {
+    constructor(private modalService: BsModalService, private appService: AppService, private alertService: AlertService) {
         this.playlistForm = new FormGroup({
             name: new FormControl('', Validators.required)
         });
     }
 
     ngOnInit() {
+        this.alertService.error('test');
         this.appService.get('playlist').subscribe(res => {
             this.playlistItems = res.items;
         });

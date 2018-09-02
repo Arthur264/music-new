@@ -24,6 +24,7 @@ export class AlertService {
 
     public error(message: string, keepAfterNavigationChange = false) {
         this.alert = {message: message, type: 'error'};
+        console.log(this.alert)
         this._make_alert(keepAfterNavigationChange);
     }
 
