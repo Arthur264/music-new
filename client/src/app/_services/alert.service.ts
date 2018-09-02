@@ -18,18 +18,17 @@ export class AlertService {
     }
 
     public success(message: string, keepAfterNavigationChange = false) {
-        this.alert = {message: message, type: 'success'};
+        this.alert = {message: 'Success: ' +  message, type: 'success'};
         this._make_alert(keepAfterNavigationChange);
     }
 
     public error(message: string, keepAfterNavigationChange = false) {
-        this.alert = {message: message, type: 'error'};
-        console.log(this.alert)
+        this.alert = {message: 'Error: ' + message, type: 'error'};
         this._make_alert(keepAfterNavigationChange);
     }
 
     public denger(message: string, keepAfterNavigationChange = false) {
-        this.alert = {message: message, type: 'denger'};
+        this.alert = {message: 'Danger: ' + message, type: 'denger'};
         this._make_alert(keepAfterNavigationChange);
     }
 

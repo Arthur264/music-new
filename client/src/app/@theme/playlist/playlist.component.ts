@@ -37,6 +37,7 @@ export class PlaylistComponent implements OnInit {
         if (this.playlistForm.valid) {
             this.appService.post('playlist', playlistData.value).subscribe((res) => {
                 this.modalRef.hide();
+                this.alertService.success('Playlist created!');
             }, (err) => {
             });
         } else {

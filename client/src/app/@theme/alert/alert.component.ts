@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AlertInterface} from '../../_interfaces/alert.interface';
-import { AlertService} from '../../_services/alert.service';
+import {AlertService} from '../../_services/alert.service';
 
 @Component({
     selector: 'app-alert',
@@ -15,10 +15,9 @@ export class AlertComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.alertService.error('test');
-        console.log('alert')
-        this.alertService.getAlert().subscribe(msg => {
-            console.log('msg', msg);
+        this.alertService.getAlert().subscribe(alert => {
+            this.alert = alert;
+            console.log(this.alert)
         });
     }
 

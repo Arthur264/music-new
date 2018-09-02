@@ -24,7 +24,6 @@ export class MusicPlayerComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        console.log('progress', this.progress.nativeElement.style.width);
     }
 
     ngOnInit() {
@@ -98,6 +97,9 @@ export class MusicPlayerComponent implements OnInit, AfterViewInit {
     }
 
     public ChangeSong(item): void {
+        this.appService.get('song/' + item.id + '/addplay').subscribe((res) => {
+            console.log(res);
+        });
         this.audio.src = item.url;
         this.nameSoung = item.name;
         this.authorSoung = item.author;
