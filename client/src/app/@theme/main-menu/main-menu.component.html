@@ -1,11 +1,10 @@
 <ul class="nav bg clearfix">
     <li class="hidden-nav-xs padder m-t m-b-sm text-xs text-muted"> Discover</li>
-    <li><a href="index-2.html"> <i class="icon-disc icon "></i> <span class="font-bold">What's new</span>
-                                    </a></li>
-    <li><a routerLink="/music"> <i class="icon-music-tone-alt icon "></i> <span
-                                            class="font-bold">Genres</span> </a></li>
-    <li><a routerLink="/artists"> <i class="icon-list icon "></i> <span class="font-bold">Listen</span>
-                                    </a></li>
+    <li *ngFor="let menuItem of menu">
+        <a routerLink=menuItem.routerLink>
+        <i class="{{menuItem.icon}} icon"></i>
+        <span class="font-bold">{{menuItem.name}}</span>
+    </a></li>
     <li class="m-b hidden-nav-xs"></li>
 </ul>
  

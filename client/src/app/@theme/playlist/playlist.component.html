@@ -1,7 +1,36 @@
 <ul class="nav text-sm">
-    <li class="hidden-nav-xs padder m-t m-b-sm text-xs text-muted"><span class="pull-right"><a href="#"><i class="icon-plus i-lg"></i></a></span> Playlist
+    <li class="hidden-nav-xs padder m-t m-b-sm text-xs text-muted">
+        <span class="pull-right">
+            <a (click)="openModal(template)"><i class="icon-plus i-lg"></i></a>
+        </span>
+        Playlist
     </li>
-    <li><a href="#"> <i class="icon-music-tone icon"></i> <span>Hip-Pop</span> </a></li>
-    <li><a href="#"> <i class="icon-playlist icon text-success-lter"></i> 
-    <b class="badge bg-success dker pull-right">9</b> <span>Jazz</span> </a></li>
+    <li *ngFor="let playlistItem of playlistItems">
+        <a href="#">
+            <i class="icon-playlist icon text-success-lter"></i>
+            <b *ngIf="playlistItem.song" class="badge bg-success dker pull-right">{{playlistItem.song.length}}</b>
+            <span>{{playlistItem.name}}</span>
+        </a>
+    </li>
 </ul>
+
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title">Create new playlist</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="playlistForm">
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">@</span>
+                <input formControlName="name" name="name" type="text" class="form-control" placeholder="Playlist name"
+                       aria-describedby="basic-addon1">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="playlistSubmit(playlistForm)">Save</button>
+    </div>
+</ng-template>
