@@ -2,11 +2,38 @@ import json
 from django.forms.models import model_to_dict
 from django.db.models import Count
 from django_filters.rest_framework import DjangoFilterBackend
-from .serializers import SongSerializer, ArtistSerializer, SimilarArtistSerializer, TagSerializer
+from rest_framework.decorators import detail_route
+from account.permissions import IsAdminOrIsSelf
+from .serializers import (
+    SongSerializer, 
+    ArtistSerializer, 
+    SimilarArtistSerializer, 
+    TagSerializer,
+    PlaylistSerializer,
+    ListenerArtistSerializer
+)
 from rest_framework import viewsets, response
-from .models import Song, Artist, Tag
+from .models import Song, Artist, Tag, Playlist
 from .filters import SongFilter
 from .paginations import LargeResultsSetPagination, InfoPagination
+
+class PlaylistViewSet(viewsets.ModelViewSet):
+    serializer_class = PlaylistSerializer
+    pagination_class = InfoPagination
+    
+    def get_queryset(self):
+        queryset = Playlist.objects.all().filter(user=self.request.user)
+        return queryset
+        
+    def create(self, request):
+        serializer_context = {
+            'request': request,
+        }
+        serializer = PlaylistSerializer(data=request.data, context=serializer_context)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return response.Response(data=serializer.data)
+        return response.Response(data=serializer.errors)
 
 class TagViewSet(viewsets.ModelViewSet):
     serializer_class = TagSerializer
@@ -45,6 +72,15 @@ class SongViewSet(viewsets.ModelViewSet):
             serializer_song.save()
             return response.Response(serializer_song.data)
         return response.Response(serializer_song.errors)
+        
+    @detail_route(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='addplay')
+    def add_play(self, request, pk):
+        serializer = ListenerArtistSerializer(data={'song': pk, 'user': request.user.pk})
+        if serializer.is_valid():
+            serializer.save()
+            return response.Response(serializer.data)
+        return response.Response(serializer.errors)
+        
         
 
 class ArtistViewSet(viewsets.ModelViewSet):

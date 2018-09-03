@@ -1,7 +1,20 @@
-from music.models import Song, Artist, Tag, Playlist, SimilarArtist
+from music.models import (
+    Song, 
+    Artist, 
+    Tag, 
+    Playlist, 
+    SimilarArtist, 
+    ListenerSong
+)
 from rest_framework import serializers
 from django.db.utils import IntegrityError
 from django.utils.text import slugify
+
+
+class ListenerArtistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ListenerSong
+        fields = ('id', 'user', 'song')
 
 class SimilarArtistSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,8 +32,10 @@ class TagSerializer(serializers.HyperlinkedModelSerializer):
         }
         
 class PlaylistSerializer(serializers.HyperlinkedModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
     class Meta:
         model = Playlist
+        depth = 1
         fields = ('id', 'name', 'user', 'song')
         
         
