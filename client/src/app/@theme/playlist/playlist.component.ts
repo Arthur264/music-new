@@ -30,6 +30,7 @@ export class PlaylistComponent implements OnInit {
     }
 
     public openModal(template: TemplateRef<any>) {
+        this.alertService.error('test');
         this.modalRef = this.modalService.show(template);
     }
 

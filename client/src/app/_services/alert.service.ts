@@ -9,8 +9,7 @@ export class AlertService {
     private _keepAfterNavigationChange = false;
     public alert: AlertInterface;
 
-    constructor() {
-    }
+    constructor() {}
 
     private _make_alert(keepAfterNavigationChange = false) {
         this._keepAfterNavigationChange = keepAfterNavigationChange;
@@ -23,6 +22,7 @@ export class AlertService {
     }
 
     public error(message: string, keepAfterNavigationChange = false) {
+        console.log('error', message)
         this.alert = {message: 'Error: ' + message, type: 'error'};
         this._make_alert(keepAfterNavigationChange);
     }
@@ -35,5 +35,4 @@ export class AlertService {
     public getAlert(): Observable<any> {
         return this._subject.asObservable();
     }
-
 }

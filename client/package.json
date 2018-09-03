@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "ng": "ng serve",
-    "start": "bash run.sh",
+    "local": "bash run_local.sh",
+    "start": "bash run_local.sh",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

@@ -6,6 +6,7 @@ export interface UserInterface {
     first_name?: string;
     last_name?: string;
     address?: string;
+    avatar?: string;
     city?: string;
     country?: string;
     postcode?: string;

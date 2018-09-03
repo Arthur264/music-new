@@ -1,11 +1,20 @@
-<section id="content">
+<section id="main-content">
     <section class="vbox">
         <section class="w-f-md" id="bjax-target">
             <section class="hbox stretch">
                 <section class='pb-40'>
                     <section class="vbox">
                         <section class="scrollable padder-lg">
-                            <h2 class="font-thin m-b">Songs</h2>
+                            <div class="music-header">
+                                <h2 class="font-thin m-b">Songs</h2>
+                                <select class="custom-select">
+                                    <option selected>Order by</option>
+                                    <option value="1">Name</option>
+                                    <option value="2">Liseners</option>
+                                    <option value="3">Upload</option>
+                                </select>
+                            </div>
+
                             <div class="row row-sm">
                                 <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let music of arrayMusic">
                                     <div class="item">

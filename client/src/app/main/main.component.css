@@ -2,10 +2,10 @@
     width: 200px;
 }
 
-#content {
-    overflow: scroll;
-    height: 100vh;
-}
+/*#main-content {*/
+    /*overflow: scroll;*/
+    /*height: 100vh;*/
+/*}*/
 .vbox{
     display: flex;
     justify-content: space-between;

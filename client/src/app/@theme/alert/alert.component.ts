@@ -15,10 +15,15 @@ export class AlertComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.alertService.getAlert().subscribe(alert => {
+        this.alertService.getAlert().subscribe((alert: AlertInterface) => {
+            console.log('alert', alert)
             this.alert = alert;
-            console.log(this.alert)
+            this.alert.alertClass = 'bounceInRight';
+            setTimeout(this.fadeItOut, 5000);
         });
     }
 
+    private fadeItOut() {
+        this.alert.alertClass = 'fadeOutDown';
+    }
 }

@@ -1,2 +1,3 @@
-<!--<alert *ngIf="alert" [type]="alert.type"><span [innerHtml]="alert.message"></span></alert>-->
-<alert [type]="'error'">Testststts</alert>
+<alert *ngIf="alert" class="animated {{alert.alertClass}}}" [type]="alert.type">
+    <span [innerHtml]="alert.message"></span>
+</alert>
