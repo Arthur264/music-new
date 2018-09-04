@@ -9,6 +9,7 @@ import {AccountService} from '../_services/account.service';
 })
 export class MainComponent implements OnInit {
     public user: UserInterface;
+    public isDropup = true;
 
     constructor(private accountService: AccountService) {
         this.user = this.accountService.user;

@@ -8,8 +8,11 @@
 html, body {
     overflow: hidden;
 }
+.pb-60{
+    padding-bottom: 60px;
+}
 #main-content{
-    height: 100vh;
+       height: 100vh;
     overflow: auto;
 }
 alert{

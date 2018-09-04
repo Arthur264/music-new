@@ -4,9 +4,9 @@
             <section class="hbox stretch">
                 <section class='pb-40'>
                     <section class="vbox">
-                        <section class="scrollable padder-lg">
+                        <section class="scrollable padder-lg pb-60">
                             <div class="music-header">
-                                <h2 class="font-thin m-b">Songs</h2>
+                                <h2 class="font-thin m-b">{{title_page}}</h2>
                                 <select class="custom-select">
                                     <option selected>Order by</option>
                                     <option value="1">Name</option>
@@ -16,7 +16,8 @@
                             </div>
 
                             <div class="row row-sm">
-                                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let music of arrayMusic">
+                                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let music of arrayMusic"
+                                     https://loading.io/spinners/dual-ring/index.dual-ring-loader.svg
                                     <div class="item">
                                         <div class="pos-rlt">
                                             <div class="item-overlay opacity r r-2x bg-black"
@@ -36,8 +37,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <pagination [max_page]="10" [url_page]="'song'" [current_page]="1"
-                                        [items]='arrayMusic'></pagination>
+                            <pagination [max_page]="10" [url_page]="api_page_url" [current_page]="1"
+                                        [items]='arrayMusic' [resposne]="resposne"></pagination>
                         </section>
                     </section>
                 </section>

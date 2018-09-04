@@ -10,12 +10,16 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AlertComponent} from './alert/alert.component';
 import {AlertModule} from 'ngx-bootstrap';
 import {AlertService} from '../_services/alert.service';
+import {RouterModule} from '@angular/router';
+import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 
 @NgModule({
     imports: [
         CommonModule,
+        RouterModule,
         FormsModule,
         ReactiveFormsModule,
+        BsDropdownModule.forRoot(),
         ModalModule.forRoot(),
         AlertModule.forRoot()
     ],
