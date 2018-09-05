@@ -4,33 +4,36 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AppService} from '../../_services/app.service';
 import {PlaylistInterface} from '../../_interfaces/playlist.interface';
 import {AlertService} from '../../_services/alert.service';
+import {PlaylistService} from '../../_services/playlist.service';
 
 
 @Component({
     selector: 'app-playlist',
     templateUrl: './playlist.component.html',
-    styleUrls: ['./playlist.component.css']
+    styleUrls: ['./playlist.component.css'],
+    providers: [PlaylistService]
 })
 export class PlaylistComponent implements OnInit {
     public playlistForm: FormGroup;
     public playlistItems: PlaylistInterface[] = [];
     public modalRef: BsModalRef;
 
-    constructor(private modalService: BsModalService, private appService: AppService, private alertService: AlertService) {
+    constructor(private modalService: BsModalService,
+                private appService: AppService,
+                private playlistService: PlaylistService,
+                private alertService: AlertService) {
         this.playlistForm = new FormGroup({
             name: new FormControl('', Validators.required)
         });
     }
 
     ngOnInit() {
-        this.alertService.error('test');
-        this.appService.get('playlist').subscribe(res => {
-            this.playlistItems = res.items;
+        this.playlistService.playlist().subscribe(playlist => {
+            this.playlistItems = playlist;
         });
     }
 
     public openModal(template: TemplateRef<any>) {
-        this.alertService.error('test');
         this.modalRef = this.modalService.show(template);
     }
 

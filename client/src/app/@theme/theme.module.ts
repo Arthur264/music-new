@@ -12,6 +12,7 @@ import {AlertModule} from 'ngx-bootstrap';
 import {AlertService} from '../_services/alert.service';
 import {RouterModule} from '@angular/router';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
+import {PlaylistService} from '../_services/playlist.service';
 
 @NgModule({
     imports: [
@@ -23,7 +24,7 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
         ModalModule.forRoot(),
         AlertModule.forRoot()
     ],
-    providers: [AlertService],
+    providers: [AlertService, PlaylistService],
     declarations: [HeaderSearchComponent, HeaderComponent, PlaylistComponent, MainMenuComponent, AsideComponent, AlertComponent],
     exports: [HeaderSearchComponent, HeaderComponent, PlaylistComponent, MainMenuComponent, AsideComponent, AlertComponent]
 })

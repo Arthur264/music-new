@@ -16,14 +16,23 @@
                             </div>
 
                             <div class="row row-sm">
-                                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let music of arrayMusic"
-                                     https://loading.io/spinners/dual-ring/index.dual-ring-loader.svg
-                                    <div class="item">
+                                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let music of arrayMusic">
+                                    <div *ngIf="music.preload" class="item-preload"
+                                         [ngStyle]="{ 'background-image': 'url(' + music.preload + ')'}"></div>
+                                    <div *ngIf="!music.preload" class="item">
                                         <div class="pos-rlt">
                                             <div class="item-overlay opacity r r-2x bg-black"
                                                  (click)="player.ChangeSong(music)">
                                                 <div class="center text-center m-t-n">
                                                     <a><i class="fa fa-play-circle i-2x"></i></a>
+                                                </div>
+                                                <div class="bottom padder m-b-sm">
+                                                    <a href="#" class="pull-right">
+                                                        <i class="fa fa-heart-o"></i>
+                                                    </a>
+                                                    <a (click)="addToPlaylist(music, template); $event.stopPropagation()">
+                                                        <i class="fa fa-plus-circle"></i>
+                                                    </a>
                                                 </div>
                                             </div>
                                             <a>
@@ -37,8 +46,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <pagination [max_page]="10" [url_page]="api_page_url" [current_page]="1"
-                                        [items]='arrayMusic' [resposne]="resposne"></pagination>
+                            <app-pagination [max_page]="10" [url_page]="api_page_url" [current_page]="1"
+                                            [items]='arrayMusic'></app-pagination>
                         </section>
                     </section>
                 </section>
@@ -49,3 +58,24 @@
 <div class="music-player" [class.music-player--open]="player.play">
     <app-music-player #player></app-music-player>
 </div>
+
+<ng-template #template>
+    <div class="modal-header">
+        <h4 class="modal-title">Choose playlist</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="choosePlaylistForm">
+            <div class="input-group">
+                <select class="form-control" placeholder="Playlist name" formControlName="name" name="name">
+                    <option value="{{playlist.id}}}" *ngFor="let playlist of playlists">{{playlist.name}}</option>
+                </select>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="choosePlaylistSubmit(choosePlaylistForm)">Save</button>
+    </div>
+</ng-template>

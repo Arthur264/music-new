@@ -48,3 +48,9 @@
     padding: 0;
     line-height: 0;
 }
+.item-preload{
+    min-height: 180px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto;
+}
