@@ -7,12 +7,9 @@
                         <section class="scrollable padder-lg pb-60">
                             <div class="music-header">
                                 <h2 class="font-thin m-b">{{title_page}}</h2>
-                                <select class="custom-select">
-                                    <option selected>Order by</option>
-                                    <option value="1">Name</option>
-                                    <option value="2">Liseners</option>
-                                    <option value="3">Upload</option>
-                                </select>
+                                <ng-select placeholder="Order by" bindLabel="name"
+                                           bindValue="id" [items]="filterItems">
+                                </ng-select>
                             </div>
 
                             <div class="row row-sm">
@@ -68,11 +65,9 @@
     </div>
     <div class="modal-body">
         <form [formGroup]="choosePlaylistForm">
-            <div class="input-group">
-                <select class="form-control" placeholder="Playlist name" formControlName="name" name="name">
-                    <option value="{{playlist.id}}}" *ngFor="let playlist of playlists">{{playlist.name}}</option>
-                </select>
-            </div>
+            <ng-select placeholder="Playlist name" bindLabel="name"
+                       bindValue="id" formControlName="name" name="name" [items]="playlists">
+            </ng-select>
         </form>
     </div>
     <div class="modal-footer">

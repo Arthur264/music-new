@@ -8,12 +8,15 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {ArtistsComponent} from './artists/artists.component';
 import {WidgetModule} from '../widget/widget.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {NgSelectModule} from '@ng-select/ng-select';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
     imports: [
         WidgetModule,
         FormsModule,
         ReactiveFormsModule,
+        NgSelectModule,
         BsDropdownModule.forRoot(),
         ThemeModule,
         CommonModule,
@@ -27,7 +30,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
         MusicObjectComponent,
         MusicPlayerComponent,
         MusicItemComponent,
-        ArtistsComponent
+        ArtistsComponent,
+        SearchComponent
     ],
     bootstrap: [MainComponent]
 })

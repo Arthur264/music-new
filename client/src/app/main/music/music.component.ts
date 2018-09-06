@@ -8,6 +8,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {PlaylistInterface} from '../../_interfaces/playlist.interface';
 import {PlaylistService} from '../../_services/playlist.service';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {FilterItems} from '../../_items/filter.items';
 
 @Component({
     selector: 'app-music',
@@ -21,10 +22,14 @@ export class MusicComponent implements OnInit, OnDestroy {
     public title_page = 'Songs';
     public playlists: PlaylistInterface[] = [];
     public modalRef: BsModalRef;
+    public filterItems = FilterItems;
     private routeSub: Subscription;
 
 
-    constructor(private modalService: BsModalService, private appService: AppService, private activatedRoute: ActivatedRoute, private playerService: PlaylistService) {
+    constructor(private modalService: BsModalService,
+                private appService: AppService,
+                private activatedRoute: ActivatedRoute,
+                private playerService: PlaylistService) {
         this.choosePlaylistForm = new FormGroup({
             name: new FormControl('', Validators.required)
         });
@@ -53,7 +58,8 @@ export class MusicComponent implements OnInit, OnDestroy {
         this.modalRef = this.modalService.show(template);
     }
 
-    public choosePlaylistSubmit(){}
+    public choosePlaylistSubmit() {
+    }
 
     ngOnDestroy() {
         if (this.routeSub) {
