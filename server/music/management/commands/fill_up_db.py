@@ -4,7 +4,7 @@ import asyncio
 import pandas as pd
 import numpy as np
 import logging
-from multiprocessing import Pool
+from multiprocessing.dummy import Pool as ThreadPool
 from threading import Thread
 from django.core.management.base import BaseCommand, CommandError
 from music.models import Song, Artist
@@ -12,8 +12,8 @@ from music.serializers import SongSerializer, ArtistSerializer, SimilarArtistSer
 
                 
 class Command(BaseCommand):
-    num_partitions = 5
-    num_cores = 5
+    num_partitions = 1
+    num_cores = 1
     folder_name = 'tmp'
     
     def add_arguments(self, parser):
@@ -30,10 +30,9 @@ class Command(BaseCommand):
         if read_music_file:
             tasks.append(self.get_chuck(self.load_music, music_files))
             
-        p = Pool(self.num_cores)
-        for task in tasks:
-            p.map(*task)
-        p.close()
+        with ThreadPool(self.num_cores) as p:
+            for task in tasks:
+                p.map(*task)
                 
     def get_chuck(self,action, files):
         tasks = []
@@ -62,33 +61,25 @@ class Command(BaseCommand):
             row_dict = row.to_dict()
             row_dict['tag'] = row_dict.get('tag', [])
             similars = row_dict.get('similar', [])
-            th_similar = Thread(target=self.create_similar, args=(similar, ))
-            th_artist = Thread(target=self.create_artist, args=(row_dict, ))
-            th_similar.start()
-            th_artist.start()
-            logging.info('Artist ', index)
-        return None
+            artist_serializer = ArtistSerializer(data=row_dict)
+            if artist_serializer.is_valid():
+                artist = artist_serializer.save()
+            else:
+                name = artist_serializer.errors.get('name')
+                if name and name[0].code == 'unique':
+                    print(f'Not unique name: {name}')
             
-    def create_similar(self, similars):
-        for similar in similars:
-            similar_artist, _ = Artist.objects.get_or_create(name=similar['name'])
-            similar_serializer = SimilarArtistSerializer(data={"first_artist":artist.pk, "second_artist":similar_artist.pk})
-            if similar_serializer.is_valid():
-                similar_serializer.save()
-            logging.warning(artist_serializer.errors)
-        return None
-            
-    def create_artist(self, row_dict):
-        artist_serializer = ArtistSerializer(data=row_dict)
-        if artist_serializer.is_valid():
-            artist = artist_serializer.save()
-        else:
-            name = artist_serializer.errors.get('name')
-            if name and name[0].code == 'unique':
-                logging.warning(f'Not unique name: {name}')
+            if not similars:
                 return None
-            logging.warning(f'Errors: {artist_serializer.errors}')
-            return None
+            
+            for similar in similars:
+                similar_artist, _ = Artist.objects.get_or_create(name=similar['name'])
+                similar_serializer = SimilarArtistSerializer(data={"first_artist":artist.pk, "second_artist":similar_artist.pk})
+                if similar_serializer.is_valid():
+                    similar_serializer.save()
+                print('Artist ', index)
+                
+        return None
             
     @staticmethod
     def load_music(df_music):
@@ -99,19 +90,13 @@ class Command(BaseCommand):
             serializer_song = SongSerializer(data=row_dict)
             
             if serializer_song.is_valid():
+                print("Song save")
                 serializer_song.save()
-                logging.warning('Music ', index)
             else:
                 url = serializer_song.errors.get('url')
                 if url and url[0].code == 'unique':
-                    logging.warning('Not unique url', index)
+                    print('Not unique url', index)
                     continue
                 name = serializer_song.errors.get('name')
                 if name and name[0].code == 'max_length':
-                    logging.warning('Max length name', index)
                     continue
-                logging.warning(serializer_song.errors)
-    
-            
-            
-                
