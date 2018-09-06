@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~@ng-select/ng-select/themes/material.theme.css";
 
 .pb-40 {
     padding-bottom: 40px;
@@ -215,5 +216,9 @@ alert{
     padding-top: .375rem;
     padding-bottom: .375rem;
     font-size: 125%
+}
+.modal-header{
+    display: flex;
+    justify-content: space-between;
 }
 
