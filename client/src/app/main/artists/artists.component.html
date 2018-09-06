@@ -16,7 +16,7 @@
                         <section class="scrollable padder-lg">
                             <h2 class="font-thin m-b">Artists</h2>
                             <div class="row row-sm">
-                                <a class="col-xs-6 col-sm-4 col-md-3 col-lg-2" [routerLink]="['/music']" [queryParams]="{artist: artist.id}" *ngFor="let artist of arrayArtist">
+                                <a class="col-xs-6 col-sm-4 col-md-3 col-lg-2" [routerLink]="['/dashboard/music', artist.id]" *ngFor="let artist of arrayArtist">
                                     <div class="item artist-item">
                                         <div class="pos-rlt">
                                             <div class="item-overlay opacity r r-2x bg-black"></div>
@@ -30,7 +30,7 @@
                                     </div>
                                 </a>
                             </div>
-                            <pagination [max_page]="10" [url_page]="'artist'" [current_page]="1" [items]='arrayArtist'></pagination>
+                            <app-pagination [max_page]="10" [url_page]="'artist'" [current_page]="1" [items]='arrayArtist'></app-pagination>
                         </section>
                     </section>
                 </section>

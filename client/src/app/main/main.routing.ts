@@ -1,5 +1,7 @@
 import {Routes, RouterModule} from '@angular/router';
 import {MainComponent} from './main.component';
+import {MusicComponent} from './music/music.component';
+import {ArtistsComponent} from './artists/artists.component';
 
 const MainRoutes: Routes = [
     {
@@ -8,10 +10,14 @@ const MainRoutes: Routes = [
         children: [
             {
                 path: 'music',
-                loadChildren: 'app/main/music/music.module#MusicModule',
+                component: MusicComponent,
             }, {
+                path: 'music/:id',
+                component: MusicComponent,
+            },
+            {
                 path: 'artists',
-                loadChildren: 'app/main/artists/artists.module#ArtistsModule',
+                component: ArtistsComponent,
             }
         ]
     }

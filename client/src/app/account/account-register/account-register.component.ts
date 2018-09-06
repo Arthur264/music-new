@@ -33,7 +33,6 @@ export class AccountRegisterComponent implements OnInit {
                 this.router.navigate(['/dashboard', 'music']);
             }, (err) => {
                 this.registerForm.controls = FormsUtils.errorMessages(this.registerForm.controls, err.json());
-                console.log(this.registerForm);
             });
         } else {
             return false;

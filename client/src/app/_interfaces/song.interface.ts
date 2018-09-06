@@ -1,6 +1,9 @@
+import {ArtistInterface} from './artist.interface';
+
 export interface SongInterface {
     id: number;
     name: string;
-    artist: object;
+    artist: ArtistInterface;
     url: string;
+    preload: string;
 }
