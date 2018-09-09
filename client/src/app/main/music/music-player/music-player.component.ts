@@ -20,7 +20,7 @@ export class MusicPlayerComponent implements OnInit, AfterViewInit {
 
     constructor(private appService: AppService) {
         this.audio = new Audio();
-        this.loadMusic();
+        // this.loadMusic();
     }
 
     ngAfterViewInit() {

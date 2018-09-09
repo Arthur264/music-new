@@ -6,7 +6,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Subscription} from '../../../../node_modules/rxjs';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {PlaylistInterface} from '../../_interfaces/playlist.interface';
-import {PlaylistService} from '../../_services/playlist.service';
+import {CacheService} from '../../_services/cache.service';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {FilterItems} from '../../_items/filter.items';
 
@@ -29,16 +29,16 @@ export class MusicComponent implements OnInit, OnDestroy {
     constructor(private modalService: BsModalService,
                 private appService: AppService,
                 private activatedRoute: ActivatedRoute,
-                private playerService: PlaylistService) {
+                private cacheService: CacheService) {
         this.choosePlaylistForm = new FormGroup({
             name: new FormControl('', Validators.required)
         });
     }
 
     ngOnInit() {
-        this.playerService.playlist().subscribe(playlist => {
-            this.playlists = playlist;
-        });
+        // this.cacheService.get('playlist').subscribe(playlist => {
+        //     this.playlists = playlist;
+        // });
         this.routeSub = this.activatedRoute.params.subscribe(params => {
             const artist_id = params['id'];
             if (artist_id) {

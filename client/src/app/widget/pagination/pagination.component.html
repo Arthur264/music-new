@@ -1,5 +1,5 @@
 <ul class="pagination">
-    <li><a (click)="prevPage()"><i class="fa fa-chevron-left"></i></a></li>
+    <li *ngIf="current_page > 1"><a (click)="prevPage()"><i class="fa fa-chevron-left"></i></a></li>
     <li [class.active]="page === current_page" *ngFor="let page of counter(current_page, max_page)"><a (click)="changePage(page)">{{page}}</a></li>
-    <li><a (click)="nextPage()"><i class="fa fa-chevron-right"></i></a></li>
+    <li *ngIf="current_page < max_page"><a (click)="nextPage()"><i class="fa fa-chevron-right"></i></a></li>
 </ul>

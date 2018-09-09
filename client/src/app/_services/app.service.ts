@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Http, Headers, RequestOptions, Response} from '@angular/http';
+import {Headers, Http, RequestOptions, Response, URLSearchParams} from '@angular/http';
 import 'rxjs/add/operator/map';
-import {Observable} from 'rxjs/Observable';
 import {AccountService} from './account.service';
 import {AppSettings} from '../app.settings';
 
@@ -11,25 +10,8 @@ export class AppService {
     constructor(private http: Http, private accountService: AccountService) {
     }
 
-    private getUrl(url) {
-        return AppSettings.API_URL + url + '/';
-    }
-
-    private getHeaders() {
-        let headers = new Headers({'Content-Type': 'application/json'});
-        if (this.accountService.token) {
-            headers.set('Authorization', 'Token ' + this.accountService.token);
-        }
-        return headers;
-    }
-
-    private getOptions() {
-        return new RequestOptions({headers: this.getHeaders()});
-    }
-
     public get(url, params = {}) {
-        params['format'] = 'json';
-        const options = this.getOptions();
+        const options = this.getOptions(params);
         return this.http.get(this.getUrl(url), options)
             .map((res: Response) => res.json());
 
@@ -51,6 +33,32 @@ export class AppService {
         const options = this.getOptions();
         return this.http.put(this.getUrl(url), body, options)
             .map((res: Response) => res.json());
+    }
+
+    private getUrl(url) {
+        return AppSettings.API_URL + url + '/';
+    }
+
+    private getHeaders() {
+        let headers = new Headers({'Content-Type': 'application/json'});
+        if (this.accountService.token) {
+            headers.set('Authorization', 'Token ' + this.accountService.token);
+        }
+        return headers;
+    }
+
+    private getParams(req_params) {
+        let params = new URLSearchParams();
+        params.append('format', 'json');
+        for (const prop in req_params) {
+            params.append(String(prop), req_params[prop]);
+        }
+        return params;
+    }
+
+    private getOptions(params = {}) {
+        const options = {headers: this.getHeaders(), params: this.getParams(params)};
+        return new RequestOptions(options);
     }
 
     // public upload(url, body) {
