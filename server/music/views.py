@@ -2,6 +2,7 @@ import json
 from django.forms.models import model_to_dict
 from django.db.models import Count
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter
 from rest_framework.decorators import detail_route
 from account.permissions import IsAdminOrIsSelf
 from .serializers import (
@@ -56,11 +57,11 @@ class SongViewSet(viewsets.ModelViewSet):
     serializer_class = SongSerializer
     queryset = Song.objects.all()
     pagination_class = InfoPagination
-    filter_backends = (DjangoFilterBackend,)
+    filter_backends = (DjangoFilterBackend, OrderingFilter)
     filter_fields = ['name']
     search_fields = ('^name')
-    ordering_fields = ('name')
-    ordering = ('name',)
+    ordering_fields = ('name',)
+    ordering = ('name', )
     
     def create(self, request):
         serializer_data = request.data
@@ -121,6 +122,7 @@ class ArtistViewSet(viewsets.ModelViewSet):
             similar_serializer = SimilarArtistSerializer(data={"first_artist":artist.pk, "second_artist":similar_artist.pk}, context={'request': request})
             if not similar_serializer.is_valid():
                 return response.Response(similar_serializer.errors)
+                
             similar_serializer.save()
             result['similar'].append(similar_serializer.data)
                 

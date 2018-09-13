@@ -2,6 +2,7 @@ from django.db import models
 from user.models import User
 from django.utils.text import slugify
 from utils.models import BaseModel
+from django.core.validators import MinLengthValidator
 
 # Create your models here.
 
@@ -17,7 +18,7 @@ class Tag(models.Model):
         return super(Tag, self).save(*args, **kwargs)
     
 class Artist(BaseModel):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100, unique=True, validators=[MinLengthValidator(3)])
     image = models.URLField(max_length=500, null=True, blank=True)
     listeners_fm = models.IntegerField(null=True, blank=True)
     playcount_fm = models.IntegerField(null=True, blank=True)
@@ -36,7 +37,7 @@ class Artist(BaseModel):
         return self.name
     
 class Song(BaseModel):
-    name  = models.CharField(max_length=100)
+    name  = models.CharField(max_length=100, validators=[MinLengthValidator(3)])
     url = models.URLField(unique=True)
     time = models.CharField(max_length=10)
     duration = models.IntegerField(null=True, blank=True)
@@ -61,7 +62,7 @@ class Song(BaseModel):
         return self.name
     
 class Playlist(BaseModel):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, validators=[MinLengthValidator(3)])
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     song = models.ManyToManyField(Song, related_name='playlist', blank=True)
     
