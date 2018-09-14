@@ -36,15 +36,18 @@ export class MusicComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        // this.cacheService.get('playlist').subscribe(playlist => {
-        //     this.playlists = playlist;
-        // });
+        this.cacheService.get('playlist').subscribe(playlist => {
+            this.playlists = playlist;
+        });
         this.routeSub = this.activatedRoute.params.subscribe(params => {
             const artist_id = params['id'];
             if (artist_id) {
                 this.api_page_url = 'artist/' + artist_id;
             }
         });
+    }
+    public changeOrdering(ordering_field){
+        console.log(ordering_field)
     }
 
     public getSongImage(music) {

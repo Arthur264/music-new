@@ -25,8 +25,9 @@ export class PaginationComponent implements OnInit, OnDestroy {
         this.sub = this.route
             .queryParams
             .subscribe(params => {
-                this.current_page = params['page'] || this.current_page;
-                this.makeItems(this.current_page);
+                const req_params = Object.assign({}, params);
+                req_params['page'] = req_params['page'] || this.current_page;
+                this.makeItems(req_params);
             });
     }
 
@@ -107,15 +108,13 @@ export class PaginationComponent implements OnInit, OnDestroy {
         }
     }
 
-
-    private makeItems(page) {
-
-        this.appService.get(this.url_page, {'page': page}).subscribe((res) => {
+    private makeItems(params) {
+        this.appService.get(this.url_page, params).subscribe((res) => {
             const res_items = 'items' in res.items ? res.items.items : res.items;
             this.putItems(res_items);
-            this.current_page = page;
+            this.current_page = params['page'];
             this.max_page = res.total_pages;
-            this.router.navigate([], {queryParams: {'page': this.current_page}});
+            this.router.navigate([], {queryParams: params});
         });
     }
 }
