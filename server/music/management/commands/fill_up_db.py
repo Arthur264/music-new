@@ -83,8 +83,6 @@ class Command(BaseCommand):
         return None
       
     def load_music(self, df_music):
-        # for index, row in df_music.iterrows():
-        #     self.procces(index, row)
         ioloop = asyncio.new_event_loop()
         tasks = [ioloop.create_task(self.procces(index, row)) for index, row in df_music.iterrows()]
         wait_tasks = asyncio.wait(tasks)
@@ -100,7 +98,6 @@ class Command(BaseCommand):
             Song.objects.create(**row_dict)
         except IntegrityError as e:
             pass
-            # print(e)
         print('Song save: ', index)
         
     @staticmethod  

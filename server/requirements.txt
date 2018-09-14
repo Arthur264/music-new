@@ -12,3 +12,6 @@ mysqlclient
 pandas
 pytz
 line_profiler
+python-memcached
+celery
+celery[redis]

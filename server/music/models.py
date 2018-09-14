@@ -2,7 +2,7 @@ from django.db import models
 from user.models import User
 from django.utils.text import slugify
 from utils.models import BaseModel
-from django.core.validators import MinLengthValidator
+from django.core.validators import RegexValidator
 
 # Create your models here.
 
@@ -18,7 +18,7 @@ class Tag(models.Model):
         return super(Tag, self).save(*args, **kwargs)
     
 class Artist(BaseModel):
-    name = models.CharField(max_length=100, unique=True, validators=[MinLengthValidator(3)])
+    name = models.CharField(max_length=100, unique=True, validators=[RegexValidator(regex='^.{4}$', message='Length has to be 4', code='nomatch')])
     image = models.URLField(max_length=500, null=True, blank=True)
     listeners_fm = models.IntegerField(null=True, blank=True)
     playcount_fm = models.IntegerField(null=True, blank=True)
@@ -37,7 +37,7 @@ class Artist(BaseModel):
         return self.name
     
 class Song(BaseModel):
-    name  = models.CharField(max_length=100, validators=[MinLengthValidator(3)])
+    name  = models.CharField(max_length=100, validators=[RegexValidator(regex='^.{4}$', message='Length has to be 4', code='nomatch')])
     url = models.URLField(unique=True)
     time = models.CharField(max_length=10)
     duration = models.IntegerField(null=True, blank=True)
@@ -62,7 +62,7 @@ class Song(BaseModel):
         return self.name
     
 class Playlist(BaseModel):
-    name = models.CharField(max_length=100, validators=[MinLengthValidator(3)])
+    name = models.CharField(max_length=100, validators=[RegexValidator(regex='^.{4}$', message='Length has to be 4', code='nomatch')])
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     song = models.ManyToManyField(Song, related_name='playlist', blank=True)
     
@@ -70,8 +70,8 @@ class Playlist(BaseModel):
         return self.name
 
 class ListenerSong(BaseModel):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    song = models.ForeignKey(Song, on_delete=models.CASCADE)
+    user = models.ForeignKey(User,  related_name='listener', on_delete=models.CASCADE)
+    song = models.ForeignKey(Song, related_name='listener', on_delete=models.CASCADE)
     
     def __str__(self):
         return self.song
@@ -83,3 +83,5 @@ class SimilarArtist(models.Model):
     class Meta:
         unique_together = ("first_artist", "second_artist")
     
+    def __str__(self):
+        return f"{self.first_artist} {self.second_artist}"
