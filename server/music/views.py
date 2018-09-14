@@ -2,8 +2,10 @@ import json
 from django.forms.models import model_to_dict
 from django.db.models import Count
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter
 from rest_framework.decorators import detail_route
 from account.permissions import IsAdminOrIsSelf
+from rest_framework.filters import SearchFilter
 from .serializers import (
     SongSerializer, 
     ArtistSerializer, 
@@ -15,11 +17,10 @@ from .serializers import (
 from rest_framework import viewsets, response
 from .models import Song, Artist, Tag, Playlist
 from .filters import SongFilter
-from .paginations import LargeResultsSetPagination, InfoPagination
+from core.pagination import InfoPagination
 
 class PlaylistViewSet(viewsets.ModelViewSet):
     serializer_class = PlaylistSerializer
-    pagination_class = InfoPagination
     
     def get_queryset(self):
         queryset = Playlist.objects.all().filter(user=self.request.user)
@@ -37,7 +38,6 @@ class PlaylistViewSet(viewsets.ModelViewSet):
 
 class TagViewSet(viewsets.ModelViewSet):
     serializer_class = TagSerializer
-    pagination_class = InfoPagination
     queryset = Tag.objects.annotate(q_count=Count('artists')).order_by('artists')
     lookup_field = 'slug'
     
@@ -55,12 +55,8 @@ class TagViewSet(viewsets.ModelViewSet):
 class SongViewSet(viewsets.ModelViewSet):
     serializer_class = SongSerializer
     queryset = Song.objects.all()
-    pagination_class = InfoPagination
-    filter_backends = (DjangoFilterBackend,)
-    filter_fields = ['name']
-    search_fields = ('^name')
-    ordering_fields = ('name')
-    ordering = ('name',)
+    filter_class = SongFilter
+    ordering_fields = ('name', 'id')
     
     def create(self, request):
         serializer_data = request.data
@@ -86,18 +82,12 @@ class SongViewSet(viewsets.ModelViewSet):
 class ArtistViewSet(viewsets.ModelViewSet):
     serializer_class = ArtistSerializer
     queryset = Artist.objects.all()
-    pagination_class = InfoPagination
-    # filter_class = (DjangoFilterBackend,)
-    # filter_fields = ['name']
-    search_fields = ('name')
-    ordering_fields = ('name')
-    ordering = ('name',)
     
     def retrieve(self,request, pk):
         instance = self.get_object()
         serializer_artist = self.get_serializer(instance).data
 
-        paginator = InfoPagination()
+        paginator = self.pagination_class
         song_list = Song.objects.filter(artist_id=serializer_artist['id'])
         song_filter = SongFilter(request.GET, queryset=song_list).queryset
         result_page = paginator.paginate_queryset(song_filter, request)
@@ -121,6 +111,7 @@ class ArtistViewSet(viewsets.ModelViewSet):
             similar_serializer = SimilarArtistSerializer(data={"first_artist":artist.pk, "second_artist":similar_artist.pk}, context={'request': request})
             if not similar_serializer.is_valid():
                 return response.Response(similar_serializer.errors)
+                
             similar_serializer.save()
             result['similar'].append(similar_serializer.data)
                 

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework.filters',
     'utils',
     'user',
     'account',
@@ -64,6 +65,7 @@ MIDDLEWARE_CLASSES = (
 
 
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'core.pagination.InfoPagination',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.BasicAuthentication',
@@ -73,7 +75,11 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
         'rest_framework.permissions.IsAuthenticated',
     ],
-    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend', 
+        'rest_framework.filters.OrderingFilter',
+        'rest_framework.filters.SearchFilter'
+    ]
 }
 
 ROOT_URLCONF = 'app.urls'
@@ -94,6 +100,13 @@ TEMPLATES = [
     },
 ]
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '0.0.0.0:8082',
+    }
+}
+
 WSGI_APPLICATION = 'app.wsgi.application'
 
 
@@ -107,7 +120,10 @@ DATABASES = {
         'NAME': 'musicdb',                      
         'USER': 'artyr264',
         'PASSWORD': '',
-        'HOST': 'localhost'
+        'HOST': 'localhost',
+        'TEST': {
+            'NAME': 'test_musicdb',
+        },
     }
 }
 

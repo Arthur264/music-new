@@ -68,7 +68,7 @@ class SongSerializer(serializers.ModelSerializer):
         model = Song
         fields =  ('id', 'name','image', 'url', 'duration', 'time','listeners_fm', 'playcount_fm', 'artist', 'artist_id')
         
-        
+    
 
 
     
