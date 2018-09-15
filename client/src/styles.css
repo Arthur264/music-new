@@ -221,4 +221,7 @@ alert{
     display: flex;
     justify-content: space-between;
 }
+.ng-select .ng-clear-wrapper{
+    display: none;
+}
 

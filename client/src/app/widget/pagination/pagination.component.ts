@@ -2,11 +2,13 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppService} from '../../_services/app.service';
 import {AppConfig} from '../../app.config';
+import {RouterService} from '../../_services/router.service';
 
 @Component({
     selector: 'app-pagination',
     templateUrl: './pagination.component.html',
-    styleUrls: ['./pagination.component.css']
+    styleUrls: ['./pagination.component.css'],
+    providers: [RouterService]
 })
 
 export class PaginationComponent implements OnInit, OnDestroy {
@@ -17,7 +19,10 @@ export class PaginationComponent implements OnInit, OnDestroy {
     private sub: any;
     private count_page = 30;
 
-    constructor(private appService: AppService, private router: Router, private route: ActivatedRoute) {
+    constructor(private appService: AppService,
+                private router: Router,
+                private route: ActivatedRoute,
+                private routerService: RouterService) {
     }
 
     ngOnInit() {
@@ -47,9 +52,10 @@ export class PaginationComponent implements OnInit, OnDestroy {
             left = current - delta,
             right = current + delta + 1;
 
-        let range = [],
-            rangeWithDots = [],
-            l;
+        const range = [],
+            rangeWithDots = [];
+
+        let old_i;
 
         range.push(1);
 
@@ -61,15 +67,15 @@ export class PaginationComponent implements OnInit, OnDestroy {
         range.push(m);
 
         for (const i of range) {
-            if (l) {
-                if (i - l === 2) {
-                    rangeWithDots.push(l + 1);
-                } else if (i - l !== 1 && last > 3) {
+            if (old_i) {
+                if (i - old_i === 2) {
+                    rangeWithDots.push(old_i + 1);
+                } else if (i - old_i !== 1 && last > 3) {
                     rangeWithDots.push('...');
                 }
             }
             rangeWithDots.push(i);
-            l = i;
+            old_i = i;
         }
         return rangeWithDots;
     }
@@ -114,7 +120,7 @@ export class PaginationComponent implements OnInit, OnDestroy {
             this.putItems(res_items);
             this.current_page = params['page'];
             this.max_page = res.total_pages;
-            this.router.navigate([], {queryParams: params});
+            this.routerService.updateQueryParams(params);
         });
     }
 }
