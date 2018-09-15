@@ -12,7 +12,7 @@ import {RouterService} from '../../_services/router.service';
 })
 
 export class PaginationComponent implements OnInit, OnDestroy {
-    @Input() public max_page = 10;
+    @Input() public max_page: number = 10;
     @Input() public url_page: string;
     @Input() public current_page = 1;
     @Input() public items: any[] = [];

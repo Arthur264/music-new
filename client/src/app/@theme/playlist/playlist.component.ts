@@ -28,9 +28,9 @@ export class PlaylistComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.cacheService.get('playlist').subscribe(playlist => {
-        //     this.playlistItems = playlist;
-        // });
+        this.cacheService.get('playlist').subscribe(playlist => {
+            this.playlistItems = playlist;
+        });
     }
 
     public openModal(template: TemplateRef<any>) {
@@ -39,11 +39,11 @@ export class PlaylistComponent implements OnInit {
 
     public playlistSubmit(playlistData) {
         if (this.playlistForm.valid) {
-            // this.appService.post('playlist', playlistData.value).subscribe((res) => {
-            //     this.modalRef.hide();
-            //     this.alertService.success('Playlist created!');
-            // }, (err) => {
-            // });
+            this.appService.post('playlist', playlistData.value).subscribe((res) => {
+                this.modalRef.hide();
+                this.alertService.success('Playlist created!');
+            }, (err) => {
+            });
         } else {
             return false;
         }

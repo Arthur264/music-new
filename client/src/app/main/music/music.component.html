@@ -34,8 +34,7 @@
                                                 </div>
                                             </div>
                                             <a>
-                                                <img [src]="getSongImage(music)" alt="{{music.name}}"
-                                                     class="r r-2x img-full song-image">
+                                                <img [src]="getSongImage(music)" alt="{{music.name}}" (error)="errorHandlerImage($event)" class="r r-2x img-full song-image">
                                             </a>
                                         </div>
                                         <div class="padder-v"><a class="text-ellipsis">{{music.name}}</a>

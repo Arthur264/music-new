@@ -41,23 +41,20 @@ export class MusicComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.cacheService.get('playlist').subscribe(playlist => {
-            this.playlists = playlist;
-        });
-        this.routeSub = this.activatedRoute.params.subscribe(params => {
-            const artist_id = params['id'];
-            const song_ordering = params['ordering'];
-            if (song_ordering) {
-                this.song_ordering = song_ordering;
-            }
-            if (artist_id) {
-                this.api_page_url = 'artist/' + artist_id;
-            }
-        });
+        this.getPlayList();
+        this.getArtistId();
+        this.getSongOrdering();
     }
 
-    public changeOrdering(ordering_field) {
-        this.routerService.updateQueryParams({'ordering': ordering_field['id']});
+    public changeOrdering(param) {
+        const order_id = param instanceof Object ? param['id'] : param;
+        FilterItems.map((item) => {
+            if (item['id'] === order_id) {
+                this.song_ordering = order_id;
+                this.routerService.updateQueryParams({'ordering': order_id});
+            }
+        });
+
     }
 
     public getSongImage(music) {
@@ -65,6 +62,10 @@ export class MusicComponent implements OnInit, OnDestroy {
             return AppConfig.DEFAULT_SONG_IMAGE;
         }
         return music.image ? music.image : music.artist.image;
+    }
+
+    public errorHandlerImage(event) {
+        event.target.src = AppConfig.DEFAULT_SONG_IMAGE;
     }
 
     public addToPlaylist(music, template) {
@@ -78,5 +79,29 @@ export class MusicComponent implements OnInit, OnDestroy {
         if (this.routeSub) {
             this.routeSub.unsubscribe();
         }
+    }
+
+    private getArtistId() {
+        this.routeSub = this.activatedRoute.params.subscribe(params => {
+            const artist_id = params['id'];
+            if (artist_id) {
+                this.api_page_url = 'artist/' + artist_id;
+            }
+        });
+    }
+
+    private getSongOrdering() {
+        const song_ordering = this.activatedRoute.snapshot.queryParams['ordering'];
+        console.log('song_ordering', song_ordering)
+        if (song_ordering) {
+            this.changeOrdering(song_ordering);
+
+        }
+    }
+
+    private getPlayList() {
+        this.cacheService.get('playlist').subscribe(playlist => {
+            this.playlists = playlist;
+        });
     }
 }
