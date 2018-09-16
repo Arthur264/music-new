@@ -1,15 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {SongInterface} from '../../_interfaces/song.interface';
-import {AppService} from '../../_services/app.service';
+import {PlaylistInterface, SongInterface} from '../../_interfaces';
 import {AppConfig} from '../../app.config';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from '../../../../node_modules/rxjs';
+import {Subscription} from 'rxjs/Subscription';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {PlaylistInterface} from '../../_interfaces/playlist.interface';
-import {CacheService} from '../../_services/cache.service';
+import {AlertService, AppService, CacheService, RouterService} from '../../_services';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {FilterItems} from '../../_items/filter.items';
-import {RouterService} from '../../_services/router.service';
+import {FilterItems} from '../../_items';
+import {FormsUtils} from '../../utils/forms';
 
 @Component({
     selector: 'app-music',
@@ -24,6 +22,7 @@ export class MusicComponent implements OnInit, OnDestroy {
     public title_page = 'Songs';
     public playlists: PlaylistInterface[] = [];
     public modalRef: BsModalRef;
+    public addToPlaylistSongId = null;
     public filterItems = FilterItems;
     public song_ordering;
     private routeSub: Subscription;
@@ -34,6 +33,7 @@ export class MusicComponent implements OnInit, OnDestroy {
                 private activatedRoute: ActivatedRoute,
                 private cacheService: CacheService,
                 private routerService: RouterService,
+                private alertService: AlertService,
                 private router: Router) {
         this.choosePlaylistForm = new FormGroup({
             name: new FormControl('', Validators.required)
@@ -69,10 +69,23 @@ export class MusicComponent implements OnInit, OnDestroy {
     }
 
     public addToPlaylist(music, template) {
+        this.addToPlaylistSongId = music.id;
         this.modalRef = this.modalService.show(template);
     }
 
-    public choosePlaylistSubmit() {
+    public choosePlaylistSubmit(form) {
+        if (this.choosePlaylistForm.valid) {
+            const url = 'playlist/' + form.value.name + '/tracks';
+            this.appService.post(url, {'song_id': this.addToPlaylistSongId}).subscribe((res) => {
+                this.modalRef.hide();
+                this.alertService.success('Playlist created!');
+                this.addToPlaylistSongId = null;
+            }, (err) => {
+                this.choosePlaylistForm.controls = FormsUtils.errorMessages(this.choosePlaylistForm.controls, err.json());
+            });
+        } else {
+            return false;
+        }
     }
 
     ngOnDestroy() {
@@ -92,7 +105,6 @@ export class MusicComponent implements OnInit, OnDestroy {
 
     private getSongOrdering() {
         const song_ordering = this.activatedRoute.snapshot.queryParams['ordering'];
-        console.log('song_ordering', song_ordering)
         if (song_ordering) {
             this.changeOrdering(song_ordering);
 

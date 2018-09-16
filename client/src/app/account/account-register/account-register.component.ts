@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, Validators, FormGroup, FormBuilder, NgForm} from '@angular/forms';
-import {AppService} from '../../_services/app.service';
-import {AccountService} from '../../_services/account.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AccountService, AppService} from '../../_services';
 import {FormsUtils} from '../../utils/forms';
 import {Router} from '@angular/router';
 
@@ -23,7 +22,6 @@ export class AccountRegisterComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log('registerForm', this.registerForm);
     }
 
     public registerSubmit(registerData) {

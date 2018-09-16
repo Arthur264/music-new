@@ -6,9 +6,9 @@
         Playlist
     </li>
     <li *ngFor="let playlistItem of playlistItems">
-        <a href="#">
+        <a [routerLink]="['/dashboard/playlist', playlistItem.slug]">
             <i class="icon-playlist icon text-success-lter"></i>
-            <b *ngIf="playlistItem.song" class="badge bg-success dker pull-right">{{playlistItem.song.length}}</b>
+            <b *ngIf="playlistItem.song.length" class="badge bg-success dker pull-right">{{playlistItem.song.length}}</b>
             <span>{{playlistItem.name}}</span>
         </a>
     </li>

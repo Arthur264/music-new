@@ -65,8 +65,13 @@
     <div class="modal-body">
         <form [formGroup]="choosePlaylistForm">
             <ng-select placeholder="Playlist name" bindLabel="name"
-                       bindValue="id" formControlName="name" name="name" [items]="playlists">
+                       bindValue="slug" formControlName="name" name="name"
+                       [items]="playlists">
             </ng-select>
+            <div class="form-error" invalidmessage="name">
+                <p *invalidType="'required'">Please provide name</p>
+                <p *invalidType="'response'"></p>
+            </div>
         </form>
     </div>
     <div class="modal-footer">
