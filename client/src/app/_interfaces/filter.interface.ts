@@ -1,4 +1,4 @@
 export interface FilterInterface {
-    id: number;
+    id: string;
     name: string;
 }

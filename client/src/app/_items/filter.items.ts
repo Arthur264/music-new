@@ -1,7 +1,7 @@
 import {FilterInterface} from '../_interfaces/filter.interface';
 
 export const FilterItems: FilterInterface[] = [
-    {'id': 0, 'name': 'Name'},
-    {'id': 1, 'name': 'Liseners'},
-    {'id': 2, 'name': 'Upload'}
+    {'id': 'name', 'name': 'Name'},
+    {'id': '-listeners_fm', 'name': 'Popular'},
+    {'id': 'created_at', 'name': 'New'}
 ];

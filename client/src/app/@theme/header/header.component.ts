@@ -5,7 +5,8 @@ import {UserInterface} from '../../_interfaces/user.interface';
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',
-    styleUrls: ['./header.component.css']
+    styleUrls: ['./header.component.css'],
+    providers: [AccountService]
 })
 export class HeaderComponent implements OnInit {
     public user: UserInterface;
@@ -18,4 +19,7 @@ export class HeaderComponent implements OnInit {
     ngOnInit() {
     }
 
+    public logout() {
+        this.accountService.logout();
+    }
 }

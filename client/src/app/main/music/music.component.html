@@ -7,8 +7,9 @@
                         <section class="scrollable padder-lg pb-60">
                             <div class="music-header">
                                 <h2 class="font-thin m-b">{{title_page}}</h2>
-                                <ng-select placeholder="Order by" bindLabel="name"
-                                           bindValue="id" [items]="filterItems">
+                                <ng-select placeholder="Order by" bindLabel="name" class="select-music"
+                                           bindValue="id" [items]="filterItems" (change)="changeOrdering($event)"
+                                           [(ngModel)]="song_ordering">
                                 </ng-select>
                             </div>
 
@@ -33,8 +34,7 @@
                                                 </div>
                                             </div>
                                             <a>
-                                                <img [src]="getSongImage(music)" alt="{{music.name}}"
-                                                     class="r r-2x img-full song-image">
+                                                <img [src]="getSongImage(music)" alt="{{music.name}}" (error)="errorHandlerImage($event)" class="r r-2x img-full song-image">
                                             </a>
                                         </div>
                                         <div class="padder-v"><a class="text-ellipsis">{{music.name}}</a>
@@ -43,8 +43,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <app-pagination [max_page]="10" [url_page]="api_page_url" [current_page]="1"
-                                            [items]='arrayMusic'></app-pagination>
+                            <app-pagination [url_page]="api_page_url" [items]='arrayMusic'></app-pagination>
                         </section>
                     </section>
                 </section>
@@ -66,8 +65,13 @@
     <div class="modal-body">
         <form [formGroup]="choosePlaylistForm">
             <ng-select placeholder="Playlist name" bindLabel="name"
-                       bindValue="id" formControlName="name" name="name" [items]="playlists">
+                       bindValue="slug" formControlName="name" name="name"
+                       [items]="playlists">
             </ng-select>
+            <div class="form-error" invalidmessage="name">
+                <p *invalidType="'required'">Please provide name</p>
+                <p *invalidType="'response'"></p>
+            </div>
         </form>
     </div>
     <div class="modal-footer">
