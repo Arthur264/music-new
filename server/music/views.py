@@ -6,6 +6,7 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.decorators import detail_route
 from account.permissions import IsAdminOrIsSelf
 from rest_framework.filters import SearchFilter
+from rest_framework import status
 from .serializers import (
     SongSerializer, 
     ArtistSerializer, 
@@ -21,9 +22,10 @@ from core.pagination import InfoPagination
 
 class PlaylistViewSet(viewsets.ModelViewSet):
     serializer_class = PlaylistSerializer
+    lookup_field = 'slug'
     
     def get_queryset(self):
-        queryset = Playlist.objects.all().filter(user=self.request.user)
+        queryset = Playlist.objects.filter(user=self.request.user)
         return queryset
         
     def create(self, request):
@@ -35,6 +37,20 @@ class PlaylistViewSet(viewsets.ModelViewSet):
             serializer.save(user=request.user)
             return response.Response(data=serializer.data)
         return response.Response(data=serializer.errors)
+        
+    @detail_route(methods=['post'], permission_classes=[IsAdminOrIsSelf], url_path='tracks')
+    def add_track_to_playlist(self, request, slug):
+        instance = self.get_object()
+        tracks_id = request.data.pop('song_id')
+        if not tracks_id:
+            return response.Response(data={'error': 'Song id not exist.'}, status=status.HTTP_404_NOT_FOUND)
+
+        song_instance = Song.objects.get(pk=tracks_id)
+        if not song_instance:
+            return response.Response(data={'error': 'Song not exist.'}, status=status.HTTP_404_NOT_FOUND)
+        instance.song.add(song_instance)
+        
+        return response.Response(data={'details': 'Song added to playlist'}, status=status.HTTP_200_OK)
 
 class TagViewSet(viewsets.ModelViewSet):
     serializer_class = TagSerializer
@@ -56,7 +72,7 @@ class SongViewSet(viewsets.ModelViewSet):
     serializer_class = SongSerializer
     queryset = Song.objects.all()
     filter_class = SongFilter
-    ordering_fields = ('name', 'id')
+    ordering_fields = '__all__'
     
     def create(self, request):
         serializer_data = request.data
@@ -77,17 +93,17 @@ class SongViewSet(viewsets.ModelViewSet):
             return response.Response(serializer.data)
         return response.Response(serializer.errors)
         
-        
 
 class ArtistViewSet(viewsets.ModelViewSet):
     serializer_class = ArtistSerializer
     queryset = Artist.objects.all()
+    ordering_fields = '__all__'
     
     def retrieve(self,request, pk):
         instance = self.get_object()
         serializer_artist = self.get_serializer(instance).data
 
-        paginator = self.pagination_class
+        paginator = InfoPagination()
         song_list = Song.objects.filter(artist_id=serializer_artist['id'])
         song_filter = SongFilter(request.GET, queryset=song_list).queryset
         result_page = paginator.paginate_queryset(song_filter, request)
@@ -108,7 +124,8 @@ class ArtistViewSet(viewsets.ModelViewSet):
             
         for similar in similars:
             similar_artist, _ = Artist.objects.get_or_create(name=similar['name'])
-            similar_serializer = SimilarArtistSerializer(data={"first_artist":artist.pk, "second_artist":similar_artist.pk}, context={'request': request})
+            similar_serializer = SimilarArtistSerializer(data={'first_artist':artist.pk, 'second_artist':similar_artist.pk}, 
+                                                                                                context={'request': request})
             if not similar_serializer.is_valid():
                 return response.Response(similar_serializer.errors)
                 

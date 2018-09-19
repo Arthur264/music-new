@@ -31,14 +31,6 @@ class TagSerializer(serializers.HyperlinkedModelSerializer):
             'name': {'validators': []},
         }
         
-class PlaylistSerializer(serializers.HyperlinkedModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
-    class Meta:
-        model = Playlist
-        depth = 1
-        fields = ('id', 'name', 'user', 'song')
-        
-        
 class ArtistSerializer(serializers.ModelSerializer):
     tag = TagSerializer(many=True,  required=False)
     published = serializers.DateField(format="%d %b %Y", input_formats=['%d %b %Y'], required=False, allow_null=True)
@@ -68,6 +60,15 @@ class SongSerializer(serializers.ModelSerializer):
         model = Song
         fields =  ('id', 'name','image', 'url', 'duration', 'time','listeners_fm', 'playcount_fm', 'artist', 'artist_id')
         
+
+class PlaylistSerializer(serializers.HyperlinkedModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
+    song = SongSerializer(many=True)
+    class Meta:
+        model = Playlist
+        depth = 1
+        lookup_field = 'slug'
+        fields = ('id', 'name', 'slug', 'user', 'song')
     
 
 
