@@ -70,6 +70,32 @@ class PlaylistSerializer(serializers.HyperlinkedModelSerializer):
         lookup_field = 'slug'
         fields = ('id', 'name', 'slug', 'user', 'song')
     
-
-
     
+class PlaylistTrackSerializer(serializers.Serializer):
+    tracks = serializers.PrimaryKeyRelatedField(source='song',  queryset=Song.objects.all(), many=True)
+    slug = serializers.SlugField()
+    
+    def to_internal_value(self, data):
+        obj = super(PlaylistTrackSerializer, self).to_internal_value(data)
+        instance_slug = data.get('slug', None)
+        if instance_slug:
+            instance = Playlist.objects.get(slug=instance_slug)
+            if instance:
+                obj['instance'] = instance
+        return obj
+
+    def save(self):
+        tracks = self.validated_data['song']
+        instance = self.validated_data['instance']
+        for track in tracks:
+            song_instance = Song.objects.get(pk=track.id)
+            instance.song.add(song_instance)
+        return instance
+    
+    def delete(self):
+        tracks = self.validated_data['song']
+        instance = self.validated_data['instance']
+        for track in tracks:
+            song_instance = Song.objects.get(pk=track.id)
+            instance.song.remove(song_instance)
+        return instance

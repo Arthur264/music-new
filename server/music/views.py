@@ -13,7 +13,8 @@ from .serializers import (
     SimilarArtistSerializer, 
     TagSerializer,
     PlaylistSerializer,
-    ListenerArtistSerializer
+    ListenerArtistSerializer,
+    PlaylistTrackSerializer
 )
 from rest_framework import viewsets, response
 from .models import Song, Artist, Tag, Playlist
@@ -38,19 +39,17 @@ class PlaylistViewSet(viewsets.ModelViewSet):
             return response.Response(data=serializer.data)
         return response.Response(data=serializer.errors)
         
-    @detail_route(methods=['post'], permission_classes=[IsAdminOrIsSelf], url_path='tracks')
+    @detail_route(methods=['post', 'delete'], permission_classes=[IsAdminOrIsSelf], url_path='tracks')
     def add_track_to_playlist(self, request, slug):
-        instance = self.get_object()
-        tracks_id = request.data.pop('song_id')
-        if not tracks_id:
-            return response.Response(data={'error': 'Song id not exist.'}, status=status.HTTP_404_NOT_FOUND)
-
-        song_instance = Song.objects.get(pk=tracks_id)
-        if not song_instance:
-            return response.Response(data={'error': 'Song not exist.'}, status=status.HTTP_404_NOT_FOUND)
-        instance.song.add(song_instance)
-        
-        return response.Response(data={'details': 'Song added to playlist'}, status=status.HTTP_200_OK)
+        tracks = request.data.pop('tracks', [])
+        serializer = PlaylistTrackSerializer(data={'tracks': tracks, 'slug': slug})
+        if serializer.is_valid():
+            if request.method == 'POST':
+                serializer.save()
+            else:
+                serializer.delete()
+            return response.Response(serializer.data)
+        return response.Response(serializer.errors)
 
 class TagViewSet(viewsets.ModelViewSet):
     serializer_class = TagSerializer
@@ -76,7 +75,7 @@ class SongViewSet(viewsets.ModelViewSet):
     
     def create(self, request):
         serializer_data = request.data
-        artist, _ = Artist.objects.get_or_create(name=request.data.get('artist'))
+        artist, _ = Artist.objects.get_or_create(name=serializer_data.get('artist'))
         serializer_data.update({'artist_id': artist.pk})
         serializer_song = self.serializer_class(data=serializer_data, context={'request': request})
         
