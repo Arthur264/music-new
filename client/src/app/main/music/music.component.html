@@ -2,49 +2,48 @@
     <section class="vbox">
         <section class="w-f-md" id="bjax-target">
             <section class="hbox stretch">
-                <section class='pb-40'>
-                    <section class="vbox">
-                        <section class="scrollable padder-lg pb-60">
-                            <div class="music-header">
-                                <h2 class="font-thin m-b">{{title_page}}</h2>
-                                <ng-select placeholder="Order by" bindLabel="name" class="select-music"
-                                           bindValue="id" [items]="filterItems" (change)="changeOrdering($event)"
-                                           [(ngModel)]="song_ordering">
-                                </ng-select>
-                            </div>
+                <section class="vbox pb-40">
+                    <section class="scrollable padder-lg pb-60">
+                        <div class="music-header">
+                            <h2 class="font-thin m-b">{{title_page}}</h2>
+                            <ng-select placeholder="Order by" bindLabel="name" class="select-music"
+                                       bindValue="id" [items]="filterItems" (change)="changeOrdering($event)"
+                                       [(ngModel)]="song_ordering">
+                            </ng-select>
+                        </div>
 
-                            <div class="row row-sm">
-                                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let music of arrayMusic">
-                                    <div *ngIf="music.preload" class="item-preload"
-                                         [ngStyle]="{ 'background-image': 'url(' + music.preload + ')'}"></div>
-                                    <div *ngIf="!music.preload" class="item">
-                                        <div class="pos-rlt">
-                                            <div class="item-overlay opacity r r-2x bg-black"
-                                                 (click)="player.ChangeSong(music)">
-                                                <div class="center text-center m-t-n">
-                                                    <a><i class="fa fa-play-circle i-2x"></i></a>
-                                                </div>
-                                                <div class="bottom padder m-b-sm">
-                                                    <a href="#" class="pull-right">
-                                                        <i class="fa fa-heart-o"></i>
-                                                    </a>
-                                                    <a (click)="addToPlaylist(music, template); $event.stopPropagation()">
-                                                        <i class="fa fa-plus-circle"></i>
-                                                    </a>
-                                                </div>
+                        <div class="row row-sm">
+                            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let music of arrayMusic">
+                                <div *ngIf="music.preload" class="item-preload"
+                                     [ngStyle]="{ 'background-image': 'url(' + music.preload + ')'}"></div>
+                                <div *ngIf="!music.preload" class="item">
+                                    <div class="pos-rlt">
+                                        <div class="item-overlay opacity r r-2x bg-black"
+                                             (click)="player.ChangeSong(music)">
+                                            <div class="center text-center m-t-n">
+                                                <a><i class="fa fa-play-circle i-2x"></i></a>
                                             </div>
-                                            <a>
-                                                <img [src]="getSongImage(music)" alt="{{music.name}}" (error)="errorHandlerImage($event)" class="r r-2x img-full song-image">
-                                            </a>
+                                            <div class="bottom padder m-b-sm">
+                                                <a href="#" class="pull-right">
+                                                    <i class="fa fa-heart-o"></i>
+                                                </a>
+                                                <a (click)="addToPlaylist(music, template); $event.stopPropagation()">
+                                                    <i class="fa fa-plus-circle"></i>
+                                                </a>
+                                            </div>
                                         </div>
-                                        <div class="padder-v"><a class="text-ellipsis">{{music.name}}</a>
-                                            <a class="text-ellipsis text-xs text-muted">{{music.artist.name}}</a>
-                                        </div>
+                                        <a>
+                                            <img [src]="getSongImage(music)" alt="{{music.name}}"
+                                                 (error)="errorHandlerImage($event)" class="r r-2x img-full song-image">
+                                        </a>
+                                    </div>
+                                    <div class="padder-v"><a class="text-ellipsis">{{music.name}}</a>
+                                        <a class="text-ellipsis text-xs text-muted">{{music.artist.name}}</a>
                                     </div>
                                 </div>
                             </div>
-                            <app-pagination [url_page]="api_page_url" [items]='arrayMusic'></app-pagination>
-                        </section>
+                        </div>
+                        <app-pagination [url_page]="api_page_url" [items]='arrayMusic'></app-pagination>
                     </section>
                 </section>
             </section>

@@ -23,8 +23,8 @@ export class AppService {
             .map((res: Response) => res.json());
     }
 
-    public delete(url) {
-        const options = this.getOptions();
+    public delete(url, body) {
+        const options = this.getOptions({}, body);
         return this.http.delete(this.getUrl(url), options)
             .map((res: Response) => res.json());
     }
@@ -56,8 +56,8 @@ export class AppService {
         return params;
     }
 
-    private getOptions(params = {}) {
-        const options = {headers: this.getHeaders(), params: this.getParams(params)};
+    private getOptions(params = {}, body = {}) {
+        const options = {headers: this.getHeaders(), params: this.getParams(params), body: body};
         return new RequestOptions(options);
     }
 
