@@ -13,6 +13,7 @@ export class ArtistsComponent implements OnInit {
     public arrayTag: TagInterface[] = [];
     public arrayArtist: ArtistInterface[] = [];
     public activeTagIndex: number = null;
+    public pagination_url: string = 'artist';
 
     constructor(private appService: AppService, private routerService: RouterService) {
     }

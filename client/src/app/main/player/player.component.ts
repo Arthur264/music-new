@@ -1,33 +1,54 @@
-import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
-import {SongInterface} from '../../../_interfaces/song.interface';
-import {AppService} from '../../../_services/app.service';
+import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {SongInterface} from '../../_interfaces';
+import {AppService, PlayerService} from '../../_services';
 
 @Component({
     selector: 'app-music-player',
-    templateUrl: './music-player.component.html',
-    styleUrls: ['./music-player.component.css'],
+    templateUrl: './player.component.html',
+    styleUrls: ['./player.component.css'],
 })
-export class MusicPlayerComponent implements OnInit, AfterViewInit {
+export class PlayerComponent implements OnInit, AfterViewInit {
     @ViewChild('progress') progress;
     audio: HTMLAudioElement;
-    currentTime: any;
-    nameSoung: string;
-    authorSoung: string;
-    totalTime: any;
-    play: boolean = false;
-    volume: boolean = true;
+    currentTime: string;
+    totalTime: string;
+    currentSong: SongInterface;
     arrayMusic: SongInterface[];
 
-    constructor(private appService: AppService) {
+    constructor(private appService: AppService, private playerService: PlayerService) {
         this.audio = new Audio();
-        // this.loadMusic();
     }
 
     ngAfterViewInit() {
     }
 
     ngOnInit() {
-        let self = this;
+        this.InitSettings();
+    }
+
+    public MoveAudio(ev): void {
+        const profit = ev.offsetX / ev.target.clientWidth;
+        this.ChangeCurrentTime(this.audio.duration * profit);
+        this.MoveBack(this.audio.currentTime);
+    }
+
+    public ChangeSong(obj: SongInterface): void {
+        this.appService.get('song/' + obj.id + '/addplay').subscribe().unsubscribe();
+        this.audio.src = obj.url;
+        this.currentSong = obj;
+        this.audio.id = String(obj.artist.id);
+        this.audio.currentTime = 0;
+        this.audio.addEventListener('canplay', () => {
+            this.PlaySong();
+        });
+    }
+
+    public PlayStop() {
+        this.audio.paused ? this.PlaySong() : this.StopSong();
+    }
+
+    private InitSettings() {
+        const self = this;
         this.audio.addEventListener('canplay', () => {
             this.totalTime = this.TransformTime(this.audio.duration);
         });
@@ -44,25 +65,18 @@ export class MusicPlayerComponent implements OnInit, AfterViewInit {
         this.progress.nativeElement.style.width = String((curtime / this.audio.duration) * 100 + '%');
     }
 
-    private ChangeCurrentTime(timet) {
-        this.audio.currentTime = timet;
+    private ChangeCurrentTime(currentTime) {
+        this.audio.currentTime = currentTime;
     }
 
     private PlaySong(): void {
-        this.play = true;
         this.totalTime = this.TransformTime(this.audio.duration);
         this.audio.play();
     }
 
-    public MoveAudio(ev): void {
-        let profit = ev.offsetX / ev.target.clientWidth;
-        this.ChangeCurrentTime(this.audio.duration * profit);
-        this.MoveBack(this.audio.currentTime);
-    }
-
     private NextSoung(): void {
         for (let i = 0; i < this.arrayMusic.length; i++) {
-            if (this.arrayMusic[i].id == Number(this.audio.id)) {
+            if (this.arrayMusic[i].id === Number(this.audio.id)) {
                 if (i !== (this.arrayMusic.length - 1)) {
                     this.ChangeSong(this.arrayMusic[i + 1]);
                 } else {
@@ -75,7 +89,7 @@ export class MusicPlayerComponent implements OnInit, AfterViewInit {
 
     private PrevSoung(): void {
         for (let i = 0; i < this.arrayMusic.length; i++) {
-            if (this.arrayMusic[i].id == Number(this.audio.id)) {
+            if (this.arrayMusic[i].id === Number(this.audio.id)) {
                 if (i !== 0) {
                     this.ChangeSong(this.arrayMusic[i - 1]);
                 } else {
@@ -87,37 +101,13 @@ export class MusicPlayerComponent implements OnInit, AfterViewInit {
     }
 
     private TransformTime(time: number): string {
-        let min = Math.floor(time / 60);
-        let sec = Math.floor(time % 60);
+        const min = Math.floor(time / 60);
+        const sec = Math.floor(time % 60);
         return min + ':' + ((sec < 10) ? ('0' + sec) : sec);
     }
 
     private StopSong(): void {
         this.audio.pause();
-    }
-
-    public ChangeSong(item): void {
-        this.appService.get('song/' + item.id + '/addplay').subscribe((res) => {
-            console.log(res);
-        });
-        this.audio.src = item.url;
-        this.nameSoung = item.name;
-        this.authorSoung = item.author;
-        this.audio.id = item.id;
-        this.audio.currentTime = 0;
-        this.audio.addEventListener('canplay', () => {
-            this.PlaySong();
-        });
-    }
-
-    public PlayStop() {
-        this.audio.paused ? this.PlaySong() : this.StopSong();
-    }
-
-    private loadMusic() {
-        this.appService.get('song').subscribe((res) => {
-            this.arrayMusic = res.results;
-        });
     }
 }
 

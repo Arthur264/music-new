@@ -3,10 +3,7 @@ import {CommonModule} from '@angular/common';
 import {MainRouting} from './main.routing';
 import {MainComponent} from './main.component';
 import {ThemeModule} from '../@theme/theme.module';
-import {
-    MusicComponent, MusicDialogComponent, MusicItemComponent, MusicObjectComponent,
-    MusicPlayerComponent
-} from './music/index';
+import {MusicComponent} from './music/music.component';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {ArtistsComponent} from './artists/artists.component';
 import {WidgetModule} from '../widget/widget.module';
@@ -31,10 +28,6 @@ import {PlaylistPageDetailsComponent} from './playlist-page/playlist-page-detail
     declarations: [
         MainComponent,
         MusicComponent,
-        MusicDialogComponent,
-        MusicObjectComponent,
-        MusicPlayerComponent,
-        MusicItemComponent,
         ArtistsComponent,
         SearchComponent,
         PlaylistPageComponent,

@@ -17,11 +17,11 @@
     width: 100px;
 }
 .music-player{
-    background: #2d2e2f;
+    background-color: #2ea0b6;
     transform: translateY(100%);
     position: fixed;
     bottom: 0;
-    width: calc(100% - 200px);
+    width: 100%;
     right: 0;
     z-index: 100;
     height: 60px;
