@@ -13,6 +13,7 @@ import {RouterModule} from '@angular/router';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {CacheService} from '../_services/cache.service';
 import {NgSelectModule} from '@ng-select/ng-select';
+import { MyFavoriteComponent } from './my-favorite/my-favorite.component';
 
 
 @NgModule({
@@ -27,7 +28,7 @@ import {NgSelectModule} from '@ng-select/ng-select';
         AlertModule.forRoot()
     ],
     providers: [AlertService, CacheService],
-    declarations: [HeaderSearchComponent, HeaderComponent, PlaylistComponent, MainMenuComponent, AsideComponent, AlertComponent],
+    declarations: [HeaderSearchComponent, HeaderComponent, PlaylistComponent, MainMenuComponent, AsideComponent, AlertComponent, MyFavoriteComponent],
     exports: [HeaderSearchComponent, HeaderComponent, PlaylistComponent, MainMenuComponent, AsideComponent, AlertComponent]
 })
 export class ThemeModule {
