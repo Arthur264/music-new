@@ -4,6 +4,7 @@ import {MainRouting} from './main.routing';
 import {MainComponent} from './main.component';
 import {ThemeModule} from '../@theme/theme.module';
 import {MusicComponent} from './music/music.component';
+import {PlayerComponent} from './player/player.component';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {ArtistsComponent} from './artists/artists.component';
 import {WidgetModule} from '../widget/widget.module';
@@ -30,6 +31,7 @@ import {PlaylistPageDetailsComponent} from './playlist-page/playlist-page-detail
         MusicComponent,
         ArtistsComponent,
         SearchComponent,
+        PlayerComponent,
         PlaylistPageComponent,
         PlaylistPageDetailsComponent
     ],

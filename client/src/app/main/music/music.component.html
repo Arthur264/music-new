@@ -19,7 +19,7 @@
                                 <div *ngIf="!music.preload" class="item">
                                     <div class="pos-rlt">
                                         <div class="item-overlay opacity r r-2x bg-black"
-                                             (click)="player.ChangeSong(music)">
+                                             (click)="changeSong(music)">
                                             <div class="center text-center m-t-n">
                                                 <a><i class="fa fa-play-circle i-2x"></i></a>
                                             </div>
@@ -50,9 +50,6 @@
         </section>
     </section>
 </section>
-<div class="music-player" [class.music-player--open]="player.play">
-    <app-music-player #player></app-music-player>
-</div>
 
 <ng-template #template>
     <div class="modal-header">
