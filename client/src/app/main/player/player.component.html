@@ -4,27 +4,27 @@
             <div class="interface">
                 <div class="controls">
                     <div>
-                        <a class="previous" (click)="PrevSoung()">
+                        <a class="previous" (click)="PrevSoung()" title="Previous song">
                             <i class="icon-control-rewind i-lg"></i>
                         </a>
                     </div>
                     <div>
-                        <a class="play">
+                        <a class="play" *ngIf="play" (click)="PlayStop()" title="Stop">
                             <i class="icon-control-play i-2x"></i>
                         </a>
-                        <a class="pause hid" style="display: none;">
+                        <a class="pause hid" *ngIf="!play" (click)="PlayStop()" title="Play">
                             <i class="icon-control-pause i-2x"></i>
                         </a>
                     </div>
                     <div>
-                        <a class="next" (click)="NextSoung()">
+                        <a class="next" (click)="NextSoung()" title="Next song">
                             <i class="icon-control-forward i-lg"></i>
                         </a>
                     </div>
                     <div class="progress hidden-xs">
                         <div class="seek-bar dk" style="width: 100%;" (click)="MoveAudio($event)">
                             <div class="play-bar bg-info" #progress></div>
-                            <div class="title text-lt">{{ authorSoung }} / {{ nameSoung }}</div>
+                            <div class="title text-lt" *ngIf="currentSong">{{ currentSong.artist.name }} / {{ currentSong.name }}</div>
                         </div>
                     </div>
                     <div class="hidden-xs hidden-sm current-time text-xs text-white">{{ currentTime }}</div>
@@ -51,19 +51,11 @@
                         </a>
                     </div>
                     <div>
-                        <a class="repeat" title="repeat">
+                        <a class="repeat" title="repeat" *ngIf="circle_play" (click)="changeCirclePlay()">
                             <i class="icon-loop text-white"></i>
                         </a>
-                        <a class="repeat-off hid" title="repeat off" style="display: none;">
+                        <a class="repeat-off hid" title="repeat off" *ngIf="!circle_play" (click)="changeCirclePlay()">
                             <i class="icon-loop text-lt"></i></a>
-                    </div>
-                    <div class="hide">
-                        <a class="full-screen" title="full screen">
-                            <i class="fa fa-expand"></i>
-                        </a>
-                        <a class="restore-screen" title="restore screen" style="display: none;">
-                            <i class="fa fa-compress text-lt"></i>
-                        </a>
                     </div>
                 </div>
             </div>

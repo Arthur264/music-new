@@ -1,17 +1,22 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SongInterface} from '../../_interfaces';
 import {AppService, PlayerService} from '../../_services';
 
 @Component({
-    selector: 'app-music-player',
+    selector: 'app-player',
     templateUrl: './player.component.html',
     styleUrls: ['./player.component.css'],
 })
-export class PlayerComponent implements OnInit, AfterViewInit {
+export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('progress') progress;
     audio: HTMLAudioElement;
     currentTime: string;
     totalTime: string;
+    subscribeSong: any;
+    first_play: boolean = false;
+    play: boolean = false;
+    circle_play: boolean = false;
+    subscribeArrayMusic: any;
     currentSong: SongInterface;
     arrayMusic: SongInterface[];
 
@@ -23,7 +28,8 @@ export class PlayerComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        this.InitSettings();
+        this.initSettings();
+        this.getSong();
     }
 
     public MoveAudio(ev): void {
@@ -32,7 +38,24 @@ export class PlayerComponent implements OnInit, AfterViewInit {
         this.MoveBack(this.audio.currentTime);
     }
 
-    public ChangeSong(obj: SongInterface): void {
+    public PlayStop() {
+        this.audio.paused ? this.PlaySong() : this.StopSong();
+    }
+
+    ngOnDestroy() {
+        if (this.subscribeArrayMusic) {
+            this.subscribeArrayMusic.unsubscribe();
+        }
+        if (this.subscribeSong) {
+            this.subscribeSong.unsubscribe();
+        }
+    }
+
+    public changeCirclePlay() {
+        this.circle_play = !this.circle_play;
+    }
+
+    private ChangeSong(obj: SongInterface): void {
         this.appService.get('song/' + obj.id + '/addplay').subscribe().unsubscribe();
         this.audio.src = obj.url;
         this.currentSong = obj;
@@ -43,11 +66,19 @@ export class PlayerComponent implements OnInit, AfterViewInit {
         });
     }
 
-    public PlayStop() {
-        this.audio.paused ? this.PlaySong() : this.StopSong();
+    private getSong() {
+        this.playerService.getSong().subscribe((currentSong) => {
+            this.ChangeSong(currentSong);
+            if (!this.first_play) {
+                this.first_play = true;
+            }
+        });
+        this.subscribeArrayMusic = this.playerService.getArrayMusic().subscribe(arrayMusic => {
+            this.arrayMusic = arrayMusic;
+        });
     }
 
-    private InitSettings() {
+    private initSettings() {
         const self = this;
         this.audio.addEventListener('canplay', () => {
             this.totalTime = this.TransformTime(this.audio.duration);
@@ -70,6 +101,7 @@ export class PlayerComponent implements OnInit, AfterViewInit {
     }
 
     private PlaySong(): void {
+        this.play = true;
         this.totalTime = this.TransformTime(this.audio.duration);
         this.audio.play();
     }
@@ -107,6 +139,7 @@ export class PlayerComponent implements OnInit, AfterViewInit {
     }
 
     private StopSong(): void {
+        this.play = false;
         this.audio.pause();
     }
 }

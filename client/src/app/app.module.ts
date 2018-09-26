@@ -3,10 +3,9 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppComponent} from './app.component';
-import {AppService} from './_services/app.service';
-import {AccountService} from './_services/account.service';
+import {AppService, AccountService, PlayerService, RouterService} from './_services';
 import {Routing} from './app.routing';
-import {AuthGuard} from './_guards/index';
+import {AuthGuard} from './_guards';
 import {HttpModule} from '@angular/http';
 
 @NgModule({
@@ -23,7 +22,7 @@ import {HttpModule} from '@angular/http';
     exports: [
         AppComponent
     ],
-    providers: [AppService, AccountService, AuthGuard],
+    providers: [AppService, AccountService, AuthGuard, PlayerService, RouterService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,10 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PlaylistInterface, SongInterface} from '../../_interfaces';
 import {AppConfig} from '../../app.config';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {AlertService, AppService, CacheService, RouterService} from '../../_services';
+import {AlertService, AppService, CacheService, PlayerService, RouterService} from '../../_services';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {FilterItems} from '../../_items';
 import {FormsUtils} from '../../utils/forms';
@@ -26,6 +26,7 @@ export class MusicComponent implements OnInit, OnDestroy {
     public filterItems = FilterItems;
     public song_ordering;
     private routeSub: Subscription;
+    private send_music: boolean = false;
 
 
     constructor(private modalService: BsModalService,
@@ -34,7 +35,7 @@ export class MusicComponent implements OnInit, OnDestroy {
                 private cacheService: CacheService,
                 private routerService: RouterService,
                 private alertService: AlertService,
-                private router: Router) {
+                private playerService: PlayerService) {
         this.choosePlaylistForm = new FormGroup({
             name: new FormControl('', Validators.required)
         });
@@ -55,6 +56,14 @@ export class MusicComponent implements OnInit, OnDestroy {
             }
         });
 
+    }
+
+    public changeSong(obj) {
+        this.playerService.emitChangeSong(obj);
+        if (!this.send_music) {
+            this.playerService.emitArrayMusic(this.arrayMusic);
+            this.send_music = true;
+        }
     }
 
     public getSongImage(music) {

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AppService} from '../../../_services';
+import {AppService, PlayerService} from '../../../_services';
 import {ActivatedRoute} from '@angular/router';
 import {SongInterface} from '../../../_interfaces';
 
@@ -10,13 +10,25 @@ import {SongInterface} from '../../../_interfaces';
 })
 export class PlaylistPageDetailsComponent implements OnInit {
     public arrayMusic: SongInterface[] = [];
+    private send_music: boolean = false;
     private playlist_slug: string;
-    constructor(private appService: AppService, private activatedRoute: ActivatedRoute) {
+
+    constructor(private appService: AppService,
+                private activatedRoute: ActivatedRoute,
+                private playerService: PlayerService) {
         this.playlist_slug = this.activatedRoute.snapshot.params['slug'];
     }
 
     ngOnInit() {
         this.getPlaylistSongs();
+    }
+
+    public playSong(obj) {
+        this.playerService.emitChangeSong(obj);
+        if (!this.send_music) {
+            this.playerService.emitArrayMusic(this.arrayMusic);
+            this.send_music = true;
+        }
     }
 
     public getPlaylistSongs() {

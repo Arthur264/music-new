@@ -1,8 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AppService} from '../../_services/app.service';
+import {AppService, RouterService} from '../../_services';
 import {AppConfig} from '../../app.config';
-import {RouterService} from '../../_services/router.service';
 
 @Component({
     selector: 'app-pagination',
@@ -27,13 +26,13 @@ export class PaginationComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.emptyItems();
-        this.sub = this.route
-            .queryParams
-            .subscribe(params => {
-                const req_params = Object.assign({}, params);
-                req_params['page'] = req_params['page'] || this.current_page;
-                this.makeItems(req_params);
-            });
+        this.getStartItems();
+    }
+
+    public getStartItems() {
+        const req_params = Object.assign({}, this.route.snapshot.queryParams);
+        req_params['page'] = req_params['page'] || this.current_page;
+        this.makeItems(req_params);
     }
 
     public nextPage() {
@@ -84,6 +83,10 @@ export class PaginationComponent implements OnInit, OnDestroy {
         if (this.sub) {
             this.sub.unsubscribe();
         }
+    }
+
+    public eventChangeItems() {
+
     }
 
     private emptyItems() {
