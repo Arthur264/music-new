@@ -31,14 +31,6 @@ class TagSerializer(serializers.HyperlinkedModelSerializer):
             'name': {'validators': []},
         }
         
-class PlaylistSerializer(serializers.HyperlinkedModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
-    class Meta:
-        model = Playlist
-        depth = 1
-        fields = ('id', 'name', 'user', 'song')
-        
-        
 class ArtistSerializer(serializers.ModelSerializer):
     tag = TagSerializer(many=True,  required=False)
     published = serializers.DateField(format="%d %b %Y", input_formats=['%d %b %Y'], required=False, allow_null=True)
@@ -68,7 +60,42 @@ class SongSerializer(serializers.ModelSerializer):
         model = Song
         fields =  ('id', 'name','image', 'url', 'duration', 'time','listeners_fm', 'playcount_fm', 'artist', 'artist_id')
         
-    
 
-
+class PlaylistSerializer(serializers.HyperlinkedModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
+    song = SongSerializer(many=True)
+    class Meta:
+        model = Playlist
+        depth = 1
+        lookup_field = 'slug'
+        fields = ('id', 'name', 'slug', 'user', 'song')
     
+    
+class PlaylistTrackSerializer(serializers.Serializer):
+    tracks = serializers.PrimaryKeyRelatedField(source='song',  queryset=Song.objects.all(), many=True)
+    slug = serializers.SlugField()
+    
+    def to_internal_value(self, data):
+        obj = super(PlaylistTrackSerializer, self).to_internal_value(data)
+        instance_slug = data.get('slug', None)
+        if instance_slug:
+            instance = Playlist.objects.get(slug=instance_slug)
+            if instance:
+                obj['instance'] = instance
+        return obj
+
+    def save(self):
+        tracks = self.validated_data['song']
+        instance = self.validated_data['instance']
+        for track in tracks:
+            song_instance = Song.objects.get(pk=track.id)
+            instance.song.add(song_instance)
+        return instance
+    
+    def delete(self):
+        tracks = self.validated_data['song']
+        instance = self.validated_data['instance']
+        for track in tracks:
+            song_instance = Song.objects.get(pk=track.id)
+            instance.song.remove(song_instance)
+        return instance

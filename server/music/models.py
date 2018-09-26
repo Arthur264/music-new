@@ -18,7 +18,7 @@ class Tag(models.Model):
         return super(Tag, self).save(*args, **kwargs)
     
 class Artist(BaseModel):
-    name = models.CharField(max_length=100, unique=True, validators=[RegexValidator(regex='^.{4}$', message='Length has to be 4', code='nomatch')])
+    name = models.CharField(max_length=100, unique=True)
     image = models.URLField(max_length=500, null=True, blank=True)
     listeners_fm = models.IntegerField(null=True, blank=True)
     playcount_fm = models.IntegerField(null=True, blank=True)
@@ -37,7 +37,7 @@ class Artist(BaseModel):
         return self.name
     
 class Song(BaseModel):
-    name  = models.CharField(max_length=100, validators=[RegexValidator(regex='^.{4}$', message='Length has to be 4', code='nomatch')])
+    name  = models.CharField(max_length=100)
     url = models.URLField(unique=True)
     time = models.CharField(max_length=10)
     duration = models.IntegerField(null=True, blank=True)
@@ -62,12 +62,17 @@ class Song(BaseModel):
         return self.name
     
 class Playlist(BaseModel):
-    name = models.CharField(max_length=100, validators=[RegexValidator(regex='^.{4}$', message='Length has to be 4', code='nomatch')])
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=35, unique=True, default=None, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     song = models.ManyToManyField(Song, related_name='playlist', blank=True)
     
     def __str__(self):
         return self.name
+        
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        return super(Playlist, self).save(*args, **kwargs)
 
 class ListenerSong(BaseModel):
     user = models.ForeignKey(User,  related_name='listener', on_delete=models.CASCADE)
@@ -81,7 +86,7 @@ class SimilarArtist(models.Model):
     second_artist = models.ForeignKey(Artist, related_name='artist2', on_delete=models.CASCADE)
     
     class Meta:
-        unique_together = ("first_artist", "second_artist")
+        unique_together = ('first_artist', 'second_artist')
     
     def __str__(self):
-        return f"{self.first_artist} {self.second_artist}"
+        return f'{self.first_artist} {self.second_artist}'
