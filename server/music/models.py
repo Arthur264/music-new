@@ -1,13 +1,20 @@
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
 from django.db import models
 from user.models import User
 from django.utils.text import slugify
 from utils.models import BaseModel
-from django.core.validators import RegexValidator
+from django.core.validators import MinLengthValidator
 
 # Create your models here.
 
+@receiver(pre_save)
+def pre_save_handler(sender, instance, *args, **kwargs):
+    instance.full_clean()
+    
+
 class Tag(models.Model):
-    name = models.CharField(max_length=35, unique=True)
+    name = models.CharField(max_length=35, unique=True, validators=[MinLengthValidator(3)])
     slug = models.SlugField(max_length=35, unique=True)
 
     def __str__(self):
@@ -18,7 +25,7 @@ class Tag(models.Model):
         return super(Tag, self).save(*args, **kwargs)
     
 class Artist(BaseModel):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100, unique=True,  validators=[MinLengthValidator(3)])
     image = models.URLField(max_length=500, null=True, blank=True)
     listeners_fm = models.IntegerField(null=True, blank=True)
     playcount_fm = models.IntegerField(null=True, blank=True)
@@ -37,7 +44,7 @@ class Artist(BaseModel):
         return self.name
     
 class Song(BaseModel):
-    name  = models.CharField(max_length=100)
+    name  = models.CharField(max_length=100, validators=[MinLengthValidator(3)])
     url = models.URLField(unique=True)
     time = models.CharField(max_length=10)
     duration = models.IntegerField(null=True, blank=True)
@@ -62,7 +69,7 @@ class Song(BaseModel):
         return self.name
     
 class Playlist(BaseModel):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, validators=[MinLengthValidator(3)])
     slug = models.SlugField(max_length=35, unique=True, default=None, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     song = models.ManyToManyField(Song, related_name='playlist', blank=True)

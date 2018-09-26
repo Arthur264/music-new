@@ -22,6 +22,7 @@ class SimilarArtistSerializer(serializers.ModelSerializer):
         fields = ('id', 'first_artist', 'second_artist')
 
 class TagSerializer(serializers.HyperlinkedModelSerializer):
+    name = serializers.CharField(min_length=3)
     class Meta:
         model = Tag
         fields = ('id', 'name', 'slug')
@@ -32,6 +33,7 @@ class TagSerializer(serializers.HyperlinkedModelSerializer):
         }
         
 class ArtistSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(min_length=3)
     tag = TagSerializer(many=True,  required=False)
     published = serializers.DateField(format="%d %b %Y", input_formats=['%d %b %Y'], required=False, allow_null=True)
     class Meta:
@@ -54,6 +56,7 @@ class ArtistSerializer(serializers.ModelSerializer):
         return instance
 
 class SongSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(min_length=3)
     artist = ArtistSerializer(read_only=True)
     artist_id = serializers.PrimaryKeyRelatedField(source='artist',  queryset=Artist.objects.all())
     class Meta:
@@ -62,6 +65,7 @@ class SongSerializer(serializers.ModelSerializer):
         
 
 class PlaylistSerializer(serializers.HyperlinkedModelSerializer):
+    name = serializers.CharField(min_length=3)
     user = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
     song = SongSerializer(many=True)
     class Meta:
