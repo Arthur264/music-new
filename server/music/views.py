@@ -16,6 +16,9 @@ from .serializers import (
     ListenerArtistSerializer,
     PlaylistTrackSerializer
 )
+from .mixins import (
+    ListCacheMixin    
+)
 from rest_framework import viewsets, response
 from .models import Song, Artist, Tag, Playlist
 from .filters import SongFilter
@@ -56,7 +59,7 @@ class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.annotate(q_count=Count('artists')).order_by('artists')
     lookup_field = 'slug'
     
-    def retrieve(self,request, slug):
+    def retrieve(self, request, slug):
         instance = self.get_object()
         serializer_tag = self.get_serializer(instance).data
 
@@ -67,7 +70,7 @@ class TagViewSet(viewsets.ModelViewSet):
         serializer_tag.update({'items': paginator.get_paginated_data(serializer_artist.data)})
         return response.Response(serializer_tag)
         
-class SongViewSet(viewsets.ModelViewSet):
+class SongViewSet(ListCacheMixin, viewsets.ModelViewSet):
     serializer_class = SongSerializer
     queryset = Song.objects.all()
     filter_class = SongFilter

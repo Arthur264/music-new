@@ -10,6 +10,12 @@ migrate:
 venv:
 	source ~/.virtualenvs/vent/bin/activate
 	
+	
+deps:
+	pip install -U -r requirements.txt
+	sudo npm install -g loadtest
+	sudo apt-get install varnish
+	
 start:
 	sudo mysql-ctl start
 	python manage.py runserver $IP:$PORT
