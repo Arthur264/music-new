@@ -6,6 +6,7 @@ from music.models import (
     SimilarArtist, 
     ListenerSong
 )
+
 from rest_framework import serializers
 from django.db.utils import IntegrityError
 from django.utils.text import slugify

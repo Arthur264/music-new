@@ -1,13 +1,13 @@
 from rest_framework.response import Response
-from .cache import cache
+from .cache import api_cache
         
 class ListCacheMixin(object):
     """
     List a queryset.
     """
     def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-        
+        filter_queryset = self.filter_queryset(self.get_queryset())
+        queryset = api_cache.app(self.serializer_class, 'list', filter_queryset)
 
         page = self.paginate_queryset(queryset)
         if page is not None:

@@ -70,7 +70,7 @@ class TagViewSet(viewsets.ModelViewSet):
         serializer_tag.update({'items': paginator.get_paginated_data(serializer_artist.data)})
         return response.Response(serializer_tag)
         
-class SongViewSet(ListCacheMixin, viewsets.ModelViewSet):
+class SongViewSet(viewsets.ModelViewSet):
     serializer_class = SongSerializer
     queryset = Song.objects.all()
     filter_class = SongFilter

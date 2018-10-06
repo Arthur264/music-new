@@ -33,7 +33,7 @@ class AuthViewSet(viewsets.ViewSet):
     def login(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
-
+        print('username', username)
         user = authenticate(username=username, password=password)
         if not user:
             return Response({"error": "Login failed"}, status=status.HTTP_401_UNAUTHORIZED)

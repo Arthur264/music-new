@@ -8,9 +8,9 @@ from django.core.validators import MinLengthValidator
 
 # Create your models here.
 
-@receiver(pre_save)
-def pre_save_handler(sender, instance, *args, **kwargs):
-    instance.full_clean()
+# @receiver(pre_save)
+# def pre_save_handler(sender, instance, *args, **kwargs):
+#     instance.full_clean()
     
 
 class Tag(models.Model):
