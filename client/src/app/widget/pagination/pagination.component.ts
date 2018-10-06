@@ -1,5 +1,11 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {
+    Component,
+    Input,
+    OnDestroy,
+    OnInit,
+    OnChanges,
+    SimpleChanges,
+} from '@angular/core';
 import {AppService, RouterService} from '../../_services';
 import {AppConfig} from '../../app.config';
 
@@ -10,29 +16,28 @@ import {AppConfig} from '../../app.config';
     providers: [RouterService]
 })
 
-export class PaginationComponent implements OnInit, OnDestroy {
-    @Input() public max_page: number = 10;
+export class PaginationComponent implements OnInit, OnDestroy, OnChanges {
     @Input() public url_page: string;
-    @Input() public current_page = 1;
     @Input() public items: any[] = [];
+    @Input() public query_params = {};
+    private current_page: number = 1;
     private sub: any;
+    private max_page: number = 10;
     private count_page = 30;
 
-    constructor(private appService: AppService,
-                private router: Router,
-                private route: ActivatedRoute,
-                private routerService: RouterService) {
+    constructor(private appService: AppService) {}
+
+
+    ngOnChanges(changes: SimpleChanges) {
+        this.makeItems(this.query_params);
     }
 
     ngOnInit() {
         this.emptyItems();
-        this.getStartItems();
     }
-
-    public getStartItems() {
-        const req_params = Object.assign({}, this.route.snapshot.queryParams);
-        req_params['page'] = req_params['page'] || this.current_page;
-        this.makeItems(req_params);
+    private updateQueryPage(params){
+        params['page'] = params['page'] || this.current_page;
+        return params
     }
 
     public nextPage() {
@@ -85,10 +90,6 @@ export class PaginationComponent implements OnInit, OnDestroy {
         }
     }
 
-    public eventChangeItems() {
-
-    }
-
     private emptyItems() {
         this.sliceItems();
         for (let i = 0; i < this.count_page; i++) {
@@ -99,7 +100,7 @@ export class PaginationComponent implements OnInit, OnDestroy {
     private changePage(n) {
         if (n !== this.current_page) {
             this.emptyItems();
-            this.makeItems(n);
+            this.makeItems({'page': n});
         }
         this.current_page = n;
     }
@@ -117,13 +118,14 @@ export class PaginationComponent implements OnInit, OnDestroy {
         }
     }
 
-    private makeItems(params) {
-        this.appService.get(this.url_page, params).subscribe((res) => {
+    private makeItems(params={}) {
+        let req_params = Object.assign({}, params);
+        req_params = this.updateQueryPage(req_params);
+        this.appService.get(this.url_page, req_params).subscribe((res) => {
             const res_items = 'items' in res.items ? res.items.items : res.items;
             this.putItems(res_items);
-            this.current_page = params['page'];
+            this.current_page = req_params['page'];
             this.max_page = res.total_pages;
-            this.routerService.updateQueryParams(params);
         });
     }
 }

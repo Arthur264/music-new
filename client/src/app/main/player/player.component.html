@@ -4,25 +4,25 @@
             <div class="interface">
                 <div class="controls">
                     <div>
-                        <a class="previous" (click)="PrevSoung()" title="Previous song">
+                        <a class="previous" (click)="prevSoung()" title="Previous song">
                             <i class="icon-control-rewind i-lg"></i>
                         </a>
                     </div>
                     <div>
-                        <a class="play" *ngIf="play" (click)="PlayStop()" title="Stop">
+                        <a class="play" *ngIf="play" (click)="playStop()" title="Stop">
                             <i class="icon-control-play i-2x"></i>
                         </a>
-                        <a class="pause hid" *ngIf="!play" (click)="PlayStop()" title="Play">
+                        <a class="pause" *ngIf="!play" (click)="playStop()" title="Play">
                             <i class="icon-control-pause i-2x"></i>
                         </a>
                     </div>
                     <div>
-                        <a class="next" (click)="NextSoung()" title="Next song">
+                        <a class="next" (click)="nextSoung()" title="Next song">
                             <i class="icon-control-forward i-lg"></i>
                         </a>
                     </div>
                     <div class="progress hidden-xs">
-                        <div class="seek-bar dk" style="width: 100%;" (click)="MoveAudio($event)">
+                        <div class="seek-bar dk" style="width: 100%;" (click)="moveAudio($event)">
                             <div class="play-bar bg-info" #progress></div>
                             <div class="title text-lt" *ngIf="currentSong">{{ currentSong.artist.name }} / {{ currentSong.name }}</div>
                         </div>
@@ -30,23 +30,23 @@
                     <div class="hidden-xs hidden-sm current-time text-xs text-white">{{ currentTime }}</div>
                     <div class="hidden-xs hidden-sm duration text-xs text-white">{{ totalTime }}</div>
                     <div class="hidden-xs hidden-sm">
-                        <a class="mute" title="mute">
+                        <a class="mute" *ngIf="volume" (click)="onOffVolume()" title="mute">
                             <i class="icon-volume-2"></i>
                         </a>
-                        <a class="unmute hid" title="unmute" style="display: none;">
+                        <a class="unmute" *ngIf="!volume" (click)="onOffVolume()" title="unmute">
                             <i class="icon-volume-off"></i>
                         </a>
                     </div>
                     <div class="hidden-xs hidden-sm volume">
                         <div class="volume-bar dk">
-                            <div class="volume-bar-value lter" style="width: 80%;"></div>
+                            <div class="volume-bar-value lter" (click)="changeVolume($event)"></div>
                         </div>
                     </div>
                     <div>
-                        <a class="shuffle" title="shuffle">
+                        <a class="shuffle" title="shuffle" *ngIf="random_play" (click)="changeRandomPlay()">
                             <i class="icon-shuffle text-white"></i>
                         </a>
-                        <a class="shuffle-off hid" title="shuffle off" style="display: none;">
+                        <a class="shuffle-off" title="shuffle off" *ngIf="!random_play"  (click)="changeRandomPlay()">
                             <i class="icon-shuffle text-lt"></i>
                         </a>
                     </div>
