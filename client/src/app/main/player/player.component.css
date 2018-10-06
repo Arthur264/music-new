@@ -190,7 +190,7 @@ body {
     display: inline-block;
     padding: 10px 5px;
 }
-.controls a.play{
+.controls a.play, .controls a.pause{
     padding-top: 4px;
 }
 
@@ -252,11 +252,16 @@ div.progress{
     height: 60px;
 }
 .volume{
-    width: 60px !important;
-    padding-right:10px !important;
+    margin: 0 !important;
+    width: 130px !important;
 }
 .volume-bar-value{
     height: 6px;
+}
+.volume-bar{
+    margin-top: 16px;
+    background-color: #4cb6cb;
+    cursor: pointer;
 }
 a.hid{
     display: none;

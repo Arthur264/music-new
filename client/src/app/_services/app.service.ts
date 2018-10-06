@@ -1,5 +1,11 @@
 import {Injectable} from '@angular/core';
-import {Headers, Http, RequestOptions, Response, URLSearchParams} from '@angular/http';
+import {
+    Headers,
+    Http,
+    RequestOptions,
+    Response,
+    URLSearchParams,
+} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {AccountService} from './account.service';
 import {AppSettings} from '../app.settings';
@@ -18,7 +24,7 @@ export class AppService {
     }
 
     public post(url, body) {
-        const options = this.getOptions();
+        const options = this.getOptions({}, body);
         return this.http.post(this.getUrl(url), body, options)
             .map((res: Response) => res.json());
     }
@@ -60,12 +66,4 @@ export class AppService {
         const options = {headers: this.getHeaders(), params: this.getParams(params), body: body};
         return new RequestOptions(options);
     }
-
-    // public upload(url, body) {
-    //     const headers = new Headers({ 'Authorization': 'Token ' + this.token, 'Accept': 'application/json' });
-    //     const options = new RequestOptions({ headers: headers });
-    //     return this.http.post(this.getUrl(url), body, options)
-    //         .map((res: Response) => res.json());
-    // }
-
 }

@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PlaylistInterface, SongInterface} from '../../_interfaces';
 import {AppConfig} from '../../app.config';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AlertService, AppService, CacheService, PlayerService, RouterService} from '../../_services';
@@ -25,6 +25,7 @@ export class MusicComponent implements OnInit, OnDestroy {
     public addToPlaylistSongId = null;
     public filterItems = FilterItems;
     public song_ordering;
+    public paginationQueryParams: Params = Object.assign({},this.route.snapshot.queryParams);
     private routeSub: Subscription;
     private send_music: boolean = false;
 
@@ -33,6 +34,7 @@ export class MusicComponent implements OnInit, OnDestroy {
                 private appService: AppService,
                 private activatedRoute: ActivatedRoute,
                 private cacheService: CacheService,
+                private route: ActivatedRoute,
                 private routerService: RouterService,
                 private alertService: AlertService,
                 private playerService: PlayerService) {
@@ -53,6 +55,7 @@ export class MusicComponent implements OnInit, OnDestroy {
             if (item['id'] === order_id) {
                 this.song_ordering = order_id;
                 this.routerService.updateQueryParams({'ordering': order_id});
+                this.paginationQueryParams = Object.assign({}, this.paginationQueryParams, {'ordering': order_id});
             }
         });
 
