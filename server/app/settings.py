@@ -117,11 +117,14 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'musicdb',
-        'USER': 'artyr264',
-        'PASSWORD': '',
+        'USER': 'root',
+        'PASSWORD': 'admin',
         'HOST': 'localhost',
         'TEST': {
             'NAME': 'test_musicdb',
+            'OPTIONS': {
+                "init_command": "SET storage_engine=INNODB",
+            }
         },
     }
 }

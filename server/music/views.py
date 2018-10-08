@@ -1,6 +1,6 @@
 from django.db.models import Count
 from rest_framework import viewsets, response
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import action
 
 from account.permissions import IsAdminOrIsSelf
 from core.pagination import InfoPagination
@@ -30,19 +30,17 @@ class PlaylistViewSet(viewsets.ModelViewSet):
             'request': request,
         }
         serializer = PlaylistSerializer(data=request.data, context=serializer_context)
-        if serializer.is_valid():
-            serializer.save(user=request.user)
-            return response.Response(data=serializer.data)
-        return response.Response(data=serializer.errors)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(user=request.user)
+        return response.Response(serializer.data)
 
-    @detail_route(methods=['post', 'delete'], permission_classes=[IsAdminOrIsSelf], url_path='tracks')
+    @action(methods=['post', 'delete'], permission_classes=[IsAdminOrIsSelf], url_path='tracks', detail=True)
     def add_track_to_playlist(self, request, slug):
         tracks = request.data.pop('tracks', [])
         serializer = PlaylistTrackSerializer(data={'tracks': tracks, 'slug': slug})
-        if serializer.is_valid():
-            serializer.operation(request.method == 'POST')
-            return response.Response(serializer.data)
-        return response.Response(serializer.errors)
+        serializer.is_valid(raise_exception=True)
+        serializer.operation(request.method == 'POST')
+        return response.Response(serializer.data)
 
 
 class TagViewSet(viewsets.ModelViewSet):
@@ -74,26 +72,23 @@ class SongViewSet(viewsets.ModelViewSet):
         serializer_data.update({'artist_id': artist.pk})
         serializer_song = self.serializer_class(data=serializer_data, context={'request': request})
 
-        if serializer_song.is_valid():
-            serializer_song.save()
-            return response.Response(serializer_song.data)
-        return response.Response(serializer_song.errors)
+        serializer_song.is_valid(raise_exception=True)
+        serializer_song.save()
+        return response.Response(serializer_song.data)
 
-    @detail_route(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='addplay')
+    @action(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='addplay', detail=True)
     def add_play(self, request, pk):
         serializer = ListenerArtistSerializer(data={'song': pk, 'user': request.user.pk})
-        if serializer.is_valid():
-            serializer.save()
-            return response.Response(serializer.data)
-        return response.Response(serializer.errors)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return response.Response(serializer.data)
 
-    @detail_route(methods=['get', 'delete'], permission_classes=[IsAdminOrIsSelf], url_path='addfavorite')
+    @action(methods=['get', 'delete'], permission_classes=[IsAdminOrIsSelf], url_path='addfavorite', detail=True)
     def add_favorite(self, request, pk):
         serializer = FavoriteSerializer(data={'song': pk}, context={'request': request})
-        if serializer.is_valid():
-            serializer.operation(request.method == 'DELETE')
-            return response.Response(serializer.data)
-        return response.Response(serializer.errors)
+        serializer.is_valid(raise_exception=True)
+        serializer.operation(request.method == 'DELETE')
+        return response.Response(serializer.data)
 
 
 class ArtistViewSet(viewsets.ModelViewSet):
@@ -118,9 +113,7 @@ class ArtistViewSet(viewsets.ModelViewSet):
         result = {'similar': []}
         similars = request.data.get('similar', [])
         artist_serializer = ArtistSerializer(data=request.data, context={'request': request})
-        if not artist_serializer.is_valid():
-            return response.Response(artist_serializer.errors)
-
+        artist_serializer.is_valid(raise_exception=True)
         artist = artist_serializer.save()
         result.update(artist_serializer.data)
 
@@ -131,9 +124,7 @@ class ArtistViewSet(viewsets.ModelViewSet):
                 'second_artist': similar_artist.pk,
             }
             similar_serializer = SimilarArtistSerializer(data=data, context={'request': request})
-            if not similar_serializer.is_valid():
-                return response.Response(similar_serializer.errors)
-
+            similar_serializer.is_valid(raise_exception=True)
             similar_serializer.save()
             result['similar'].append(similar_serializer.data)
 
