@@ -1,3 +1,4 @@
+import numpy as np
 from django.db.models import Count
 from rest_framework import viewsets, response
 from rest_framework.decorators import action
@@ -89,6 +90,11 @@ class SongViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.operation(request.method == 'DELETE')
         return response.Response(serializer.data)
+
+    @action(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='selection')
+    def selection(self, request):
+        top_songs = np.random.choice(Song.objects.order_by('-listeners_fm')[:200], 15)
+        return None
 
 
 class ArtistViewSet(viewsets.ModelViewSet):

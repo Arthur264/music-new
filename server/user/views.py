@@ -4,9 +4,9 @@ from __future__ import unicode_literals
 from django.core import serializers
 from django.db.models import Q
 from rest_framework import viewsets
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import action
 from rest_framework.response import Response
-from users.serializers import UserSerializer, FriendSerializer
+from .serializers import UserSerializer, FriendSerializer
 
 from account.permissions import IsAdminOrIsSelf
 from .models import User, Friends
@@ -22,18 +22,7 @@ class UserViewSet(viewsets.ModelViewSet):
     class Meta:
         model = User
 
-    def get_queryset(self):
-        return User.objects.all()
-
-    def create(self, request):
-        serializer = UserSerializer(data=request.POST)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors)
-
-    @detail_route(methods=['get', 'post'], permission_classes=[IsAdminOrIsSelf], url_path='friends',
-                  serializer_class=FriendSerializer)
+    @action(methods=['get', 'post'], permission_classes=[IsAdminOrIsSelf], url_path='friends', detail=True)
     def friends(self, request, pk=None):
         if request.method == 'GET':
             user = request.user.pk
@@ -41,7 +30,6 @@ class UserViewSet(viewsets.ModelViewSet):
             return Response(serializers.serialize('json', data))
         else:
             serializer = FriendSerializer(data={'user': request.user.pk, 'friend': request.POST['friend']})
-            print(serializer)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data)

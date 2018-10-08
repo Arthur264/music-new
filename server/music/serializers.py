@@ -87,8 +87,9 @@ class SongSerializer(serializers.ModelSerializer):
     class Meta:
         model = Song
         fields = (
-            'id', 'name', 'image', 'url', 'duration', 'time', 'listeners_fm', 'playcount_fm', 'artist', 'artist_id',
-            'favorite')
+            'id', 'name', 'image', 'url', 'duration', 'time', 'listeners_fm', 'playcount_fm', 'artist',
+            'artist_id', 'favorite'
+        )
 
     def get_favorite(self, obj):
         return bool(obj.favorite.filter(pk=self.context['request'].user.pk))
