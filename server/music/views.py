@@ -14,7 +14,8 @@ from .serializers import (
     TagSerializer,
     PlaylistSerializer,
     ListenerArtistSerializer,
-    PlaylistTrackSerializer
+    PlaylistTrackSerializer,
+    FavoriteSerializer,
 )
 from .mixins import (
     ListCacheMixin    
@@ -29,8 +30,7 @@ class PlaylistViewSet(viewsets.ModelViewSet):
     lookup_field = 'slug'
     
     def get_queryset(self):
-        queryset = Playlist.objects.filter(user=self.request.user)
-        return queryset
+        return Playlist.objects.filter(user=self.request.user)
         
     def create(self, request):
         serializer_context = {
@@ -47,10 +47,7 @@ class PlaylistViewSet(viewsets.ModelViewSet):
         tracks = request.data.pop('tracks', [])
         serializer = PlaylistTrackSerializer(data={'tracks': tracks, 'slug': slug})
         if serializer.is_valid():
-            if request.method == 'POST':
-                serializer.save()
-            else:
-                serializer.delete()
+            serializer.operation(request.method == 'POST')
             return response.Response(serializer.data)
         return response.Response(serializer.errors)
 
@@ -95,6 +92,14 @@ class SongViewSet(viewsets.ModelViewSet):
             return response.Response(serializer.data)
         return response.Response(serializer.errors)
         
+    @detail_route(methods=['get', 'delete'], permission_classes=[IsAdminOrIsSelf], url_path='addfavorite')
+    def add_favorite(self, request, pk):
+        serializer = FavoriteSerializer(data={'song': pk}, context={'request': request})
+        if serializer.is_valid():
+            serializer.operation(request.method == 'DELETE')
+            return response.Response(serializer.data)
+        return response.Response(serializer.errors)
+        
 
 class ArtistViewSet(viewsets.ModelViewSet):
     serializer_class = ArtistSerializer
@@ -126,8 +131,11 @@ class ArtistViewSet(viewsets.ModelViewSet):
             
         for similar in similars:
             similar_artist, _ = Artist.objects.get_or_create(name=similar['name'])
-            similar_serializer = SimilarArtistSerializer(data={'first_artist':artist.pk, 'second_artist':similar_artist.pk}, 
-                                                                                                context={'request': request})
+            data = {
+                'first_artist':artist.pk, 
+                'second_artist':similar_artist.pk,
+            }
+            similar_serializer = SimilarArtistSerializer(data=data, context={'request': request})
             if not similar_serializer.is_valid():
                 return response.Response(similar_serializer.errors)
                 

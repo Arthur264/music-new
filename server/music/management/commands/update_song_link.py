@@ -12,7 +12,7 @@ class Command(BaseCommand):
         async with session.head(url) as response:
             return await response.status
 
-    async def main(self, ):
+    async def main(self):
         urls =  Song.objects.values_list('url')
         tasks = [fetch(session, url) for url in urls]
         print(tasks[:10])

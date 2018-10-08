@@ -4,13 +4,28 @@ from music.models import (
     Tag, 
     Playlist, 
     SimilarArtist, 
-    ListenerSong
+    ListenerSong,
 )
 
 from rest_framework import serializers
 from django.db.utils import IntegrityError
 from django.utils.text import slugify
 
+class FavoriteSerializer(serializers.Serializer):
+    song = serializers.PrimaryKeyRelatedField(queryset=Song.objects.all())
+    user = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
+    class Meta:
+        fields = ('user', 'song')
+        
+    def operation(self, delete=False):
+        instance = self.validated_data['song']
+        user = self.context['request'].user
+        if delete:
+            instance.favorite.remove(user)
+        else: 
+            instance.favorite.add(user)
+        return instance
+        
 
 class ListenerArtistSerializer(serializers.ModelSerializer):
     class Meta:
@@ -39,8 +54,7 @@ class ArtistSerializer(serializers.ModelSerializer):
     published = serializers.DateField(format="%d %b %Y", input_formats=['%d %b %Y'], required=False, allow_null=True)
     class Meta:
         model = Artist
-        fields = ('id', 'name', 'image', 'url', 'listeners_fm', 'playcount_fm', 
-                'tag', 'published', 'content')
+        fields = ('id', 'name', 'image', 'url', 'listeners_fm', 'playcount_fm', 'tag', 'published', 'content')
         extra_kwargs = {
             'name': {'validators': []},
         }
@@ -60,9 +74,13 @@ class SongSerializer(serializers.ModelSerializer):
     name = serializers.CharField(min_length=3)
     artist = ArtistSerializer(read_only=True)
     artist_id = serializers.PrimaryKeyRelatedField(source='artist',  queryset=Artist.objects.all())
+    favorite = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Song
-        fields =  ('id', 'name','image', 'url', 'duration', 'time','listeners_fm', 'playcount_fm', 'artist', 'artist_id')
+        fields = ('id', 'name','image', 'url', 'duration', 'time','listeners_fm', 'playcount_fm', 'artist', 'artist_id', 'favorite')
+        
+    def get_favorite(self, obj):
+        return bool(obj.favorite.filter(pk=self.context['request'].user.pk))
         
 
 class PlaylistSerializer(serializers.HyperlinkedModelSerializer):
@@ -89,18 +107,13 @@ class PlaylistTrackSerializer(serializers.Serializer):
                 obj['instance'] = instance
         return obj
 
-    def save(self):
+    def operation(self, delete=False):
         tracks = self.validated_data['song']
         instance = self.validated_data['instance']
         for track in tracks:
             song_instance = Song.objects.get(pk=track.id)
-            instance.song.add(song_instance)
-        return instance
-    
-    def delete(self):
-        tracks = self.validated_data['song']
-        instance = self.validated_data['instance']
-        for track in tracks:
-            song_instance = Song.objects.get(pk=track.id)
-            instance.song.remove(song_instance)
+            if delete:
+                instance.song.add(song_instance)
+            else:
+                instance.song.remove(song_instance)
         return instance
