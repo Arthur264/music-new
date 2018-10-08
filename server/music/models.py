@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.text import slugify
 
 from user.models import User
-from utils.models import BaseModel
+from core.models import BaseModel
 
 
 # Create your models here.

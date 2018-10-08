@@ -91,9 +91,10 @@ class SongViewSet(viewsets.ModelViewSet):
         serializer.operation(request.method == 'DELETE')
         return response.Response(serializer.data)
 
-    @action(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='selection')
+    @action(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='selection', detail=True)
     def selection(self, request):
         top_songs = np.random.choice(Song.objects.order_by('-listeners_fm')[:200], 15)
+        top_favorite_artist_song = None
         return None
 
 
