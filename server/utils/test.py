@@ -1,5 +1,7 @@
 from contextlib import contextmanager
+
 from django.core.exceptions import ValidationError
+
 
 class ValidationErrorTestMixin(object):
 

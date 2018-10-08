@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('music', '0006_auto_20180902_1556'),
     ]
@@ -14,7 +13,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='artist',
             name='name',
-            field=models.CharField(max_length=100, unique=True, validators=[django.core.validators.MinLengthValidator(3)]),
+            field=models.CharField(max_length=100, unique=True,
+                                   validators=[django.core.validators.MinLengthValidator(3)]),
         ),
         migrations.AlterField(
             model_name='playlist',

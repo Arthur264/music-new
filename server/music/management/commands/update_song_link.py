@@ -1,8 +1,11 @@
 import asyncio
+
 import aiohttp
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
+
 from music.models import Song
-                
+
+
 class Command(BaseCommand):
     def handle(self, *args, **options):
         loop = asyncio.get_event_loop()
@@ -13,11 +16,9 @@ class Command(BaseCommand):
             return await response.status
 
     async def main(self):
-        urls =  Song.objects.values_list('url')
+        urls = Song.objects.values_list('url')
         tasks = [fetch(session, url) for url in urls]
         print(tasks[:10])
         async with aiohttp.ClientSession() as session:
             statuses = await asyncio.gather(*tasks)
             print(status)
-        
-        

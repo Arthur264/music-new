@@ -1,13 +1,14 @@
 from rest_framework import routers
+
+from account.views import AuthViewSet
 from music.views import (
-    SongViewSet, 
-    ArtistViewSet, 
+    SongViewSet,
+    ArtistViewSet,
     TagViewSet,
     PlaylistViewSet
 )
-from account.views import AuthViewSet
-app_name = "app"
 
+app_name = "app"
 
 router = routers.DefaultRouter()
 router.register(r'song', SongViewSet, base_name='song')

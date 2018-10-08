@@ -1,8 +1,9 @@
-from app.api_settings import DEFAULTS
 from django.conf import settings
 
-class Config(object):
+from app.api_settings import DEFAULTS
 
+
+class Config(object):
     """
     A settings object, that allows API settings to be accessed as properties.
     For example:

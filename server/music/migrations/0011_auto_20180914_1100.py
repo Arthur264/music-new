@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('music', '0010_auto_20180914_1054'),
     ]
@@ -14,16 +13,19 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='artist',
             name='name',
-            field=models.CharField(max_length=100, unique=True, validators=[django.core.validators.RegexValidator(code='nomatch', message='Length has to be 4', regex='^.{4}$')]),
+            field=models.CharField(max_length=100, unique=True, validators=[
+                django.core.validators.RegexValidator(code='nomatch', message='Length has to be 4', regex='^.{4}$')]),
         ),
         migrations.AlterField(
             model_name='playlist',
             name='name',
-            field=models.CharField(max_length=100, validators=[django.core.validators.RegexValidator(code='nomatch', message='Length has to be 4', regex='^.{4}$')]),
+            field=models.CharField(max_length=100, validators=[
+                django.core.validators.RegexValidator(code='nomatch', message='Length has to be 4', regex='^.{4}$')]),
         ),
         migrations.AlterField(
             model_name='song',
             name='name',
-            field=models.CharField(max_length=100, validators=[django.core.validators.RegexValidator(code='nomatch', message='Length has to be 4', regex='^.{4}$')]),
+            field=models.CharField(max_length=100, validators=[
+                django.core.validators.RegexValidator(code='nomatch', message='Length has to be 4', regex='^.{4}$')]),
         ),
     ]

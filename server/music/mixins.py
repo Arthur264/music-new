@@ -1,10 +1,13 @@
 from rest_framework.response import Response
+
 from .cache import api_cache
-        
+
+
 class ListCacheMixin(object):
     """
     List a queryset.
     """
+
     def list(self, request, *args, **kwargs):
         filter_queryset = self.filter_queryset(self.get_queryset())
         queryset = api_cache.app(self.serializer_class, 'list', filter_queryset)
@@ -16,4 +19,3 @@ class ListCacheMixin(object):
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
-

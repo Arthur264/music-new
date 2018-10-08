@@ -1,9 +1,8 @@
-import json
-from django.core.management.base import BaseCommand, CommandError
-from music.models import Song, Artist
+from django.core.management.base import BaseCommand
+
 
 class Command(BaseCommand):
-    
+
     def add_arguments(self, parser):
         parser.add_argument('model_name', nargs='+')
 
@@ -13,5 +12,3 @@ class Command(BaseCommand):
             model.objects.all().delete()
         except (NameError,):
             raise NameError("Table not exist.")
-            
-                

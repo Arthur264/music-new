@@ -44,4 +44,7 @@ Thumbs.db
 #server
 .idea
 server/tmp
+venv
+server/venv
+__pycache__/
 

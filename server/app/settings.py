@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'r(5e_^(aa5k(%((g=hcf*p8s7)z=15^-ym_1!dt(yluea21*zi'
 DEBUG = True
 
 ALLOWED_HOSTS = ['music-artyr264.c9users.io']
-
 
 # Application definition
 
@@ -63,7 +61,6 @@ MIDDLEWARE_CLASSES = (
     'corsheaders.middleware.CorsMiddleware',
 )
 
-
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'core.pagination.InfoPagination',
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -76,7 +73,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_FILTER_BACKENDS': [
-        'django_filters.rest_framework.DjangoFilterBackend', 
+        'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.OrderingFilter',
         'rest_framework.filters.SearchFilter'
     ]
@@ -112,7 +109,6 @@ CACHES = {
 
 WSGI_APPLICATION = 'app.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 AUTH_USER_MODEL = 'user.User'
@@ -120,7 +116,7 @@ AUTH_USER_MODEL = 'user.User'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'musicdb',                      
+        'NAME': 'musicdb',
         'USER': 'artyr264',
         'PASSWORD': '',
         'HOST': 'localhost',
@@ -148,11 +144,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-CORS_ORIGIN_ALLOW_ALL=True
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_HEADERS = ('content-disposition', 'accept-encoding',
-                      'content-type', 'accept', 'origin', 'authorization','cache-control', 'x-requested-with')
-                      
+                      'content-type', 'accept', 'origin', 'authorization', 'cache-control', 'x-requested-with')
+
 # CORS_ORIGIN_WHITELIST = (
 #     'http://music-artyr264.c9users.io',
 # )
@@ -169,11 +164,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
-
-

@@ -1,5 +1,6 @@
-from .models import User, Friends
 from rest_framework import serializers
+
+from .models import User, Friends
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -32,7 +33,3 @@ class FriendSerializer(serializers.ModelSerializer):
         model = Friends
         fields = ('id', 'user', 'friend')
         lookup_field = 'pk'
-
-
-
-

@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-import json
+
+from django.contrib.auth import authenticate
+from django.forms.models import model_to_dict
+from rest_framework import status
 from rest_framework import viewsets
-from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
 from rest_framework.decorators import list_route
-from .permissions import IsAdminOrIsSelf
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+
 from user.models import User
 from user.serializers import UserSerializer
-from rest_framework import status
-from .serializers import LoginSerializer, RegisterSerializer
-from rest_framework.authtoken.models import Token
-from rest_framework.permissions import AllowAny
-from django.forms.models import model_to_dict
-from rest_framework.authtoken.serializers import AuthTokenSerializer
-from django.contrib.auth import authenticate
+from .permissions import IsAdminOrIsSelf
+from .serializers import RegisterSerializer
+
 
 # Create your views here.
 
@@ -54,7 +55,7 @@ class AuthViewSet(viewsets.ViewSet):
             return Response({
                 'user': UserSerializer(user).data,
                 'token': model_to_dict(user.auth_token)['key']}, status=status.HTTP_201_CREATED)
-                
+
         return Response(register_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @list_route(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='logout')
