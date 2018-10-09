@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.contrib.auth import logout
 from django.forms.models import model_to_dict
-from rest_framework import status
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
@@ -31,7 +31,8 @@ class AuthViewSet(viewsets.ViewSet):
     def login(self, request):
         login_serializer = LoginSerializer(data=request.data)
         login_serializer.is_valid(raise_exception=True)
-        return Response(login_serializer.data)
+        login_data = login_serializer.login()
+        return Response(login_data)
 
     @action(methods=['post'], permission_classes=[AllowAny], url_path='register', detail=False)
     def register(self, request):
@@ -39,13 +40,14 @@ class AuthViewSet(viewsets.ViewSet):
         register_serializer.is_valid(raise_exception=True)
         user = register_serializer.save()
         return Response({
-                'user': UserSerializer(user).data,
-                'token': model_to_dict(user.auth_token)['key']
+            'user': UserSerializer(user).data,
+            'token': model_to_dict(user.auth_token)['key']
         }, status=status.HTTP_201_CREATED)
 
     @action(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='logout', detail=False)
-    def logout(self, request):
+    def logout_user(self, request):
         request.user.auth_token.delete()
+        logout(request)
         return Response(status=status.HTTP_200_OK)
 
     @action(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='token', detail=False)

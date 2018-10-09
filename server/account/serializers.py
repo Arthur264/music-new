@@ -1,18 +1,20 @@
-from rest_framework import serializers
 from django.contrib.auth import authenticate
+from rest_framework import serializers
 from rest_framework.authtoken.models import Token
-from user.serializers import UserSerializer
 
 from user.models import User
+from user.serializers import UserSerializer
 
 
-class LoginSerializer(serializers.ModelSerializer):
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
+
     class Meta:
-        model = User
         fields = ('username', 'password')
 
     def login(self):
-        username = self.validated_data['user']
+        username = self.validated_data['username']
         password = self.validated_data['password']
         user = authenticate(username=username, password=password)
         if not user:
