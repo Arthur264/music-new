@@ -119,7 +119,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'musicdb',
         'USER': 'root',
-        'PASSWORD': 'admin',
+        'PASSWORD': 'admin123',
         'HOST': 'localhost',
         'TEST': {
             'NAME': 'test_musicdb',

@@ -6,13 +6,13 @@ from django.forms.models import model_to_dict
 from rest_framework import status, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from user.models import User
 from user.serializers import UserSerializer
 from .permissions import IsAdminOrIsSelf
-from .serializers import RegisterSerializer, LoginSerializer
+from .serializers import RegisterSerializer, LoginSerializer, ChangePasswordSerializer
 
 
 # Create your views here.
@@ -20,12 +20,12 @@ from .serializers import RegisterSerializer, LoginSerializer
 class AuthViewSet(viewsets.ViewSet):
     queryset = User.objects.all()
 
-    @action(methods=['post'], permission_classes=[IsAdminOrIsSelf], url_path='change-password', detail=False)
+    @action(methods=['post'], permission_classes=[IsAuthenticated], url_path='change-password',  detail=False)
     def set_password(self, request):
-        serialized = UserSerializer(data=request.data)
-        serialized.is_valid(raise_exception=True)
-        serialized.save()
-        return Response(status=status.HTTP_205_RESET_CONTENT)
+        change_password_serializer = ChangePasswordSerializer(data=request.data, context={'request': request})
+        change_password_serializer.is_valid(raise_exception=True)
+        change_password_serializer.change_password()
+        return Response(status=status.HTTP_200_OK)
 
     @action(methods=['post'], permission_classes=[AllowAny], url_path='login', detail=False)
     def login(self, request):
@@ -44,13 +44,13 @@ class AuthViewSet(viewsets.ViewSet):
             'token': model_to_dict(user.auth_token)['key']
         }, status=status.HTTP_201_CREATED)
 
-    @action(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='logout', detail=False)
+    @action(permission_classes=[IsAdminOrIsSelf], url_path='logout', detail=False)
     def logout_user(self, request):
         request.user.auth_token.delete()
         logout(request)
         return Response(status=status.HTTP_200_OK)
 
-    @action(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='token', detail=False)
+    @action(permission_classes=[IsAdminOrIsSelf], url_path='token', detail=False)
     def token(self, request):
         u = User.objects.get(username=request.user.username)
         token, created = Token.objects.get_or_create(user=u)

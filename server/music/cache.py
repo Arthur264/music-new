@@ -1,11 +1,12 @@
 import json
 
 from django.core.cache import cache
+from core.cache import AbstractCache
 
 from app.config import config
 
 
-class Cache(object):
+class Cache(AbstractCache):
     timeout = getattr(config, 'DEFAULT_CACHE_TIMEOUT', {})
 
     def add(self, serializer, method, queryset):
@@ -15,12 +16,10 @@ class Cache(object):
         cache.set(cache_name, queryset, self.timeout)
         return queryset
 
-    @staticmethod
-    def remove(cache_name):
+    def remove(self, cache_name):
         return cache.delete(cache_name)
 
-    @staticmethod
-    def get(cache_name):
+    def get(self, cache_name):
         return cache.get(cache_name)
 
     def make_params(self, serializer, method):
