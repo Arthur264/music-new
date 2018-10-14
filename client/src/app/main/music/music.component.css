@@ -4,6 +4,12 @@
     flex-wrap: wrap;
     margin-top: 40px;
 }
+.fa-plus-circle, .favorite{
+    cursor: pointer;
+}
+.main-list{
+    padding-bottom: 20px;
+}
 
 .music-list__item {
     width: 20%;

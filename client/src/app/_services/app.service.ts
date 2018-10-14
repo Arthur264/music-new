@@ -17,6 +17,7 @@ export class AppService {
     }
 
     public get(url, params = {}) {
+        console.log(url, params)
         const options = this.getOptions(params);
         return this.http.get(this.getUrl(url), options)
             .map((res: Response) => res.json());
@@ -29,7 +30,7 @@ export class AppService {
             .map((res: Response) => res.json());
     }
 
-    public delete(url, body) {
+    public delete(url, body={}) {
         const options = this.getOptions({}, body);
         return this.http.delete(this.getUrl(url), options)
             .map((res: Response) => res.json());

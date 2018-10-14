@@ -64,7 +64,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
         this.appService.get('song/' + obj.id + '/addplay').subscribe().unsubscribe();
         this.audio.src = obj.url;
         this.currentSong = obj;
-        this.audio.id = String(obj.artist.id);
+        this.audio.id = String(obj.id);
         this.audio.currentTime = 0;
         this.audio.addEventListener('canplay', () => {
             this.playSong();
@@ -95,6 +95,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         this.audio.addEventListener('ended', function () {
             if (!self.circle_play){
+                console.log('endddddddd')
                 self.nextSoung();
             }else{
 

@@ -1,6 +1,6 @@
 <section id="main-content">
     <section class="vbox">
-        <section class="w-f-md" id="bjax-target">
+        <section class="w-f-md">
             <section class="hbox stretch">
                 <section class="vbox pb-40">
                     <section class="scrollable padder-lg pb-60">
@@ -11,21 +11,23 @@
                                        [(ngModel)]="song_ordering">
                             </ng-select>
                         </div>
-
-                        <div class="row row-sm">
+                        <div class="row row-sm main-list">
                             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let music of arrayMusic">
                                 <div *ngIf="music.preload" class="item-preload"
                                      [ngStyle]="{ 'background-image': 'url(' + music.preload + ')'}"></div>
                                 <div *ngIf="!music.preload" class="item">
                                     <div class="pos-rlt">
-                                        <div class="item-overlay opacity r r-2x bg-black"
-                                             (click)="changeSong(music)">
+                                        <div class="item-overlay opacity r r-2x bg-black" (click)="changeSong(music)">
                                             <div class="center text-center m-t-n">
                                                 <a><i class="fa fa-play-circle i-2x"></i></a>
                                             </div>
                                             <div class="bottom padder m-b-sm">
-                                                <a href="#" class="pull-right">
-                                                    <i class="fa fa-heart-o"></i>
+                                                <a (click)="addFavorite(music); $event.stopPropagation()" class="pull-right favorite">
+                                                    <i class="fa"
+                                                       [ngClass]="{
+                                                        'fa-heart-o': !music.favorite,
+                                                        'fa-heart text-danger': music.favorite
+                                                      }"></i>
                                                 </a>
                                                 <a (click)="addToPlaylist(music, template); $event.stopPropagation()">
                                                     <i class="fa fa-plus-circle"></i>
@@ -43,14 +45,17 @@
                                 </div>
                             </div>
                         </div>
-                        <app-pagination [url_page]="api_page_url" [items]='arrayMusic' [query_params]='paginationQueryParams'></app-pagination>
+                        <app-pagination
+                                [url_page]="api_page_url"
+                                [items]='arrayMusic'
+                                [query_params]='paginationQueryParams'
+                        ></app-pagination>
                     </section>
                 </section>
             </section>
         </section>
     </section>
 </section>
-
 <ng-template #template>
     <div class="modal-header">
         <h4 class="modal-title">Choose playlist</h4>

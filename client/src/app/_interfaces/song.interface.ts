@@ -8,4 +8,5 @@ export interface SongInterface {
     artist: ArtistInterface;
     url: string;
     preload: string;
+    favorite: boolean;
 }
