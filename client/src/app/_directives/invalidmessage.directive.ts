@@ -1,6 +1,6 @@
 import {Directive, ElementRef, Input, OnDestroy, OnInit, Renderer2} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
-import {AbstractControl, ControlContainer, FormGroupDirective} from '@angular/forms';
+import {ControlContainer, FormGroupDirective} from '@angular/forms';
 
 @Directive({
     selector: '[invalidmessage]'

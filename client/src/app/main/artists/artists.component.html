@@ -1,39 +1,45 @@
 <section id="main-content">
-    <section class="vbox">
-        <section class="w-f-md" id="bjax-target">
-            <section class="hbox stretch">
-                <aside class="aside bg-light dk" id="sidebar">
-                    <section class="vbox animated fadeInUp">
-                        <section class="scrollable hover">
-                            <div class="list-group no-radius no-border no-bg m-t-n-xxs m-b-none auto">
-                                <a class="list-group-item tag-item" (click)='changeTag(tag, i)' [class.active]="activeTagIndex === i" *ngFor="let tag of arrayTag; let i = index">{{tag.name}}</a>
-                            </div>
-                        </section>
-                    </section>
-                </aside>
-                <section class='pb-40'>
-                    <section class="vbox">
-                        <section class="scrollable padder-lg">
-                            <h2 class="font-thin m-b">Artists</h2>
-                            <div class="row row-sm">
-                                <a class="col-xs-6 col-sm-4 col-md-3 col-lg-2" [routerLink]="['/dashboard/music', artist.id]" *ngFor="let artist of arrayArtist">
-                                    <div class="item artist-item">
-                                        <div class="pos-rlt">
-                                            <div class="item-overlay opacity r r-2x bg-black"></div>
-                                            <a>
-                                                <img [src]="getArtistImage(artist)" alt="{{artist.name}}" class="r r-2x img-full song-image">
-                                            </a>
-                                        </div>
-                                        <div class="padder-v">
-                                            <a class="text-ellipsis">{{artist.name}}</a>
-                                        </div>
-                                    </div>
+    <section class="hbox stretch">
+        <aside class="aside bg-light dk" id="sidebar">
+            <section class="vbox animated fadeInUp">
+                <section class="scrollable hover">
+                    <div class="list-group no-radius no-border no-bg m-t-n-xxs m-b-none auto">
+                        <a class="list-group-item tag-item"
+                           (click)='changeTag(tag, i)'
+                           [class.active]="activeTagIndex === i"
+                           *ngFor="let tag of arrayTag; let i = index">{{tag.name}}</a>
+                    </div>
+                </section>
+            </section>
+        </aside>
+        <section class="vbox pb-40">
+            <section class="scrollable padder-lg">
+                <h2 class="font-thin m-b">Artists</h2>
+                <div class="row row-sm">
+                    <a class="col-xs-6 col-sm-4 col-md-3 col-lg-2"
+                       [routerLink]="['/dashboard/music', artist.id]"
+                       *ngFor="let artist of arrayArtist">
+                        <div *ngIf="artist.preload" class="item-preload"
+                             [ngStyle]="{ 'background-image': 'url(' + artist.preload + ')'}"></div>
+                        <div *ngIf="!artist.preload" class="item artist-item">
+                            <div class="pos-rlt">
+                                <div class="item-overlay opacity r r-2x bg-black"></div>
+                                <a>
+                                    <img [appImage]="artist"
+                                         class="r r-2x img-full song-image">
                                 </a>
                             </div>
-                            <app-pagination [url_page]="pagination_url" [items]='arrayArtist'></app-pagination>
-                        </section>
-                    </section>
-                </section>
+                            <div class="padder-v">
+                                <a class="text-ellipsis">{{artist.name}}</a>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <app-pagination
+                        [url_page]="api_page_url"
+                        [items]='arrayArtist'
+                        [query_params]='paginationQueryParams'
+                ></app-pagination>
             </section>
         </section>
     </section>

@@ -1,0 +1,44 @@
+<section id="main-content">
+    <section class="vbox pb-40">
+        <section class="scrollable padder-lg pb-60">
+            <h2 class="font-thin m-b">Favorite</h2>
+            <div class="row row-sm main-list">
+                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let music of arrayMusic">
+                    <div *ngIf="music.preload" class="item-preload"
+                         [ngStyle]="{ 'background-image': 'url(' + music.preload + ')'}"></div>
+                    <div *ngIf="!music.preload" class="item">
+                        <div class="pos-rlt">
+                            <div class="item-overlay opacity r r-2x bg-black" (click)="changeSong(music)">
+                                <div class="center text-center m-t-n">
+                                    <a><i class="fa fa-play-circle i-2x"></i></a>
+                                </div>
+                                <div class="bottom padder m-b-sm">
+                                    <a (click)="addFavorite(music); $event.stopPropagation()"
+                                       class="pull-right favorite">
+                                        <i class="fa"
+                                           [ngClass]="{
+                                                        'fa-heart-o': !music.favorite,
+                                                        'fa-heart text-danger': music.favorite
+                                                      }"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <a>
+                                <img [src]="getSongImage(music)" alt="{{music.name}}"
+                                     (error)="errorHandlerImage($event)" class="r r-2x img-full song-image">
+                            </a>
+                        </div>
+                        <div class="padder-v"><a class="text-ellipsis">{{music.name}}</a>
+                            <a class="text-ellipsis text-xs text-muted">{{music.artist.name}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <app-pagination
+                    [url_page]="api_page_url"
+                    [items]='arrayMusic'
+                    [query_params]='paginationQueryParams'
+            ></app-pagination>
+        </section>
+    </section>
+</section>

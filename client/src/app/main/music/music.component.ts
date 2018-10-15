@@ -1,10 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PlaylistInterface, SongInterface} from '../../_interfaces';
-import {AppConfig} from '../../app.config';
-import {ActivatedRoute, Params, Router} from '@angular/router';
+import {ActivatedRoute, Params} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {AlertService, AppService, CacheService, PlayerService, RouterService} from '../../_services';
+import {AlertService, AppService, CacheService, PlayerService, RouterService,} from '../../_services';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {FilterItems} from '../../_items';
 import {FormsUtils} from '../../utils/forms';
@@ -25,19 +24,21 @@ export class MusicComponent implements OnInit, OnDestroy {
     public addToPlaylistSongId = null;
     public filterItems = FilterItems;
     public song_ordering;
-    public paginationQueryParams: Params = Object.assign({},this.route.snapshot.queryParams);
+    public paginationQueryParams: Params = Object.assign({}, this.route.snapshot.queryParams);
     private routeSub: Subscription;
-    private send_music: boolean = false;
+    private send_array_music: boolean = false;
 
 
-    constructor(private modalService: BsModalService,
-                private appService: AppService,
-                private activatedRoute: ActivatedRoute,
-                private cacheService: CacheService,
-                private route: ActivatedRoute,
-                private routerService: RouterService,
-                private alertService: AlertService,
-                private playerService: PlayerService) {
+    constructor(
+        private modalService: BsModalService,
+        private appService: AppService,
+        private activatedRoute: ActivatedRoute,
+        private cacheService: CacheService,
+        private route: ActivatedRoute,
+        private routerService: RouterService,
+        private alertService: AlertService,
+        private playerService: PlayerService,
+    ) {
         this.choosePlaylistForm = new FormGroup({
             name: new FormControl('', Validators.required)
         });
@@ -61,23 +62,13 @@ export class MusicComponent implements OnInit, OnDestroy {
 
     }
 
-    public changeSong(obj) {
+    public playStopSong(obj) {
+        obj.play = obj.play ? false : true;
         this.playerService.emitChangeSong(obj);
-        if (!this.send_music) {
+        if (!this.send_array_music) {
             this.playerService.emitArrayMusic(this.arrayMusic);
-            this.send_music = true;
+            this.send_array_music = true;
         }
-    }
-
-    public getSongImage(music) {
-        if (music.image == null && music.artist.image == null) {
-            return AppConfig.DEFAULT_SONG_IMAGE;
-        }
-        return music.image ? music.image : music.artist.image;
-    }
-
-    public errorHandlerImage(event) {
-        event.target.src = AppConfig.DEFAULT_SONG_IMAGE;
     }
 
     public addToPlaylist(music, template) {
@@ -85,9 +76,17 @@ export class MusicComponent implements OnInit, OnDestroy {
         this.modalRef = this.modalService.show(template);
     }
 
+    public addFavorite(music) {
+        let favoriteMethod = music.favorite ? this.appService.delete : this.appService.get;
+        favoriteMethod(`song/${music.id}/addfavorite`).subscribe((res) => {
+            music.favorite = !music.favorite;
+        })
+        return true;
+    }
+
     public choosePlaylistSubmit(form) {
         if (this.choosePlaylistForm.valid) {
-            const url = 'playlist/' + form.value.name + '/tracks';
+            const url = `playlist/${form.value.name}/tracks`;
             this.appService.post(url, {'song_id': this.addToPlaylistSongId}).subscribe((res) => {
                 this.modalRef.hide();
                 this.alertService.success('Playlist created!');
@@ -110,7 +109,7 @@ export class MusicComponent implements OnInit, OnDestroy {
         this.routeSub = this.activatedRoute.params.subscribe(params => {
             const artist_id = params['id'];
             if (artist_id) {
-                this.api_page_url = 'artist/' + artist_id;
+                this.api_page_url = `artist/${artist_id}`;
             }
         });
     }

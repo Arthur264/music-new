@@ -61,14 +61,19 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private changeSong(obj: SongInterface): void {
-        this.appService.get('song/' + obj.id + '/addplay').subscribe().unsubscribe();
-        this.audio.src = obj.url;
-        this.currentSong = obj;
-        this.audio.id = String(obj.artist.id);
-        this.audio.currentTime = 0;
-        this.audio.addEventListener('canplay', () => {
-            this.playSong();
-        });
+        console.log(obj)
+        if (obj.play) {
+            this.appService.get('song/' + obj.id + '/addplay').subscribe().unsubscribe();
+            this.audio.src = obj.url;
+            this.currentSong = obj;
+            this.audio.id = String(obj.id);
+            this.audio.currentTime = 0;
+            this.audio.addEventListener('canplay', () => {
+                this.playSong();
+            });
+        }else{
+            this.stopSong();
+        }
     }
 
     private getSong() {
@@ -95,6 +100,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         this.audio.addEventListener('ended', function () {
             if (!self.circle_play){
+                console.log('endddddddd')
                 self.nextSoung();
             }else{
 

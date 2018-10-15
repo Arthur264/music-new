@@ -29,7 +29,7 @@ export class AppService {
             .map((res: Response) => res.json());
     }
 
-    public delete(url, body) {
+    public delete(url, body={}) {
         const options = this.getOptions({}, body);
         return this.http.delete(this.getUrl(url), options)
             .map((res: Response) => res.json());
