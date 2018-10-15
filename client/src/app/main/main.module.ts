@@ -13,6 +13,7 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {SearchComponent} from './search/search.component';
 import {PlaylistPageComponent} from './playlist-page/playlist-page.component';
 import {PlaylistPageDetailsComponent} from './playlist-page/playlist-page-details/playlist-page-details.component';
+import { FavoriteComponent } from './favorite/favorite.component';
 
 @NgModule({
     imports: [
@@ -33,7 +34,8 @@ import {PlaylistPageDetailsComponent} from './playlist-page/playlist-page-detail
         SearchComponent,
         PlayerComponent,
         PlaylistPageComponent,
-        PlaylistPageDetailsComponent
+        PlaylistPageDetailsComponent,
+        FavoriteComponent
     ],
     bootstrap: [MainComponent]
 })

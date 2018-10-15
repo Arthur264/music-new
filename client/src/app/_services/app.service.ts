@@ -17,7 +17,6 @@ export class AppService {
     }
 
     public get(url, params = {}) {
-        console.log(url, params)
         const options = this.getOptions(params);
         return this.http.get(this.getUrl(url), options)
             .map((res: Response) => res.json());

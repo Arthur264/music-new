@@ -26,7 +26,10 @@
                                         <div class="pos-rlt">
                                             <div class="item-overlay opacity r r-2x bg-black"></div>
                                             <a>
-                                                <img [src]="getArtistImage(artist)" alt="{{artist.name}}" class="r r-2x img-full song-image">
+                                                <img appImage="artist"
+                                                     [src]="getArtistImage(artist)"
+                                                     alt="{{artist.name}}"
+                                                     class="r r-2x img-full song-image">
                                             </a>
                                         </div>
                                         <div class="padder-v">
