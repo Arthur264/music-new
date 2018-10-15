@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ArtistInterface, TagInterface} from '../../_interfaces';
 import {AppService, RouterService} from '../../_services';
-import {AppConfig} from '../../app.config';
 import {ActivatedRoute, Params} from '@angular/router';
 
 @Component({
@@ -35,12 +34,5 @@ export class ArtistsComponent implements OnInit {
         this.api_page_url = `tag/${tag.slug}`;
         this.routerService.updateQueryParams({'tag': tag.slug});
         this.paginationQueryParams = Object.assign({}, this.paginationQueryParams, {'tag': tag.slug});
-    }
-
-    public getArtistImage(artist) {
-        if (artist.image == null) {
-            return AppConfig.DEFAULT_ARTIST_IMAGE;
-        }
-        return artist.image;
     }
 }

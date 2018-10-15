@@ -1,6 +1,5 @@
-import { Routes, RouterModule } from '@angular/router';
-
-import { AuthGuard } from './_guards/index';
+import {Routes, RouterModule} from '@angular/router';
+import {AuthGuard} from './_guards';
 
 const AppRoutes: Routes = [
     {

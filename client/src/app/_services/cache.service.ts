@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {AppService} from './app.service';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
+import "rxjs/add/operator/share"
 
 
 @Injectable()
