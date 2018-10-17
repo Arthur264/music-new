@@ -25,17 +25,23 @@ export class PaginationComponent implements OnInit, OnDestroy, OnChanges {
     private max_page: number = 10;
     private count_page = 30;
 
-    constructor(private appService: AppService) {}
+    constructor(
+        private appService: AppService,
+        private routerService: RouterService,
+    ) {}
 
 
     ngOnChanges(changes: SimpleChanges) {
+        const req_params = Object.assign({}, this.query_params);
+        req_params['page'] = req_params['page'] || this.current_page;
         this.makeItems(this.query_params);
     }
 
     ngOnInit() {
         this.emptyItems();
     }
-    private updateQueryPage(params){
+
+    private updateQueryPage(params) {
         params['page'] = params['page'] || this.current_page;
         return params
     }
@@ -117,8 +123,7 @@ export class PaginationComponent implements OnInit, OnDestroy, OnChanges {
             this.items.push(items[i]);
         }
     }
-
-    private makeItems(params={}) {
+    private makeItems(params = {}) {
         let req_params = Object.assign({}, params);
         req_params = this.updateQueryPage(req_params);
         this.appService.get(this.url_page, req_params).subscribe((res) => {
@@ -126,6 +131,7 @@ export class PaginationComponent implements OnInit, OnDestroy, OnChanges {
             this.putItems(res_items);
             this.current_page = req_params['page'];
             this.max_page = res.total_pages;
+            this.routerService.updateQueryParams({'page': req_params['page']});
         });
     }
 }

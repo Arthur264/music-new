@@ -3,7 +3,7 @@ import {PlaylistInterface, SongInterface} from '../../_interfaces';
 import {ActivatedRoute, Params} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {AlertService, AppService, CacheService, PlayerService, RouterService,} from '../../_services';
+import {AlertService, AppService, CacheService, RouterService,} from '../../_services';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {FilterItems} from '../../_items';
 import {FormsUtils} from '../../utils/forms';
@@ -25,8 +25,6 @@ export class MusicComponent implements OnInit, OnDestroy {
     public song_ordering;
     public paginationQueryParams: Params = Object.assign({}, this.route.snapshot.queryParams);
     private routeSub: Subscription;
-    private send_array_music: boolean = false;
-
 
     constructor(
         private modalService: BsModalService,
@@ -36,7 +34,6 @@ export class MusicComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private routerService: RouterService,
         private alertService: AlertService,
-        private playerService: PlayerService,
     ) {
         this.choosePlaylistForm = new FormGroup({
             name: new FormControl('', Validators.required)
@@ -60,28 +57,10 @@ export class MusicComponent implements OnInit, OnDestroy {
         });
     }
 
-    public playStopSong(obj) {
-        obj.play = obj.play ? false : true;
-        this.playerService.emitChangeSong(obj);
-        if (!this.send_array_music) {
-            this.playerService.emitArrayMusic(this.arrayMusic);
-            this.send_array_music = true;
-        }
-    }
-
     public addToPlaylist(music, template) {
         this.addToPlaylistSongId = music.id;
         this.modalRef = this.modalService.show(template);
     }
-
-    public favorite(music) {
-        let favoriteMethod = music.favorite ? this.appService.delete : this.appService.get;
-        favoriteMethod(`song/${music.id}/favorite`, {}).subscribe((res) => {
-            music.favorite = !music.favorite;
-        })
-        return true;
-    }
-
     public choosePlaylistSubmit(form) {
         if (this.choosePlaylistForm.valid) {
             const url = `playlist/${form.value.name}/tracks`;
