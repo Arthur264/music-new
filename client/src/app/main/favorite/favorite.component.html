@@ -24,8 +24,8 @@
                                 </div>
                             </div>
                             <a>
-                                <img [src]="getSongImage(music)" alt="{{music.name}}"
-                                     (error)="errorHandlerImage($event)" class="r r-2x img-full song-image">
+                                <img [appImage]="music"
+                                     class="r r-2x img-full song-image">
                             </a>
                         </div>
                         <div class="padder-v"><a class="text-ellipsis">{{music.name}}</a>
@@ -34,11 +34,6 @@
                     </div>
                 </div>
             </div>
-            <app-pagination
-                    [url_page]="api_page_url"
-                    [items]='arrayMusic'
-                    [query_params]='paginationQueryParams'
-            ></app-pagination>
         </section>
     </section>
 </section>

@@ -18,7 +18,6 @@ export class MusicComponent implements OnInit, OnDestroy {
     public arrayMusic: SongInterface[] = [];
     public choosePlaylistForm: FormGroup;
     public api_page_url = 'song';
-    public title_page = 'Songs';
     public playlists: PlaylistInterface[] = [];
     public modalRef: BsModalRef;
     public addToPlaylistSongId = null;
@@ -59,7 +58,6 @@ export class MusicComponent implements OnInit, OnDestroy {
                 this.paginationQueryParams = Object.assign({}, this.paginationQueryParams, {'ordering': order_id});
             }
         });
-
     }
 
     public playStopSong(obj) {
@@ -76,9 +74,9 @@ export class MusicComponent implements OnInit, OnDestroy {
         this.modalRef = this.modalService.show(template);
     }
 
-    public addFavorite(music) {
+    public favorite(music) {
         let favoriteMethod = music.favorite ? this.appService.delete : this.appService.get;
-        favoriteMethod(`song/${music.id}/addfavorite`).subscribe((res) => {
+        favoriteMethod(`song/${music.id}/favorite`, {}).subscribe((res) => {
             music.favorite = !music.favorite;
         })
         return true;
@@ -118,7 +116,6 @@ export class MusicComponent implements OnInit, OnDestroy {
         const song_ordering = this.activatedRoute.snapshot.queryParams['ordering'];
         if (song_ordering) {
             this.changeOrdering(song_ordering);
-
         }
     }
 
