@@ -60,6 +60,7 @@ MIDDLEWARE = [
 
 MIDDLEWARE_CLASSES = (
     'corsheaders.middleware.CorsMiddleware',
+    'app.middleware.DisableBrowserCacheMiddleware',
 )
 
 REST_FRAMEWORK = {
@@ -70,7 +71,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        # 'rest_framework.permissions.DjangoModelPermissions',
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_FILTER_BACKENDS': [

@@ -18,7 +18,14 @@ from .serializers import (
     FavoriteSerializer,
 )
 
-
+class FavoriteViewSet(viewsets.ViewSet):
+    permission_classes_by_action = {'list': [IsAdminOrIsSelf]}
+    
+    def list(self, request):
+        user = request.user
+        serializer = SongSerializer(user.favorite.all(), many=True, context={'request': request})
+        return response.Response(serializer.data)
+        
 class PlaylistViewSet(viewsets.ModelViewSet):
     serializer_class = PlaylistSerializer
     lookup_field = 'slug'
@@ -84,7 +91,7 @@ class SongViewSet(viewsets.ModelViewSet):
         serializer.save()
         return response.Response(serializer.data)
 
-    @action(methods=['get', 'delete'], permission_classes=[IsAdminOrIsSelf], url_path='addfavorite', detail=True)
+    @action(methods=['get', 'delete'], permission_classes=[IsAdminOrIsSelf], url_path='favorite', detail=True)
     def add_favorite(self, request, pk):
         serializer = FavoriteSerializer(data={'song': pk}, context={'request': request})
         serializer.is_valid(raise_exception=True)
