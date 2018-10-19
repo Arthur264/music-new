@@ -29,7 +29,7 @@ export class AppService {
             .map((res: Response) => res.json());
     }
 
-    public delete(url, body={}) {
+    public delete(url, body = {}) {
         const options = this.getOptions({}, body);
         return this.http.delete(this.getUrl(url), options)
             .map((res: Response) => res.json());
@@ -42,7 +42,7 @@ export class AppService {
     }
 
     private getUrl(url) {
-        return AppSettings.API_URL + url + '/';
+        return `${AppSettings.API_URL}${url}/`;
     }
 
     private getHeaders() {
@@ -63,7 +63,13 @@ export class AppService {
     }
 
     private getOptions(params = {}, body = {}) {
-        const options = {headers: this.getHeaders(), params: this.getParams(params), body: body};
+        let options = {headers: this.getHeaders()};
+        if (params) {
+            options['params'] = this.getParams(params)
+        }
+        if (body) {
+            options['body'] = body
+        }
         return new RequestOptions(options);
     }
 }

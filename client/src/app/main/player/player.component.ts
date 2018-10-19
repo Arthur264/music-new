@@ -61,7 +61,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private changeSong(obj: SongInterface): void {
-        console.log(obj)
         if (obj.play) {
             this.appService.get('song/' + obj.id + '/addplay').subscribe().unsubscribe();
             this.audio.src = obj.url;
@@ -125,6 +124,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private nextSoung(): void {
         for (let i = 0; i < this.arrayMusic.length; i++) {
+            console.log(this.arrayMusic[i].id, Number(this.audio.id));
             if (this.arrayMusic[i].id === Number(this.audio.id)) {
                 if (i !== (this.arrayMusic.length - 1)) {
                     this.changeSong(this.arrayMusic[i + 1]);

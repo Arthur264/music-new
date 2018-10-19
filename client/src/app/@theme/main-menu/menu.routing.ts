@@ -15,7 +15,7 @@ export const MENU_ITEMS: MenuItem[] = [
         icon: 'icon-list'
     },{
         name: 'My favorite',
-        link: '/dashboard/my-favorite',
+        link: '/dashboard/favorite',
         icon: 'fa fa-heart'
     }
 ];
