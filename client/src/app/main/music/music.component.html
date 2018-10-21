@@ -10,39 +10,7 @@
             </div>
             <div class="row row-sm main-list">
                 <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let music of arrayMusic">
-                    <div *ngIf="music.preload" class="item-preload"
-                         [ngStyle]="{ 'background-image': 'url(' + music.preload + ')'}"></div>
-                    <div *ngIf="!music.preload" class="item">
-                        <div class="pos-rlt">
-                            <div class="item-overlay opacity r r-2x bg-black" (click)="playStopSong(music)">
-                                <div class="center text-center m-t-n">
-                                    <a>
-                                        <i class="i-2x"
-                                          [ngClass]="{'fa fa-play-circle': !music.play,'icon-control-pause': music.play}">
-                                        </i>
-                                    </a>
-                                </div>
-                                <div class="bottom padder m-b-sm">
-                                    <a (click)="favorite(music); $event.stopPropagation()"
-                                       class="pull-right favorite">
-                                        <i class="fa"
-                                           [ngClass]="{'fa-heart-o': !music.favorite, 'fa-heart text-danger': music.favorite}">
-                                        </i>
-                                    </a>
-                                    <a (click)="addToPlaylist(music, template); $event.stopPropagation()">
-                                        <i class="fa fa-plus-circle"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <a>
-                                <img [appImage]="music"
-                                     class="r r-2x img-full song-image">
-                            </a>
-                        </div>
-                        <div class="padder-v"><a class="text-ellipsis">{{music.name}}</a>
-                            <a class="text-ellipsis text-xs text-muted">{{music.artist.name}}</a>
-                        </div>
-                    </div>
+                    <song-item [item]="music"></song-item>
                 </div>
             </div>
             <app-pagination

@@ -3,7 +3,7 @@ import {PlaylistInterface, SongInterface} from '../../_interfaces';
 import {ActivatedRoute, Params} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {AlertService, AppService, CacheService, RouterService,} from '../../_services';
+import {AlertService, AppService, CacheService, PlayerService, RouterService,} from '../../_services';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {FilterItems} from '../../_items';
 import {FormsUtils} from '../../utils/forms';
@@ -32,6 +32,7 @@ export class MusicComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private cacheService: CacheService,
         private route: ActivatedRoute,
+        private playerService: PlayerService,
         private routerService: RouterService,
         private alertService: AlertService,
     ) {
@@ -44,6 +45,9 @@ export class MusicComponent implements OnInit, OnDestroy {
         this.getPlayList();
         this.getArtistId();
         this.getSongOrdering();
+    }
+    public sendSongsArray(){
+        this.playerService.emitArrayMusic(this.arrayMusic);
     }
 
     public changeOrdering(param) {

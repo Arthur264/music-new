@@ -13,8 +13,10 @@ import {AppSettings} from '../app.settings';
 @Injectable()
 export class AppService {
 
-    constructor(private http: Http, private accountService: AccountService) {
-    }
+    constructor(
+        private http: Http,
+        private accountService: AccountService,
+    ) {}
 
     public get(url, params = {}) {
         const options = this.getOptions(params);

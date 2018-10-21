@@ -22,7 +22,13 @@ import {HttpModule} from '@angular/http';
     exports: [
         AppComponent
     ],
-    providers: [AppService, AccountService, AuthGuard, PlayerService, RouterService],
+    providers: [
+        AppService,
+        AccountService,
+        AuthGuard,
+        PlayerService,
+        RouterService,
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {
