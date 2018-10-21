@@ -53,7 +53,7 @@ class Song(BaseModel):
     image = models.URLField(max_length=500, null=True, blank=True)
     listeners_fm = models.IntegerField(null=True, blank=True)
     playcount_fm = models.IntegerField(null=True, blank=True)
-    favorite = models.ManyToManyField(User, related_name='favorited_by')
+    favorite = models.ManyToManyField(User, related_name='favorite')
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
 
     class Meta:

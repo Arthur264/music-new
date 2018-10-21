@@ -5,7 +5,8 @@ from music.views import (
     SongViewSet,
     ArtistViewSet,
     TagViewSet,
-    PlaylistViewSet
+    PlaylistViewSet,
+    FavoriteViewSet,
 )
 
 app_name = "app"
@@ -16,3 +17,4 @@ router.register(r'artist', ArtistViewSet, base_name='artist')
 router.register(r'tag', TagViewSet, base_name='tag')
 router.register(r'auth', AuthViewSet, base_name='auth')
 router.register(r'playlist', PlaylistViewSet, base_name='playlist')
+router.register(r'favorite', FavoriteViewSet, base_name='favorite')

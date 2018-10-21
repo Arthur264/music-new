@@ -21,11 +21,11 @@ class SongViewTestCase(TestCase):
         self.check_response_user_song(response)
 
     def test_favorite(self):
-        get_res = self.client.get(f'/api/v1/song/{self.song.pk}/addfavorite/')
+        get_res = self.client.get(f'/api/v1/song/{self.song.pk}/favorite/')
         self.check_response_user_song(get_res)
         self.assertIn(self.user.pk, [i.pk for i in self.song.favorite.all()])
 
-        delete_res = self.client.delete(f'/api/v1/song/{self.song.pk}/addfavorite/')
+        delete_res = self.client.delete(f'/api/v1/song/{self.song.pk}/favorite/')
         self.check_response_user_song(delete_res)
         self.assertNotIn(self.user.pk, [i.pk for i in self.song.favorite.all()])
 
