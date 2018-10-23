@@ -4,7 +4,7 @@ import {MusicComponent} from './music/music.component';
 import {ArtistsComponent} from './artists/artists.component';
 import {PlaylistPageComponent} from './playlist-page/playlist-page.component';
 import {PlaylistPageDetailsComponent} from './playlist-page/playlist-page-details/playlist-page-details.component';
-import {FavoriteComponent} from "./favorite/favorite.component";
+import {FavoriteComponent} from './favorite/favorite.component';
 
 const MainRoutes: Routes = [
     {

@@ -14,7 +14,8 @@ export class InvalidTypeDirective implements OnInit {
         private templateRef: TemplateRef<any>,
         private viewContainer: ViewContainerRef,
         private _el: ElementRef,
-    ) {}
+    ) {
+    }
 
     ngOnInit() {
         this.invalidmessage.controlValue$.subscribe(() => {

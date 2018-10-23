@@ -1,11 +1,5 @@
 import {Injectable} from '@angular/core';
-import {
-    Headers,
-    Http,
-    RequestOptions,
-    Response,
-    URLSearchParams,
-} from '@angular/http';
+import {Headers, Http, RequestOptions, Response, URLSearchParams,} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {AccountService} from './account.service';
 import {AppSettings} from '../app.settings';
@@ -13,7 +7,10 @@ import {AppSettings} from '../app.settings';
 @Injectable()
 export class AppService {
 
-    constructor(private http: Http, private accountService: AccountService) {
+    constructor(
+        private http: Http,
+        private accountService: AccountService,
+    ) {
     }
 
     public get(url, params = {}) {
@@ -65,10 +62,10 @@ export class AppService {
     private getOptions(params = {}, body = {}) {
         let options = {headers: this.getHeaders()};
         if (params) {
-            options['params'] = this.getParams(params)
+            options['params'] = this.getParams(params);
         }
         if (body) {
-            options['body'] = body
+            options['body'] = body;
         }
         return new RequestOptions(options);
     }

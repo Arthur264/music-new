@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {PaginationComponent} from './pagination/pagination.component';
-import {InvalidmessageDirective, InvalidTypeDirective, ImageDirective} from '../_directives';
+import {ImageDirective, InvalidmessageDirective, InvalidTypeDirective} from '../_directives';
 
 @NgModule({
     imports: [

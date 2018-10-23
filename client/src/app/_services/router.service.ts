@@ -5,7 +5,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 export class RouterService {
 
     constructor(private activatedRoute: ActivatedRoute,
-                private router: Router) {}
+                private router: Router) {
+    }
 
     public updateQueryParams(params) {
         this.router.navigate([], {

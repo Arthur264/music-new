@@ -12,7 +12,7 @@ export class ImageDirective implements OnInit {
     }
 
     ngOnInit() {
-        if (!('preload' in this.appImage)) {
+        if (!this.appImage.hasOwnProperty('preload')) {
             this._el.nativeElement.src = this.getImage();
             this._el.nativeElement.alt = this.getAlt();
         }

@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-header-search',
-  templateUrl: './header-search.component.html',
-  styleUrls: ['./header-search.component.css']
+    selector: 'app-header-search',
+    templateUrl: './header-search.component.html',
+    styleUrls: ['./header-search.component.css']
 })
 export class HeaderSearchComponent implements OnInit {
 
-  constructor() { }
+    constructor() {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
 }

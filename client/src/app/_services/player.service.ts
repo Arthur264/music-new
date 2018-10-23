@@ -6,9 +6,10 @@ import {Subject} from 'rxjs/Subject';
 @Injectable()
 export class PlayerService {
     private _currentSong: Subject<SongInterface> = new Subject();
-    private _arrayMusic: Subject<SongInterface[]> = new Subject();
+    private _arraySong: Subject<SongInterface[]> = new Subject();
 
-    constructor() {}
+    constructor() {
+    }
 
 
     public emitChangeSong(obj: SongInterface) {
@@ -20,11 +21,11 @@ export class PlayerService {
     }
 
     public emitArrayMusic(obj: SongInterface[]) {
-        this._arrayMusic.next(obj);
+        this._arraySong.next(obj);
     }
 
     public getArrayMusic(): Observable<any> {
-        return this._arrayMusic.asObservable();
+        return this._arraySong.asObservable();
     }
 
 }

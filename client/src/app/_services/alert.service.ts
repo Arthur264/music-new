@@ -9,7 +9,8 @@ export class AlertService {
     private _keepAfterNavigationChange = false;
     public alert: AlertInterface;
 
-    constructor() {}
+    constructor() {
+    }
 
     private _make_alert(keepAfterNavigationChange = false) {
         this._keepAfterNavigationChange = keepAfterNavigationChange;
@@ -17,12 +18,12 @@ export class AlertService {
     }
 
     public success(message: string, keepAfterNavigationChange = false) {
-        this.alert = {message: 'Success: ' +  message, type: 'success'};
+        this.alert = {message: 'Success: ' + message, type: 'success'};
         this._make_alert(keepAfterNavigationChange);
     }
 
     public error(message: string, keepAfterNavigationChange = false) {
-        console.log('error', message)
+        console.log('error', message);
         this.alert = {message: 'Error: ' + message, type: 'error'};
         this._make_alert(keepAfterNavigationChange);
     }

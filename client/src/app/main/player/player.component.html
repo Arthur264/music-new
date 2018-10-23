@@ -24,7 +24,9 @@
                     <div class="progress hidden-xs">
                         <div class="seek-bar dk" style="width: 100%;" (click)="moveAudio($event)">
                             <div class="play-bar bg-info" #progress></div>
-                            <div class="title text-lt" *ngIf="currentSong">{{ currentSong.artist.name }} / {{ currentSong.name }}</div>
+                            <div class="title text-lt" *ngIf="currentSong">{{ currentSong.artist.name }} / {{
+                                currentSong.name }}
+                            </div>
                         </div>
                     </div>
                     <div class="hidden-xs hidden-sm current-time text-xs text-white">{{ currentTime }}</div>
@@ -46,7 +48,7 @@
                         <a class="shuffle" title="shuffle" *ngIf="random_play" (click)="changeRandomPlay()">
                             <i class="icon-shuffle text-white"></i>
                         </a>
-                        <a class="shuffle-off" title="shuffle off" *ngIf="!random_play"  (click)="changeRandomPlay()">
+                        <a class="shuffle-off" title="shuffle off" *ngIf="!random_play" (click)="changeRandomPlay()">
                             <i class="icon-shuffle text-lt"></i>
                         </a>
                     </div>

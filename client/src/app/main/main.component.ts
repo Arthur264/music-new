@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {UserInterface} from '../_interfaces/user.interface';
-import {AccountService} from '../_services/account.service';
+import {UserInterface} from '../_interfaces';
+import {AccountService} from '../_services';
 
 @Component({
     selector: 'app-main',
@@ -15,6 +15,7 @@ export class MainComponent implements OnInit {
         this.user = this.accountService.user;
 
     }
+
     ngOnInit() {
 
     }

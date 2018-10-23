@@ -8,12 +8,11 @@ import {AsideComponent} from './aside/aside.component';
 import {AlertModule, ModalModule} from 'ngx-bootstrap';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AlertComponent} from './alert/alert.component';
-import {AlertService} from '../_services/alert.service';
+import {AlertService, CacheService} from '../_services';
 import {RouterModule} from '@angular/router';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
-import {CacheService} from '../_services/cache.service';
 import {NgSelectModule} from '@ng-select/ng-select';
-import { MyFavoriteComponent } from './my-favorite/my-favorite.component';
+import {MyFavoriteComponent} from './my-favorite/my-favorite.component';
 
 
 @NgModule({
@@ -28,8 +27,23 @@ import { MyFavoriteComponent } from './my-favorite/my-favorite.component';
         AlertModule.forRoot()
     ],
     providers: [AlertService, CacheService],
-    declarations: [HeaderSearchComponent, HeaderComponent, PlaylistComponent, MainMenuComponent, AsideComponent, AlertComponent, MyFavoriteComponent],
-    exports: [HeaderSearchComponent, HeaderComponent, PlaylistComponent, MainMenuComponent, AsideComponent, AlertComponent]
+    declarations: [
+        HeaderSearchComponent,
+        HeaderComponent,
+        PlaylistComponent,
+        MainMenuComponent,
+        AsideComponent,
+        AlertComponent,
+        MyFavoriteComponent,
+    ],
+    exports: [
+        HeaderSearchComponent,
+        HeaderComponent,
+        PlaylistComponent,
+        MainMenuComponent,
+        AsideComponent,
+        AlertComponent,
+    ]
 })
 export class ThemeModule {
 }
