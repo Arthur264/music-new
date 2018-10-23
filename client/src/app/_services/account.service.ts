@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {AppConfig} from '../app.config';
-import {UserInterface} from '../_interfaces/user.interface';
+import {UserInterface} from '../_interfaces';
 import {Router} from '@angular/router';
 
 @Injectable()
@@ -38,7 +38,7 @@ export class AccountService {
     }
 
     public save(data) {
-        this._clear()
+        this._clear();
         this.user = this.set_default_user_data(data.user);
         this.token = data.token;
     }

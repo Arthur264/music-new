@@ -1,21 +1,26 @@
-<header class="wrapper text-center"> <strong>Sign in to get in touch</strong> </header>
+<header class="wrapper text-center"><strong>Sign in to get in touch</strong></header>
 <form [formGroup]="loginForm">
     <div class="form-group">
-        <input type="text" formControlName="username" placeholder="Username" name='Username' class="form-control rounded input-lg text-center no-border">
+        <input type="text" formControlName="username" placeholder="Username" name='Username'
+               class="form-control rounded input-lg text-center no-border">
         <div class="form-error" invalidmessage="username">
             <p *invalidType="'required'">Please provide username</p>
         </div>
     </div>
     <div class="form-group">
-        <input type="password" formControlName="password" name='password' placeholder="Password" class="form-control rounded input-lg text-center no-border">
+        <input type="password" formControlName="password" name='password' placeholder="Password"
+               class="form-control rounded input-lg text-center no-border">
         <div class="form-error" invalidmessage="password">
             <p *invalidType="'required'">Please provide password</p>
         </div>
     </div>
-    <button (click)="loginSubmit(loginForm)" type="submit" class="btn btn-lg btn-warning lt b-white b-2x btn-block btn-rounded">
+    <button (click)="loginSubmit(loginForm)" type="submit"
+            class="btn btn-lg btn-warning lt b-white b-2x btn-block btn-rounded">
         <i class="icon-arrow-right pull-right"></i><span class="m-r-n-lg">Sign in</span>
-        </button>
-    <div class="text-center m-t m-b"><a href="#"><small>Forgot password?</small></a></div>
+    </button>
+    <div class="text-center m-t m-b"><a href="#">
+        <small>Forgot password?</small>
+    </a></div>
     <div class="line line-dashed"></div>
     <p class="text-muted text-center">
         <small>Do not have an account?</small>

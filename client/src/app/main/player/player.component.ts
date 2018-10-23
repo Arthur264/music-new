@@ -70,7 +70,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
             this.audio.addEventListener('canplay', () => {
                 this.playSong();
             });
-        }else{
+        } else {
             this.stopSong();
         }
     }
@@ -98,10 +98,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
             self.moveBack(self.audio.currentTime);
         });
         this.audio.addEventListener('ended', function () {
-            if (!self.circle_play){
-                console.log('endddddddd')
+            if (!self.circle_play) {
+                console.log('endddddddd');
                 self.nextSoung();
-            }else{
+            } else {
 
             }
 
@@ -160,27 +160,30 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
         this.audio.pause();
     }
 
-    public randomSort(arr){
-        arr.sort(function() {
+    public randomSort(arr) {
+        arr.sort(function () {
             return .5 - Math.random();
         });
         return arr;
     }
-    public changeRandomPlay(){
+
+    public changeRandomPlay() {
         if (!this.randomArrayMusic) {
             this.randomArrayMusic = this.randomSort(this.arrayMusic);
         }
     }
-    public changeVolume(ev){
+
+    public changeVolume(ev) {
         const profit = ev.offsetX / ev.target.clientWidth;
         this.audio.volume = profit;
-        console.log(profit)
+        console.log(profit);
     }
-    public onOffVolume(){
-        if (this.volume){
+
+    public onOffVolume() {
+        if (this.volume) {
             this.audio.volume = 0;
             this.volume = false;
-        }else {
+        } else {
             this.audio.volume = this.current_volume;
             this.volume = true;
         }

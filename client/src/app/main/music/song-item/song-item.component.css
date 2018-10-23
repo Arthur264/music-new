@@ -1,15 +1,17 @@
-.fa-plus-circle, .favorite{
+.fa-plus-circle, .favorite {
     cursor: pointer;
 }
 
-.song-image{
+.song-image {
     min-height: 147px;
     object-fit: cover;
 }
-.i-2x{
+
+.i-2x {
     cursor: pointer;
 }
-.item-preload{
+
+.item-preload {
     min-height: 180px;
     background-repeat: no-repeat;
     background-position: center;

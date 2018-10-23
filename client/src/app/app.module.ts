@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppComponent} from './app.component';
-import {AppService, AccountService, PlayerService, RouterService} from './_services';
+import {AccountService, AppService, PlayerService, RouterService} from './_services';
 import {Routing} from './app.routing';
 import {AuthGuard} from './_guards';
 import {HttpModule} from '@angular/http';

@@ -30,10 +30,10 @@ export class FavoriteComponent implements OnInit {
         this.playerService.emitArrayMusic(this.arrayMusic);
     }
 
-    public deleteFavoriteItem(song_id){
+    public deleteFavoriteItem(song_id) {
         this.arrayMusic = this.arrayMusic.filter((item) => {
             return item.id != song_id;
-        })
+        });
     }
 
 }

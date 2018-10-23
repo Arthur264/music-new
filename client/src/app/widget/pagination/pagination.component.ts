@@ -1,11 +1,4 @@
-import {
-    Component,
-    Input,
-    OnDestroy,
-    OnInit,
-    OnChanges,
-    SimpleChanges,
-} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges,} from '@angular/core';
 import {AppService, RouterService} from '../../_services';
 import {AppConfig} from '../../app.config';
 
@@ -28,7 +21,8 @@ export class PaginationComponent implements OnInit, OnDestroy, OnChanges {
     constructor(
         private appService: AppService,
         private routerService: RouterService,
-    ) {}
+    ) {
+    }
 
 
     ngOnChanges(changes: SimpleChanges) {
@@ -43,7 +37,7 @@ export class PaginationComponent implements OnInit, OnDestroy, OnChanges {
 
     private updateQueryPage(params) {
         params['page'] = params['page'] || this.current_page;
-        return params
+        return params;
     }
 
     public nextPage() {
@@ -123,6 +117,7 @@ export class PaginationComponent implements OnInit, OnDestroy, OnChanges {
             this.items.push(items[i]);
         }
     }
+
     private makeItems(params = {}) {
         let req_params = Object.assign({}, params);
         req_params = this.updateQueryPage(req_params);

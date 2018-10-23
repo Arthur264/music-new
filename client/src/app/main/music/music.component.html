@@ -9,8 +9,8 @@
                 </ng-select>
             </div>
             <div class="row row-sm main-list">
-                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let music of arrayMusic">
-                    <song-item [item]="music"></song-item>
+                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let song of arraySong">
+                    <song-item [item]="song"></song-item>
                 </div>
             </div>
             <app-pagination
@@ -21,27 +21,3 @@
         </section>
     </section>
 </section>
-
-<ng-template #template>
-    <div class="modal-header">
-        <h4 class="modal-title">Choose playlist</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <form [formGroup]="choosePlaylistForm">
-            <ng-select placeholder="Playlist name" bindLabel="name"
-                       bindValue="slug" formControlName="name" name="name"
-                       [items]="playlists">
-            </ng-select>
-            <div class="form-error" invalidmessage="name">
-                <p *invalidType="'required'">Please provide name</p>
-                <p *invalidType="'response'"></p>
-            </div>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-success" (click)="choosePlaylistSubmit(choosePlaylistForm)">Save</button>
-    </div>
-</ng-template>

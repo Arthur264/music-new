@@ -8,7 +8,8 @@ export class PlayerService {
     private _currentSong: Subject<SongInterface> = new Subject();
     private _arrayMusic: Subject<SongInterface[]> = new Subject();
 
-    constructor() {}
+    constructor() {
+    }
 
 
     public emitChangeSong(obj: SongInterface) {

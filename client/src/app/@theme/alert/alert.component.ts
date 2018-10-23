@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {AlertInterface} from '../../_interfaces/alert.interface';
-import {AlertService} from '../../_services/alert.service';
+import {AlertInterface} from '../../_interfaces';
+import {AlertService} from '../../_services';
 
 @Component({
     selector: 'app-alert',
@@ -16,7 +16,7 @@ export class AlertComponent implements OnInit {
 
     ngOnInit() {
         this.alertService.getAlert().subscribe((alert: AlertInterface) => {
-            console.log('alert', alert)
+            console.log('alert', alert);
             this.alert = alert;
             this.alert.alertClass = 'bounceInRight';
             setTimeout(this.fadeItOut, 5000);

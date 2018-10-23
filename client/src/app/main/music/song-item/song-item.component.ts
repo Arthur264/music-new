@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {PlayerService, AppService} from '../../../_services';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AppService, PlayerService} from '../../../_services';
 import {SongInterface} from '../../../_interfaces';
 
 @Component({
@@ -11,7 +11,6 @@ export class SongItemComponent implements OnInit {
     @Input('item') music: SongInterface;
     @Output('sendSongs') sendSongs: EventEmitter<any> = new EventEmitter<any>();
     @Output('deleteFavorite') deleteFavorite: EventEmitter<number> = new EventEmitter<number>();
-    private send_array_music: boolean = false;
 
     constructor(
         private playerService: PlayerService,
@@ -24,11 +23,10 @@ export class SongItemComponent implements OnInit {
 
     public playStopSong(obj) {
         obj.play = obj.play ? false : true;
-        this.playerService.emitChangeSong(obj);
-        if (!this.send_array_music) {
+        if (obj.play){
             this.sendSongs.emit();
-            this.send_array_music = true;
         }
+        this.playerService.emitChangeSong(obj);
     }
 
     public favorite(music) {
@@ -37,11 +35,11 @@ export class SongItemComponent implements OnInit {
             this.appService.delete(url, {}).subscribe((res) => {
                 music.favorite = !music.favorite;
                 this.deleteFavorite.emit(music.id);
-            })
+            });
         } else {
             this.appService.get(url, {}).subscribe((res) => {
                 music.favorite = !music.favorite;
-            })
+            });
         }
 
         return true;

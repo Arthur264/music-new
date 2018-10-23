@@ -13,10 +13,12 @@
     -webkit-user-select: none;
     /*background-color: #fff;*/
 }
+
 .audio.green-audio-player .play-pause-btn {
     /*display: none;*/
     cursor: pointer;
 }
+
 .audio.green-audio-player .spinner {
     width: 18px;
     height: 18px;
@@ -25,18 +27,21 @@
     background-repeat: no-repeat;
     animation: spin 0.4s linear infinite;
 }
+
 .audio.green-audio-player .slider {
     flex-grow: 1;
     background-color: #44BFA3;
     cursor: pointer;
     position: relative;
 }
+
 .audio.green-audio-player .slider .progress {
     background-color: black;
     border-radius: inherit;
     position: absolute;
     pointer-events: none;
 }
+
 .audio.green-audio-player .slider .progress .pin {
     height: 16px;
     width: 16px;
@@ -46,9 +51,11 @@
     pointer-events: all;
     box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.32);
 }
-.audio.green-audio-player > .slider .progress .pin{
+
+.audio.green-audio-player > .slider .progress .pin {
     display: none;
 }
+
 .audio.green-audio-player .controls {
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
@@ -59,6 +66,7 @@
     margin-right: 24px;
     padding-top: 12px;
 }
+
 .audio.green-audio-player .slider {
     position: absolute;
     width: 100%;
@@ -66,32 +74,39 @@
     top: 0;
     height: 4px;
 }
+
 .audio.green-audio-player .controls .slider .progress {
     width: 0;
     height: 100%;
 }
+
 .audio.green-audio-player .controls .slider .progress .pin {
     right: -8px;
-  
+
     top: -6px;
 }
+
 .audio.green-audio-player .controls span {
     cursor: default;
 }
+
 .audio.green-audio-player .volume {
     float: right;
     position: relative;
 }
+
 .audio.green-audio-player .volume .volume-btn {
     cursor: pointer;
 }
+
 .audio.green-audio-player .volume .volume-btn.open path {
     fill: #44BFA3;
 }
+
 .audio.green-audio-player .volume .volume-controls {
     width: 30px;
     height: 135px;
-    
+
     background-color: rgba(0, 0, 0, 0.62);
     border-radius: 7px;
     position: absolute;
@@ -101,29 +116,35 @@
     align-items: center;
     display: flex;
 }
+
 .audio.green-audio-player .volume .volume-controls.hidden {
     display: none;
 }
+
 .audio.green-audio-player .volume .volume-controls .slider {
     width: 6px;
     height: 100%;
     left: 12px;
 }
+
 .audio.green-audio-player .volume .volume-controls .slider .progress {
     bottom: 0;
     height: 100%;
-    
+
     width: 6px;
 }
+
 .audio.green-audio-player .volume .volume-controls .slider .progress .pin {
     left: -5px;
     background-color: #44BFA3;
     top: 0;
 }
-.audio-group{
+
+.audio-group {
     display: flex;
 }
-.controls{
+
+.controls {
     flex: 1;
 }
 
@@ -145,11 +166,13 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
-.progress{
+
+.progress {
     height: 4px;
     overflow: visible;
- 
+
 }
+
 @keyframes spin {
     from {
         transform: rotateZ(0);
@@ -158,22 +181,27 @@ body {
         transform: rotateZ(1turn);
     }
 }
-.hidden{
+
+.hidden {
     display: none !important;
 }
-.controls__time{
+
+.controls__time {
     min-width: 90px;
     display: inline-block;
 }
-.prev-btn, .next-btn{
+
+.prev-btn, .next-btn {
     display: inline-block;
     margin: 0 10px;
     cursor: pointer;
 }
-.total-time, .current-time{
+
+.total-time, .current-time {
     color: #aaabac;
 }
-.play-pause-btn, .volume{
+
+.play-pause-btn, .volume {
     display: inline-block;
 }
 
@@ -184,20 +212,23 @@ body {
     justify-content: space-between;
     align-items: center;
 }
-.controls a{
+
+.controls a {
     color: #fff;
     cursor: pointer;
     display: inline-block;
     padding: 10px 5px;
 }
-.controls a.play, .controls a.pause{
+
+.controls a.play, .controls a.pause {
     padding-top: 4px;
 }
 
-.controls a i{
+.controls a i {
     line-height: inherit;
 }
-.controls > div{
+
+.controls > div {
     color: #fff;
     vertical-align: middle;
     text-align: center;
@@ -206,25 +237,30 @@ body {
     margin-right: 15px;
     margin-left: 15px;
 }
-.controls > div.progress{
+
+.controls > div.progress {
     width: 100%;
     height: 60px;
     margin-bottom: 0;
     background-color: #36b0c8;
 }
-.controls .current-time, .controls .duration{
+
+.controls .current-time, .controls .duration {
     line-height: 40px;
 }
-div.progress{
+
+div.progress {
     width: auto;
     vertical-align: top;
     position: relative;
     border-radius: 0;
 }
-.seek-bar{
+
+.seek-bar {
     position: relative;
 }
-.title{
+
+.title {
     color: #fff;
     position: absolute;
     left: 25px;
@@ -233,47 +269,54 @@ div.progress{
     display: block !important;
     line-height: 60px;
 }
-.title ul{
+
+.title ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.title li{
+.title li {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.artist{
+
+.artist {
     opacity: 0.6;
 }
 
-.play-bar{
+.play-bar {
     height: 60px;
 }
-.volume{
+
+.volume {
     margin: 0 !important;
     width: 130px !important;
 }
-.volume-bar-value{
+
+.volume-bar-value {
     height: 6px;
 }
-.volume-bar{
+
+.volume-bar {
     margin-top: 16px;
     background-color: #4cb6cb;
     cursor: pointer;
 }
-a.hid{
+
+a.hid {
     display: none;
 }
 
 /*video*/
-.video{
+.video {
     font-size: 0;
     line-height: 0;
     min-height: 160px;
 }
-.video-play{
+
+.video-play {
     display: inline-block;
     position: absolute;
     left: 50%;
@@ -282,45 +325,49 @@ a.hid{
     margin-left: -30px;
     margin-top: -65px;
 }
+
 .video-full {
     /* Rules for IE6 (full-screen) */
-    width:480px;
-    height:270px;
+    width: 480px;
+    height: 270px;
     /* Rules for IE7 (full-screen) - Otherwise the relative container causes other page items that are not position:static (default) to appear over the video/gui. */
-    position:static !important; position:relative;
+    position: static !important;
+    position: relative;
 }
 
 /* The z-index rule is defined in this manner to enable Popcorn plugins that add overlays to video area. EG. Subtitles. */
 .video-full div div {
-    z-index:1000;
+    z-index: 1000;
 }
 
 .video-full .jplayer {
     top: 0;
     left: 0;
-    position: fixed !important; position: relative; /* Rules for IE6 (full-screen) */
+    position: fixed !important;
+    position: relative; /* Rules for IE6 (full-screen) */
     overflow: hidden;
 }
 
 .video-full .gui {
-    position: fixed !important; position: static; /* Rules for IE6 (full-screen) */
+    position: fixed !important;
+    position: static; /* Rules for IE6 (full-screen) */
     top: 0;
     left: 0;
-    width:100%;
-    height:100%;
-    z-index:1001; /* 1 layer above the others. */
+    width: 100%;
+    height: 100%;
+    z-index: 1001; /* 1 layer above the others. */
 }
 
 .video-full .interface {
-    position: absolute !important; position: relative; /* Rules for IE6 (full-screen) */
+    position: absolute !important;
+    position: relative; /* Rules for IE6 (full-screen) */
     bottom: 0;
     left: 0;
 }
 
-
 /*playlist*/
 
-.playlist ul{
+.playlist ul {
     max-height: 320px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -328,18 +375,18 @@ a.hid{
     display: none !important;
 }
 
-.playlist.open ul{
+.playlist.open ul {
     display: block !important;
     bottom: 60px;
     left: 180px;
 }
 
-.playlist li{
+.playlist li {
     list-style: none;
     position: relative;
 }
 
-.playlist-item{
+.playlist-item {
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -347,29 +394,30 @@ a.hid{
     border-top: 1px solid rgba(255, 255, 255, .1);
     padding: 12px 40px 12px 8px;
 }
-.playlist-item:focus{
+
+.playlist-item:focus {
     outline: 0;
 }
 
-.playlist-item:before{
+.playlist-item:before {
     display: inline-block;
     text-align: center;
     width: 30px;
     font-family: FontAwesome;
-    content:"\f0da";
+    content: "\f0da";
     opacity: 0.6;
 }
 
-a.playlist-current:before{
-    content:"\f144";
+a.playlist-current:before {
+    content: "\f144";
     opacity: 1;
 }
 
-.playlist li:first-child .playlist-item{
+.playlist li:first-child .playlist-item {
     border-width: 0;
 }
 
-.playlist-item-remove{
+.playlist-item-remove {
     font-size: 15px;
     display: block;
     position: absolute;
@@ -379,15 +427,16 @@ a.playlist-current:before{
     opacity: 0.6;
 }
 
-
 @media (max-width: 767px) {
-    .footer .gui{
+    .footer .gui {
         margin: 0 -10px;
     }
-    div.progress{
+
+    div.progress {
         padding: 0 10px;
     }
-    .playlist.open ul{
+
+    .playlist.open ul {
         display: block !important;
         bottom: 60px;
         left: 0px;
