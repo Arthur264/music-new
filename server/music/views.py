@@ -6,7 +6,13 @@ from rest_framework.decorators import action
 from account.permissions import IsAdminOrIsSelf
 from core.pagination import InfoPagination
 from .filters import SongFilter
-from .models import Song, Artist, Tag, Playlist
+from .models import (
+    Song, 
+    Artist, 
+    Tag, 
+    Playlist,
+    ListenerSong,
+)
 from .serializers import (
     SongSerializer,
     ArtistSerializer,
@@ -92,16 +98,16 @@ class SongViewSet(viewsets.ModelViewSet):
         return response.Response(serializer.data)
 
     @action(methods=['get', 'delete'], permission_classes=[IsAdminOrIsSelf], url_path='favorite', detail=True)
-    def add_favorite(self, request, pk):
+    def favorite(self, request, pk):
         serializer = FavoriteSerializer(data={'song': pk}, context={'request': request})
         serializer.is_valid(raise_exception=True)
         serializer.operation(request.method == 'DELETE')
         return response.Response(serializer.data)
 
-    @action(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='selection', detail=True)
+    @action(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='selection', detail=False)
     def selection(self, request):
         top_songs = np.random.choice(Song.objects.order_by('-listeners_fm')[:200], 15)
-        top_favorite_artist_song = None
+        top_favorite_artist_song = ListenerArtist.objects.filter(user=request.user)
         return None
 
 
