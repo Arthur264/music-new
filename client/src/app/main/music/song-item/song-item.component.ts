@@ -9,7 +9,7 @@ import {SongInterface} from '../../../_interfaces';
 })
 export class SongItemComponent implements OnInit {
     @Input('item') music: SongInterface;
-    @Output('sendSongs') sendSongs: EventEmitter<any> = new EventEmitter<any>();
+    @Output('emitSongs') emitSongs: EventEmitter<any> = new EventEmitter<any>();
     @Output('deleteFavorite') deleteFavorite: EventEmitter<number> = new EventEmitter<number>();
 
     constructor(
@@ -24,7 +24,7 @@ export class SongItemComponent implements OnInit {
     public playStopSong(obj) {
         obj.play = obj.play ? false : true;
         if (obj.play){
-            this.sendSongs.emit();
+            this.emitSongs.emit();
         }
         this.playerService.emitChangeSong(obj);
     }

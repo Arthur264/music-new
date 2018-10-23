@@ -5,25 +5,31 @@ import {PlayerService} from './player.service';
 @Injectable()
 export class SongService {
     public arraySong: SongInterface[] = [];
-    private send_player_song: boolean = false;
+    private emit_player_song: boolean = false;
 
     constructor(
         private playerService: PlayerService,
     ) {
     }
-    public sendSongsArray() {
-        this.send_player_song = false;
+    public emitSongArray() {
+        this.emit_player_song = false;
         this.playerService.emitArrayMusic(this.arraySong);
     }
 
     public emitPlayerSong(){
-        if (!this.send_player_song) {
+        if (!this.emit_player_song) {
             this.sendSongs.emit();
-            this.send_array_music = true;
+            this.emit_player_song = true;
         }
     }
     public addToPlaylist(music, template) {
         this.addToPlaylistSongId = music.id;
         this.modalRef = this.modalService.show(template);
+    }
+
+    private beforePlay(){
+        this.arraySong = this.arraySong.map((item) => {
+            return item.play = !item.play;
+        })
     }
 }
