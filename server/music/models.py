@@ -91,12 +91,16 @@ class ListenerSong(BaseModel):
     song = models.ForeignKey(Song, related_name='listener', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.song
+        return f'{self.user.id}_{self.song.id}'
+        
+    @property
+    def artist_id(self):
+        return self.song.artist_id
 
 
 class SimilarArtist(models.Model):
-    first_artist = models.ForeignKey(Artist, related_name='artist1', on_delete=models.CASCADE)
-    second_artist = models.ForeignKey(Artist, related_name='artist2', on_delete=models.CASCADE)
+    first_artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
+    second_artist = models.ForeignKey(Artist, related_name='similar', on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ('first_artist', 'second_artist')

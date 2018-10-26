@@ -26,3 +26,11 @@ class FriendSerializer(serializers.ModelSerializer):
         model = Friends
         fields = ('id', 'user', 'friend')
         lookup_field = 'pk'
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'date_joined', 'description', 'city',
+                  'phone')
+        lookup_field = 'slug'

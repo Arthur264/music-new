@@ -6,7 +6,10 @@ from django.db.models import Q
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .serializers import UserSerializer, FriendSerializer
+from .serializers import (
+    UserSerializer,
+    FriendSerializer,
+)
 
 from account.permissions import IsAdminOrIsSelf
 from .models import User, Friends
@@ -34,3 +37,15 @@ class UserViewSet(viewsets.ModelViewSet):
                 serializer.save()
                 return Response(serializer.data)
             return Response(serializer.errors)
+
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    serializer_class = UserSerializer
+
+    def update(self, request, *args, **kwargs):
+        pass
+
+    @action(methods=['post'], permission_classes=[IsAdminOrIsSelf], url_path='avatar', detail=False)
+    def update_avatar(self, request):
+        pass
+

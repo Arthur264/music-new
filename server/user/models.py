@@ -24,6 +24,7 @@ class User(AbstractUser):
     city = models.CharField(max_length=100, null=True, blank=True)
     phone = models.CharField(max_length=100, null=True, blank=True)
     timezone = models.CharField(null=True, blank=True, max_length=50)
+    last_ip = models.GenericIPAddressField(protocol='IPv4', null=True, blank=True)
 
     class Meta:
         db_table = 'user'

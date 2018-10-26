@@ -6,7 +6,12 @@ from rest_framework.decorators import action
 from account.permissions import IsAdminOrIsSelf
 from core.pagination import InfoPagination
 from .filters import SongFilter
-from .models import Song, Artist, Tag, Playlist
+from .models import (
+    Song,
+    Artist,
+    Tag,
+    Playlist,
+)
 from .serializers import (
     SongSerializer,
     ArtistSerializer,
@@ -18,14 +23,16 @@ from .serializers import (
     FavoriteSerializer,
 )
 
+
 class FavoriteViewSet(viewsets.ViewSet):
     permission_classes_by_action = {'list': [IsAdminOrIsSelf]}
-    
+
     def list(self, request):
         user = request.user
         serializer = SongSerializer(user.favorite.all(), many=True, context={'request': request})
         return response.Response(serializer.data)
-        
+
+
 class PlaylistViewSet(viewsets.ModelViewSet):
     serializer_class = PlaylistSerializer
     lookup_field = 'slug'
@@ -74,7 +81,7 @@ class SongViewSet(viewsets.ModelViewSet):
     filter_class = SongFilter
     ordering_fields = '__all__'
 
-    def create(self, request):
+    def create(self, request, *args, **kwargs):
         serializer_data = request.data
         artist, _ = Artist.objects.get_or_create(name=serializer_data.get('artist'))
         serializer_data.update({'artist_id': artist.pk})
@@ -92,16 +99,16 @@ class SongViewSet(viewsets.ModelViewSet):
         return response.Response(serializer.data)
 
     @action(methods=['get', 'delete'], permission_classes=[IsAdminOrIsSelf], url_path='favorite', detail=True)
-    def add_favorite(self, request, pk):
+    def favorite(self, request, pk):
         serializer = FavoriteSerializer(data={'song': pk}, context={'request': request})
         serializer.is_valid(raise_exception=True)
         serializer.operation(request.method == 'DELETE')
         return response.Response(serializer.data)
 
-    @action(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='selection', detail=True)
+    @action(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='selection', detail=False)
     def selection(self, request):
         top_songs = np.random.choice(Song.objects.order_by('-listeners_fm')[:200], 15)
-        top_favorite_artist_song = None
+        top_favorite_artist_song = ListenerArtist.objects.filter(user=request.user)
         return None
 
 
