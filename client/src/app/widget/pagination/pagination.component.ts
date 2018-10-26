@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges,} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges, EventEmitter, Output,} from '@angular/core';
 import {AppService, RouterService} from '../../_services';
 import {AppConfig} from '../../app.config';
 
@@ -9,12 +9,11 @@ import {AppConfig} from '../../app.config';
     providers: [RouterService]
 })
 
-export class PaginationComponent implements OnInit, OnDestroy, OnChanges {
+export class PaginationComponent implements OnInit,  OnChanges {
     @Input() public url_page: string;
-    @Input() public items: any[] = [];
     @Input() public query_params = {};
+    @Output('changeItem') emitChangeItem: EventEmitter<any> = new EventEmitter<any>();
     private current_page: number = 1;
-    private sub: any;
     private max_page: number = 10;
     private count_page = 30;
 
@@ -32,7 +31,7 @@ export class PaginationComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     ngOnInit() {
-        this.emptyItems();
+        this.prepareItems();
     }
 
     private updateQueryPage(params) {
@@ -84,46 +83,27 @@ export class PaginationComponent implements OnInit, OnDestroy, OnChanges {
         return rangeWithDots;
     }
 
-    ngOnDestroy() {
-        if (this.sub) {
-            this.sub.unsubscribe();
-        }
-    }
-
-    private emptyItems() {
-        this.sliceItems();
+    private prepareItems() {
+        let items = [];
         for (let i = 0; i < this.count_page; i++) {
-            this.items.push({'preload': AppConfig.DEFAULT_PRELOADER});
+            items.push({'preload': AppConfig.DEFAULT_PRELOADER});
         }
+        this.emitChangeItem.emit(items);
     }
 
     private changePage(n) {
         if (n !== this.current_page) {
-            this.emptyItems();
+            this.prepareItems();
             this.makeItems({'page': n});
         }
         this.current_page = n;
     }
-
-    private sliceItems() {
-        if (this.items) {
-            this.items.splice(0, this.items.length);
-        }
-    }
-
-    private putItems(items) {
-        this.sliceItems();
-        for (let i = 0; i < items.length; i++) {
-            this.items.push(items[i]);
-        }
-    }
-
     private makeItems(params = {}) {
         let req_params = Object.assign({}, params);
         req_params = this.updateQueryPage(req_params);
         this.appService.get(this.url_page, req_params).subscribe((res) => {
             const res_items = 'items' in res.items ? res.items.items : res.items;
-            this.putItems(res_items);
+            this.emitChangeItem.emit(res_items);
             this.current_page = req_params['page'];
             this.max_page = res.total_pages;
             this.routerService.updateQueryParams({'page': req_params['page']});

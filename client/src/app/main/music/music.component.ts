@@ -22,9 +22,7 @@ export class MusicComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private route: ActivatedRoute,
         private routerService: RouterService,
-    ) {
-
-    }
+    ) {}
 
     ngOnInit() {
         this.getArtistId();
@@ -43,6 +41,9 @@ export class MusicComponent implements OnInit {
         if (artist_id) {
             this.api_page_url = `artist/${artist_id}`;
         }
+    }
+    public getSongItems(item: SongInterface[]){
+        this.arraySong = item;
     }
 
     private getSongOrdering() {

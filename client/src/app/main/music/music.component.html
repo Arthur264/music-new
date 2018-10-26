@@ -15,7 +15,7 @@
             </div>
             <app-pagination
                     [url_page]="api_page_url"
-                    [items]='arrayMusic'
+                    (changeItems)='getSongItems($event)'
                     [query_params]='paginationQueryParams'
             ></app-pagination>
         </section>

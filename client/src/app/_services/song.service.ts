@@ -29,7 +29,10 @@ export class SongService {
 
     private beforePlay(){
         this.arraySong = this.arraySong.map((item) => {
-            return item.play = !item.play;
+            if (item.play){
+                item.play = !item.play;
+            }
+            return item;
         })
     }
 }
