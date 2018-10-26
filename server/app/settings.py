@@ -61,6 +61,7 @@ MIDDLEWARE = [
 MIDDLEWARE_CLASSES = (
     'corsheaders.middleware.CorsMiddleware',
     'app.middleware.DisableBrowserCacheMiddleware',
+    'app.middleware.LastUserIP',
 )
 
 REST_FRAMEWORK = {

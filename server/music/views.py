@@ -7,11 +7,10 @@ from account.permissions import IsAdminOrIsSelf
 from core.pagination import InfoPagination
 from .filters import SongFilter
 from .models import (
-    Song, 
-    Artist, 
-    Tag, 
+    Song,
+    Artist,
+    Tag,
     Playlist,
-    ListenerSong,
 )
 from .serializers import (
     SongSerializer,
@@ -24,14 +23,16 @@ from .serializers import (
     FavoriteSerializer,
 )
 
+
 class FavoriteViewSet(viewsets.ViewSet):
     permission_classes_by_action = {'list': [IsAdminOrIsSelf]}
-    
+
     def list(self, request):
         user = request.user
         serializer = SongSerializer(user.favorite.all(), many=True, context={'request': request})
         return response.Response(serializer.data)
-        
+
+
 class PlaylistViewSet(viewsets.ModelViewSet):
     serializer_class = PlaylistSerializer
     lookup_field = 'slug'
@@ -80,7 +81,7 @@ class SongViewSet(viewsets.ModelViewSet):
     filter_class = SongFilter
     ordering_fields = '__all__'
 
-    def create(self, request):
+    def create(self, request, *args, **kwargs):
         serializer_data = request.data
         artist, _ = Artist.objects.get_or_create(name=serializer_data.get('artist'))
         serializer_data.update({'artist_id': artist.pk})
