@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {SongInterface} from '../../_interfaces';
 import {ActivatedRoute, Params} from '@angular/router';
-import {AppService, RouterService,} from '../../_services';
+import {AppService, RouterService, SongService} from '../../_services';
 import {FilterItems} from '../../_items';
 
 @Component({
@@ -22,11 +22,13 @@ export class MusicComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private route: ActivatedRoute,
         private routerService: RouterService,
+        private songService: SongService,
     ) {}
 
     ngOnInit() {
         this.getArtistId();
         this.getSongOrdering();
+        this.getSongArray();
     }
 
     public changeOrdering(param) {
@@ -44,6 +46,12 @@ export class MusicComponent implements OnInit {
     }
     public getSongItems(item: SongInterface[]){
         this.arraySong = item;
+        this.songService.emitSongArray(item);
+    }
+    public getSongArray(){
+        this.songService.getSongArray().subscribe((items) => {
+            this.arraySong = items;
+        })
     }
 
     private getSongOrdering() {

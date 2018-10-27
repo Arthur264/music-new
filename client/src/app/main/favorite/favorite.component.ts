@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {SongInterface} from '../../_interfaces';
-import {AppService, PlayerService} from '../../_services';
+import {AppService, SongService} from '../../_services';
 
 @Component({
     selector: 'app-favorite',
@@ -8,11 +8,11 @@ import {AppService, PlayerService} from '../../_services';
     styleUrls: ['./favorite.component.css'],
 })
 export class FavoriteComponent implements OnInit {
-    public arrayMusic: SongInterface[] = [];
+    public arraySong: SongInterface[] = [];
 
     constructor(
         private appService: AppService,
-        private playerService: PlayerService,
+        private songService: SongService,
     ) {
     }
 
@@ -22,16 +22,22 @@ export class FavoriteComponent implements OnInit {
 
     public getFavorite() {
         this.appService.get('favorite').subscribe(res => {
-            this.arrayMusic = res;
+            this.arraySong = res;
         });
     }
 
-    public sendSongsArray() {
-        this.playerService.emitArrayMusic(this.arrayMusic);
+    public getSongItems(item: SongInterface[]){
+        this.arraySong = item;
+        this.songService.emitSongArray(item);
+    }
+    public getSongArray(){
+        this.songService.getSongArray().subscribe((items) => {
+            this.arraySong = items;
+        })
     }
 
     public deleteFavoriteItem(song_id) {
-        this.arrayMusic = this.arrayMusic.filter((item) => {
+        this.arraySong = this.arraySong.filter((item) => {
             return item.id != song_id;
         });
     }
