@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {AppService, PlayerService} from '../../../_services';
+import {AppService, PlayerService, SongService} from '../../../_services';
 import {SongInterface} from '../../../_interfaces';
 
 @Component({
@@ -9,24 +9,21 @@ import {SongInterface} from '../../../_interfaces';
 })
 export class SongItemComponent implements OnInit {
     @Input('item') music: SongInterface;
-    @Output('emitSongs') emitSongs: EventEmitter<any> = new EventEmitter<any>();
+    @Input('has_playlist') has_playlist: true;
     @Output('deleteFavorite') deleteFavorite: EventEmitter<number> = new EventEmitter<number>();
 
     constructor(
         private playerService: PlayerService,
         private appService: AppService,
+        private songService: SongService,
     ) {
     }
 
     ngOnInit() {
     }
 
-    public playStopSong(obj) {
-        obj.play = obj.play ? false : true;
-        if (obj.play){
-            this.emitSongs.emit();
-        }
-        this.playerService.emitChangeSong(obj);
+    public playStopSong(item) {
+        this.songService.emitPlayerSong(item);
     }
 
     public favorite(music) {
@@ -41,7 +38,6 @@ export class SongItemComponent implements OnInit {
                 music.favorite = !music.favorite;
             });
         }
-
         return true;
     }
 

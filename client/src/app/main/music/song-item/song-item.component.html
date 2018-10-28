@@ -11,13 +11,13 @@
                 </a>
             </div>
             <div class="bottom padder m-b-sm">
-                <a (click)="favorite(music); $event.stopPropagation()"
+                <a  (click)="favorite(music); $event.stopPropagation()"
                    class="pull-right favorite">
                     <i class="fa"
                        [ngClass]="{'fa-heart-o': !music.favorite, 'fa-heart text-danger': music.favorite}">
                     </i>
                 </a>
-                <a (click)="addToPlaylist(music, template); $event.stopPropagation()">
+                <a *ngIf="has_playlist" (click)="addToPlaylist(music, template); $event.stopPropagation()">
                     <i class="fa fa-plus-circle"></i>
                 </a>
             </div>

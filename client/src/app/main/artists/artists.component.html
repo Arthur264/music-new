@@ -37,7 +37,7 @@
                 </div>
                 <app-pagination
                         [url_page]="api_page_url"
-                        [items]='arrayArtist'
+                        (changeItems)='getArtistItems($event)'
                         [query_params]='paginationQueryParams'
                 ></app-pagination>
             </section>

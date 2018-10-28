@@ -3,9 +3,12 @@
         <section class="scrollable padder-lg pb-60">
             <h2 class="font-thin m-b">Favorite</h2>
             <div class="row row-sm main-list">
-                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let music of arrayMusic">
-                    <song-item [item]="music" (sendSongs)="sendSongsArray"
-                               (deleteFavorite)="deleteFavoriteItem($event)"></song-item>
+                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let music of arraySong">
+                    <song-item
+                            [item]="music"
+                            [has_playlist]=false
+                            (deleteFavorite)="deleteFavoriteItem($event)"
+                    ></song-item>
                 </div>
             </div>
         </section>

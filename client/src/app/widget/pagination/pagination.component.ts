@@ -12,7 +12,7 @@ import {AppConfig} from '../../app.config';
 export class PaginationComponent implements OnInit,  OnChanges {
     @Input() public url_page: string;
     @Input() public query_params = {};
-    @Output('changeItem') emitChangeItem: EventEmitter<any> = new EventEmitter<any>();
+    @Output('changeItems') emitChangeItem: EventEmitter<any> = new EventEmitter<any>();
     private current_page: number = 1;
     private max_page: number = 10;
     private count_page = 30;
@@ -22,7 +22,6 @@ export class PaginationComponent implements OnInit,  OnChanges {
         private routerService: RouterService,
     ) {
     }
-
 
     ngOnChanges(changes: SimpleChanges) {
         const req_params = Object.assign({}, this.query_params);

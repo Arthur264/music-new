@@ -25,7 +25,10 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
     randomArrayMusic: SongInterface[];
 
 
-    constructor(private appService: AppService, private playerService: PlayerService) {
+    constructor(
+        private appService: AppService,
+        private playerService: PlayerService,
+    ) {
         this.audio = new Audio();
     }
 
@@ -99,12 +102,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         this.audio.addEventListener('ended', function () {
             if (!self.circle_play) {
-                console.log('endddddddd');
                 self.nextSoung();
-            } else {
-
             }
-
         });
     }
 
