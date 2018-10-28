@@ -221,3 +221,7 @@ alert{
     display: none;
 }
 
+.modal-sm .modal-footer{
+    padding: 10px 20px 10px;
+    margin-top: 0;
+}

@@ -6,8 +6,8 @@
         Playlist
     </li>
     <li *ngFor="let playlistItem of playlistItems">
-        <a [routerLink]="['/dashboard/playlist', playlistItem.slug]">
-            <i class="icon-playlist icon text-success-lter"></i>
+        <a [routerLink]="['/dashboard/playlist', playlistItem.slug]" routerLinkActive="active">
+            <i class="icon-playlist icon"></i>
             <b *ngIf="playlistItem.song.length"
                class="badge bg-success dker pull-right">{{playlistItem.song.length}}</b>
             <span>{{playlistItem.name}}</span>
@@ -24,14 +24,26 @@
     </div>
     <div class="modal-body">
         <form [formGroup]="playlistForm">
-            <div class="input-group">
-                <span class="input-group-addon" id="basic-addon1">@</span>
-                <input formControlName="name" name="name" type="text" class="form-control" placeholder="Playlist name"
-                       aria-describedby="basic-addon1">
+            <div class="form-group">
+                <input formControlName="name"
+                       name="name"
+                       type="text"
+                       class="form-control"
+                       placeholder="Playlist name">
+                <div class="form-error" invalidmessage="name">
+                    <p *invalidType="'required'">Please provide playlist name</p>
+                    <p *invalidType="'response'">response</p>
+                </div>
             </div>
         </form>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-success" (click)="playlistSubmit(playlistForm)">Save</button>
+        <button
+                type="button"
+                class="btn btn-success"
+                (click)="playlistSubmit()"
+                [disabled]="!playlistForm.valid"
+        >Save
+        </button>
     </div>
 </ng-template>

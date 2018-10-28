@@ -13,11 +13,13 @@ import {RouterModule} from '@angular/router';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {MyFavoriteComponent} from './my-favorite/my-favorite.component';
+import {WidgetModule} from '../widget/widget.module';
 
 
 @NgModule({
     imports: [
         CommonModule,
+        WidgetModule,
         RouterModule,
         FormsModule,
         ReactiveFormsModule,
