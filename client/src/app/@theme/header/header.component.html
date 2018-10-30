@@ -2,7 +2,6 @@
     <div class="navbar-header aside bg-info dk">
         <a routerLink="/" class="navbar-brand text-lt">
             <i class="icon-earphones"></i>
-            <!--<img  src="images/logo.png" alt="." class="hide"> -->
             <span class="hidden-nav-xs m-l-sm">Music</span>
         </a>
     </div>
@@ -19,7 +18,7 @@
                 </a>
                 <ul class="dropdown-menu animated fadeInRight" *dropdownMenu>
                     <li><span class="arrow top"></span> <a>Settings</a></li>
-                    <li><a>Profile</a></li>
+                    <li><a routerLink="/dashboard/profile">Profile</a></li>
                     <li class="divider"></li>
                     <li><a (click)="logout()">Logout</a></li>
                 </ul>

@@ -11,4 +11,5 @@ export interface UserInterface {
     country?: string;
     postcode?: string;
     description?: string;
+    phone?: string;
 }

@@ -1,4 +1,4 @@
-import {MenuItem} from '../../_interfaces/menu-item.interface';
+import {MenuItem} from '../../_interfaces';
 
 export const MENU_ITEMS: MenuItem[] = [
     {
