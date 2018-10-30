@@ -17,7 +17,7 @@
                        [ngClass]="{'fa-heart-o': !music.favorite, 'fa-heart text-danger': music.favorite}">
                     </i>
                 </a>
-                <a *ngIf="has_playlist" (click)="addToPlaylist(music, template); $event.stopPropagation()">
+                <a *ngIf="has_playlist" (click)="playlist(music); $event.stopPropagation()">
                     <i class="fa fa-plus-circle"></i>
                 </a>
             </div>

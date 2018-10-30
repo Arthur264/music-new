@@ -19,6 +19,7 @@
         </aside>
         <!-- /.aside -->
         <router-outlet></router-outlet>
+        <app-song-playlist></app-song-playlist>
         <div class="music-player" [class.music-player--open]="player.first_play">
             <app-player #player></app-player>
         </div>

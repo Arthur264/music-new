@@ -10,7 +10,7 @@ import {HttpModule} from '@angular/http';
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
     ],
     imports: [
         FormsModule,

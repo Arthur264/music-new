@@ -12,6 +12,7 @@ import {FilterItems} from '../../_items';
 })
 export class MusicComponent implements OnInit {
     public arraySong: SongInterface[] = [];
+    public page_title: string = 'Songs';
     public api_page_url = 'song';
     public filterItems = FilterItems;
     public song_ordering;
@@ -23,10 +24,11 @@ export class MusicComponent implements OnInit {
         private route: ActivatedRoute,
         private routerService: RouterService,
         private songService: SongService,
-    ) {}
+    ) {
+        this.getArtistId();
+    }
 
     ngOnInit() {
-        this.getArtistId();
         this.getSongOrdering();
         this.getSongArray();
     }
@@ -39,7 +41,7 @@ export class MusicComponent implements OnInit {
     }
 
     private getArtistId() {
-        const artist_id = this.activatedRoute.params['id'];
+        const artist_id = this.activatedRoute.snapshot.params['id'];
         if (artist_id) {
             this.api_page_url = `artist/${artist_id}`;
         }
@@ -58,6 +60,11 @@ export class MusicComponent implements OnInit {
         const song_ordering = this.activatedRoute.snapshot.queryParams['ordering'];
         if (song_ordering) {
             this.changeOrdering(song_ordering);
+        }
+    }
+    public getArtistInfo(res){
+        if (res.name){
+            this.page_title = res.name;
         }
     }
 }

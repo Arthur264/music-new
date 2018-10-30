@@ -16,6 +16,7 @@ import {PlaylistPageDetailsComponent} from './playlist-page/playlist-page-detail
 import {FavoriteComponent} from './favorite/favorite.component';
 import {SongItemComponent} from './music/song-item/song-item.component';
 import { SongPlaylistComponent } from './music/song-playlist/song-playlist.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
     imports: [
@@ -42,6 +43,7 @@ import { SongPlaylistComponent } from './music/song-playlist/song-playlist.compo
         SongItemComponent,
         FavoriteComponent,
         SongPlaylistComponent,
+        ProfileComponent,
     ],
     bootstrap: [MainComponent]
 })

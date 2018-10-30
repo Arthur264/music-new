@@ -2,7 +2,7 @@
     <section class="vbox pb-40">
         <section class="scrollable padder-lg pb-60">
             <div class="music-header">
-                <h2 class="font-thin m-b">Songs</h2>
+                <h2 class="font-thin m-b">{{page_title}}</h2>
                 <ng-select placeholder="Order by" bindLabel="name" class="select-music"
                            bindValue="id" [items]="filterItems" (change)="changeOrdering($event)"
                            [(ngModel)]="song_ordering">
@@ -15,6 +15,7 @@
             </div>
             <app-pagination
                     [url_page]="api_page_url"
+                    (response)="getArtistInfo($event)"
                     (changeItems)='getSongItems($event)'
                     [query_params]='paginationQueryParams'
             ></app-pagination>

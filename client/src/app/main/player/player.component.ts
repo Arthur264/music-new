@@ -102,7 +102,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         this.audio.addEventListener('ended', function () {
             if (!self.circle_play) {
-                self.nextSoung();
+                self.nextSong();
             }
         });
     }
@@ -121,18 +121,16 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
         this.audio.play();
     }
 
-    private nextSoung(): void {
+    private nextSong(): void {
         for (let i = 0; i < this.arrayMusic.length; i++) {
-            console.log(this.arrayMusic[i].id, Number(this.audio.id));
             if (this.arrayMusic[i].id === Number(this.audio.id)) {
                 if (i !== (this.arrayMusic.length - 1)) {
-                    this.changeSong(this.arrayMusic[i + 1]);
-                } else {
-                    this.changeSong(this.arrayMusic[0]);
+                    return this.changeSong(this.arrayMusic[i + 1]);
                 }
-                break;
+                return this.changeSong(this.arrayMusic[0]);
             }
         }
+        return this.stopSong();
     }
 
     private prevSoung(): void {
