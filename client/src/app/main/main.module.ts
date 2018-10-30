@@ -15,8 +15,19 @@ import {PlaylistPageComponent} from './playlist-page/playlist-page.component';
 import {PlaylistPageDetailsComponent} from './playlist-page/playlist-page-details/playlist-page-details.component';
 import {FavoriteComponent} from './favorite/favorite.component';
 import {SongItemComponent} from './music/song-item/song-item.component';
-import { SongPlaylistComponent } from './music/song-playlist/song-playlist.component';
-import { ProfileComponent } from './profile/profile.component';
+import {SongPlaylistComponent} from './music/song-playlist/song-playlist.component';
+import {ProfileComponent} from './profile/profile.component';
+import {
+    DropzoneModule,
+    DropzoneConfigInterface,
+    DROPZONE_CONFIG,
+} from 'ngx-dropzone-wrapper';
+
+
+const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
+    acceptedFiles: 'image/*',
+    createImageThumbnails: true
+};
 
 @NgModule({
     imports: [
@@ -28,6 +39,7 @@ import { ProfileComponent } from './profile/profile.component';
         ThemeModule,
         CommonModule,
         MainRouting,
+        DropzoneModule,
     ],
     exports: [
         MainComponent,
@@ -45,7 +57,13 @@ import { ProfileComponent } from './profile/profile.component';
         SongPlaylistComponent,
         ProfileComponent,
     ],
-    bootstrap: [MainComponent]
+    bootstrap: [MainComponent],
+    providers: [
+        {
+            provide: DROPZONE_CONFIG,
+            useValue: DEFAULT_DROPZONE_CONFIG
+        }
+    ]
 })
 export class MainModule {
 }

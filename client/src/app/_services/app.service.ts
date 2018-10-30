@@ -38,7 +38,7 @@ export class AppService {
             .map((res: Response) => res.json());
     }
 
-    private getUrl(url) {
+    public getUrl(url) {
         return `${AppSettings.API_URL}${url}/`;
     }
 
