@@ -8,25 +8,26 @@
                 <div class="col-sm-3">
                     <div class="text-center">
                         <img src="{{user.avatar}}"
+                             (click)="fileInput.click()"
                              class="avatar img-circle img-thumbnail"
                              alt="avatar">
+                        <input
+                                type="file"
+                                (change)="onAvatarChanged($event)"
+                                style="display: none;"
+                                accept="image"
+                                #fileInput >
                     </div>
-                    <dropzone
-                            [config]="config"
-                            [message]="'Click or drag images here to upload'"
-                            (error)="onUploadError($event)"
-                            (success)="onUploadSuccess($event)"
-                    ></dropzone>
                     <br>
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             Social links
                             <i class="fa fa-link fa-1x"></i>
                             <span class="pull-right">
-                        <a>
-                            <i class="icon-plus i-lg"></i>
-                        </a>
-                    </span>
+                                <a (click)="openModal()" class="social-link">
+                                    <i class="icon-plus i-lg"></i>
+                                </a>
+                            </span>
                         </div>
                         <div class="panel-body"><a href="http://bootnipets.com">bootnipets.com</a></div>
                     </div>
@@ -143,3 +144,20 @@
         </div>
     </section>
 </section>
+
+<ng-template #modalTemplate>
+    <div class="modal-header">
+        <h4 class="modal-title">New social link</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form>
+
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success">Save</button>
+    </div>
+</ng-template>

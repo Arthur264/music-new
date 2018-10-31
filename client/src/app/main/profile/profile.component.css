@@ -1,5 +1,9 @@
 .avatar{
     display: inline-block;
+    cursor: pointer;
+}
+.social-link{
+    cursor: pointer;
 }
 #profile_form{
     display: flex;

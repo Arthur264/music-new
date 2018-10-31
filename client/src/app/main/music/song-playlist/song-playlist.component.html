@@ -6,7 +6,7 @@
         </button>
     </div>
     <div class="modal-body">
-        <form [formGroup]="choosePlaylistForm">
+        <form [formGroup]="selectPlaylistForm">
             <ng-select placeholder="Playlist name" bindLabel="name"
                        bindValue="slug" formControlName="name" name="name"
                        placeholder="Playlist"
@@ -19,6 +19,6 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-success" (click)="choosePlaylistSubmit(choosePlaylistForm)">Save</button>
+        <button type="button" class="btn btn-success" (click)="selectPlaylistSubmit()">Save</button>
     </div>
 </ng-template>

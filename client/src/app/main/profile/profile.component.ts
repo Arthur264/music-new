@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild, TemplateRef} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserInterface} from '../../_interfaces';
 import {AccountService, AppService} from '../../_services';
-import {DropzoneConfigInterface} from 'ngx-dropzone-wrapper';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 
 @Component({
     selector: 'app-profile',
@@ -13,11 +13,13 @@ export class ProfileComponent implements OnInit {
     public profileForm: FormGroup;
     public changePasswordForm: FormGroup;
     public user: UserInterface;
-    public config: DropzoneConfigInterface;
+    public modalRef: BsModalRef;
+    @ViewChild('modalTemplate') modalTemplate: TemplateRef<any>;
 
     constructor(
         private accountService: AccountService,
         private appService: AppService,
+        private modalService: BsModalService,
     ) {
         this.user = this.accountService.user;
         this.profileForm = new FormGroup({
@@ -33,14 +35,6 @@ export class ProfileComponent implements OnInit {
             new_password: new FormControl('', Validators.required),
             confirm_password: new FormControl('', Validators.required),
         });
-
-        this.config = {
-            maxFiles: 1,
-            clickable: true,
-            headers: { 'Authorization': 'Token ' + this.accountService.token },
-            url: this.appService.getUrl('avatar')
-        }
-
     }
 
     ngOnInit() {
@@ -55,5 +49,19 @@ export class ProfileComponent implements OnInit {
         if (this.profileForm.valid) {
 
         }
+    }
+
+    public openModal(){
+        this.modalRef = this.modalService.show(this.modalTemplate, {class: 'modal-sm'});
+    }
+
+    public onAvatarChanged(event){
+        const file = event.target.files[0];
+        if (!('image' in file.type)){
+            return false;
+        }
+        const uploadData = new FormData();
+        uploadData.append('avatar', file, file.name);
+        // this.appService.uploadFormData()
     }
 }

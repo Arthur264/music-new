@@ -25,7 +25,7 @@ export class SongPlaylistComponent implements OnInit {
         private songService: SongService,
     ) {
         this.selectPlaylistForm = new FormGroup({
-            name: new FormControl('', Validators.required)
+            name: new FormControl(null, Validators.required)
         });
     }
 
