@@ -92,19 +92,23 @@ class SongSerializer(serializers.ModelSerializer):
         )
 
     def get_favorite(self, obj):
-        return bool(obj.favorite.filter(pk=self.context['request'].user.pk))
+        return obj.favorite.filter(pk=self.context['request'].user.pk).exists()
 
 
 class PlaylistSerializer(serializers.HyperlinkedModelSerializer):
     name = serializers.CharField(min_length=3)
     user = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
-    song = SongSerializer(many=True)
+    song = SongSerializer(many=True, read_only=True)
 
     class Meta:
         model = Playlist
         depth = 1
         lookup_field = 'slug'
         fields = ('id', 'name', 'slug', 'user', 'song')
+        
+    def to_internal_value(self, attrs):
+        attrs['slug'] = slugify(attrs.get('name'))
+        return super(PlaylistSerializer, self).to_internal_value(attrs)
 
 
 class PlaylistTrackSerializer(serializers.Serializer):
@@ -113,7 +117,7 @@ class PlaylistTrackSerializer(serializers.Serializer):
 
     def to_internal_value(self, data):
         obj = super(PlaylistTrackSerializer, self).to_internal_value(data)
-        instance_slug = data.get('slug', None)
+        instance_slug = data.get('slug')
         if instance_slug:
             instance = Playlist.objects.get(slug=instance_slug)
             if instance:
