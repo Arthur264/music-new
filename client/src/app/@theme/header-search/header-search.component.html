@@ -6,7 +6,11 @@
                     <i class="fa fa-search"></i>
                 </button> 
             </span>
-            <input type="text" class="form-control input-sm no-border rounded" placeholder="Search songs, artist...">
+            <input
+                    type="search"
+                    class="form-control input-sm no-border rounded sbibod"
+                    (input)="onSearchChange($event.target.value)"
+                    placeholder="Search songs, artist...">
         </div>
     </div>
 </form>

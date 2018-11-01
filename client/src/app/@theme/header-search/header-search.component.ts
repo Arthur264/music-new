@@ -13,4 +13,8 @@ export class HeaderSearchComponent implements OnInit {
     ngOnInit() {
     }
 
+    public onSearchChange(searchValue : string ){
+        console.log(searchValue);
+    }
+
 }

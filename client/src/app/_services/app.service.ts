@@ -38,14 +38,17 @@ export class AppService {
             .map((res: Response) => res.json());
     }
 
-    private getUrl(url) {
+    public getUrl(url) {
         return `${AppSettings.API_URL}${url}/`;
     }
 
-    private getHeaders() {
+    private getHeaders(req_headers={}) {
         let headers = new Headers({'Content-Type': 'application/json'});
         if (this.accountService.token) {
             headers.set('Authorization', 'Token ' + this.accountService.token);
+        }
+        for(let prop in req_headers){
+            headers.set(prop, req_headers[prop]);
         }
         return headers;
     }
@@ -59,8 +62,8 @@ export class AppService {
         return params;
     }
 
-    private getOptions(params = {}, body = {}) {
-        let options = {headers: this.getHeaders()};
+    private getOptions(params = {}, body = {}, headers={}) {
+        let options = {headers: this.getHeaders(headers)};
         if (params) {
             options['params'] = this.getParams(params);
         }
@@ -68,5 +71,11 @@ export class AppService {
             options['body'] = body;
         }
         return new RequestOptions(options);
+    }
+
+    public uploadFormData(url, body: FormData) {
+        const options = this.getOptions({}, body, {'Accept': 'application/json'});
+        return this.http.post(this.getUrl(url), body, options)
+            .map((res: Response) => res.json());
     }
 }

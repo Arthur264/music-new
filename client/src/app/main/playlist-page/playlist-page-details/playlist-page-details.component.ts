@@ -35,7 +35,7 @@ export class PlaylistPageDetailsComponent implements OnInit {
 
     public getPlaylistSongs() {
         const url = 'playlist/' + this.playlist_slug;
-        this.appService.get(url, 'song').subscribe(res => {
+        this.appService.get(url).subscribe(res => {
             this.arrayMusic = res['song'];
         });
     }

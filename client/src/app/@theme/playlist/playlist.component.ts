@@ -1,11 +1,9 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {AppService} from '../../_services/app.service';
-import {PlaylistInterface} from '../../_interfaces/playlist.interface';
-import {AlertService} from '../../_services/alert.service';
-import {CacheService} from '../../_services/cache.service';
-
+import {AlertService, AppService, CacheService} from '../../_services';
+import {PlaylistInterface} from '../../_interfaces';
+import {FormsUtils} from '../../utils/forms';
 
 @Component({
     selector: 'app-playlist',
@@ -18,10 +16,12 @@ export class PlaylistComponent implements OnInit {
     public playlistItems: PlaylistInterface[] = [];
     public modalRef: BsModalRef;
 
-    constructor(private modalService: BsModalService,
-                private appService: AppService,
-                private cacheService: CacheService,
-                private alertService: AlertService) {
+    constructor(
+        private modalService: BsModalService,
+        private appService: AppService,
+        private cacheService: CacheService,
+        private alertService: AlertService,
+    ) {
         this.playlistForm = new FormGroup({
             name: new FormControl('', Validators.required)
         });
@@ -34,15 +34,22 @@ export class PlaylistComponent implements OnInit {
     }
 
     public openModal(template: TemplateRef<any>) {
-        this.modalRef = this.modalService.show(template);
+        this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
     }
 
-    public playlistSubmit(playlistData) {
+    public playlistSubmit() {
         if (this.playlistForm.valid) {
-            this.appService.post('playlist', playlistData.value).subscribe((res) => {
+            this.appService.post('playlist', this.playlistForm.value).subscribe((res) => {
+                this.cacheService.addToCache('playlist', res);
                 this.modalRef.hide();
                 this.alertService.success('Playlist created!');
+                this.playlistForm.reset();
             }, (err) => {
+                const errors = err.json();
+                if(errors.slug){
+                    const errorMes = {'name': ['Playlist with this name already exists']};
+                    this.playlistForm.controls = FormsUtils.errorMessages(this.playlistForm.controls, errorMes);
+                }
             });
         } else {
             return false;

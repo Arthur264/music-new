@@ -13,6 +13,7 @@ export class PaginationComponent implements OnInit,  OnChanges {
     @Input() public url_page: string;
     @Input() public query_params = {};
     @Output('changeItems') emitChangeItem: EventEmitter<any> = new EventEmitter<any>();
+    @Output('response') emitResponse: EventEmitter<any> = new EventEmitter<any>();
     private current_page: number = 1;
     private max_page: number = 10;
     private count_page = 30;
@@ -101,6 +102,7 @@ export class PaginationComponent implements OnInit,  OnChanges {
         let req_params = Object.assign({}, params);
         req_params = this.updateQueryPage(req_params);
         this.appService.get(this.url_page, req_params).subscribe((res) => {
+            this.emitResponse.emit(res);
             const res_items = 'items' in res.items ? res.items.items : res.items;
             this.emitChangeItem.emit(res_items);
             this.current_page = req_params['page'];

@@ -1,0 +1,17 @@
+.avatar{
+    display: inline-block;
+    cursor: pointer;
+}
+.social-link{
+    cursor: pointer;
+}
+#profile_form{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#profile_form .form-group{
+    width: 50%;
+    padding-left: 15px;
+    padding-right: 15px;
+}

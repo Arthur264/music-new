@@ -1,20 +1,27 @@
-import {Injectable, EventEmitter} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {SongInterface} from '../_interfaces';
 import {PlayerService} from './player.service';
 
 @Injectable()
 export class SongService {
-    public _arraySong: SongInterface[] = [];
+    private _arraySong: SongInterface[] = [];
+    private _playlistSong: EventEmitter<SongInterface> = new EventEmitter<SongInterface>();
     private emit_player_song: boolean = false;
-    private _eventSong: EventEmitter<SongInterface[]> = new EventEmitter<SongInterface[]> ();
+    private _eventSong: EventEmitter<SongInterface[]> = new EventEmitter<SongInterface[]>();
 
     constructor(
         private playerService: PlayerService,
     ) {
     }
+
     public getSongArray() {
         return this._eventSong;
     }
+
+    public getPlaylistSong() {
+        return this._playlistSong;
+    }
+
     public emitSongArray(items: SongInterface[]) {
         this._eventSong.emit(items);
         if (this._arraySong != items) {
@@ -23,10 +30,14 @@ export class SongService {
         }
     }
 
+    public emitPlaylistSong(item: SongInterface) {
+        this._playlistSong.emit(item);
+    }
+
     public emitPlayerSong(song: SongInterface) {
-        if (song.play){
+        if (song.play) {
             song.play = false;
-        }else {
+        } else {
             this.beforePlay();
             song.play = true;
         }
@@ -35,11 +46,6 @@ export class SongService {
             this.playerService.emitArrayMusic(this._arraySong);
             this.emit_player_song = true;
         }
-    }
-
-    public addToPlaylist(music, template) {
-        // this.addToPlaylistSongId = music.id;
-        // this.modalRef = this.modalService.show(template);
     }
 
     private beforePlay() {
