@@ -17,6 +17,7 @@ from .serializers import (
     LoginSerializer,
     ChangePasswordSerializer,
     AvatarSerializer,
+    ChangeProfileSerializer,
 )
 
 
@@ -64,9 +65,12 @@ class AuthViewSet(viewsets.ViewSet):
 
     @action(methods=['post'], permission_classes=[IsAdminOrIsSelf], url_path='update', detail=False)
     def profile_update(self, request):
-        pass
+        avatar_serializer = ChangeProfileSerializer(data=request.data, partial=True)
+        avatar_serializer.is_valid(raise_exception=True)
+        avatar_serializer.save()
+        return Response(status=status.HTTP_200_OK)
 
-    @action(methods=['post'], permission_classes=[IsAdminOrIsSelf], url_path='avatar', detail=False)
+    @action(methods=['put'], permission_classes=[IsAdminOrIsSelf], url_path='avatar', detail=False)
     def avatar_update(self, request):
         avatar_serializer = AvatarSerializer(data=request.data, context={'request': request})
         avatar_serializer.is_valid(raise_exception=True)
