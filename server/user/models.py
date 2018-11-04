@@ -8,6 +8,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
+from phonenumber_field.modelfields import PhoneNumberField
+
 
 # This code is triggered whenever a new user has been created and saved to the database
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
@@ -22,7 +24,7 @@ class User(AbstractUser):
     description = models.CharField(max_length=200, null=True, blank=True)
     device = models.CharField(null=True, blank=True, max_length=50)
     city = models.CharField(max_length=100, null=True, blank=True)
-    phone = models.CharField(max_length=100, null=True, blank=True)
+    phone = PhoneNumberField(null=True, blank=True)
     timezone = models.CharField(null=True, blank=True, max_length=50)
     last_ip = models.GenericIPAddressField(protocol='IPv4', null=True, blank=True)
 

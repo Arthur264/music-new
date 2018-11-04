@@ -68,4 +68,7 @@ class AuthViewSet(viewsets.ViewSet):
 
     @action(methods=['post'], permission_classes=[IsAdminOrIsSelf], url_path='avatar', detail=False)
     def avatar_update(self, request):
-        pass
+        avatar_serializer = AvatarSerializer(data=request.data, context={'request': request})
+        avatar_serializer.is_valid(raise_exception=True)
+        avatar_serializer.save()
+        return Response(status=status.HTTP_200_OK)
