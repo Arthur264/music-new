@@ -12,7 +12,12 @@ from rest_framework.response import Response
 from user.models import User
 from user.serializers import UserSerializer
 from .permissions import IsAdminOrIsSelf
-from .serializers import RegisterSerializer, LoginSerializer, ChangePasswordSerializer
+from .serializers import (
+    RegisterSerializer,
+    LoginSerializer,
+    ChangePasswordSerializer,
+    AvatarSerializer,
+)
 
 
 # Create your views here.
@@ -56,3 +61,11 @@ class AuthViewSet(viewsets.ViewSet):
         token, created = Token.objects.get_or_create(user=u)
         request.user.token = token.key
         return Response({"token": token.key})
+
+    @action(methods=['post'], permission_classes=[IsAdminOrIsSelf], url_path='update', detail=False)
+    def profile_update(self, request):
+        pass
+
+    @action(methods=['post'], permission_classes=[IsAdminOrIsSelf], url_path='avatar', detail=False)
+    def avatar_update(self, request):
+        pass
