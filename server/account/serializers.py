@@ -42,24 +42,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 
-class AvatarSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('avatar',)
-
-
-class ChangeProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'city', 'phone')
-
-    def update(self, instance, validated_data):
-        for (key, value) in validated_data.items():
-            setattr(instance, key, value)
-        instance.save()
-        return instance
-
-
 class ChangePasswordSerializer(serializers.Serializer):
     """
     Serializer for password change endpoint.

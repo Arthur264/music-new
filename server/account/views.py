@@ -16,8 +16,6 @@ from .serializers import (
     RegisterSerializer,
     LoginSerializer,
     ChangePasswordSerializer,
-    AvatarSerializer,
-    ChangeProfileSerializer,
 )
 
 
@@ -26,7 +24,7 @@ from .serializers import (
 class AuthViewSet(viewsets.ViewSet):
     queryset = User.objects.all()
 
-    @action(methods=['post'], permission_classes=[IsAuthenticated], url_path='change-password',  detail=False)
+    @action(methods=['post'], permission_classes=[IsAuthenticated], url_path='change-password', detail=False)
     def set_password(self, request):
         change_password_serializer = ChangePasswordSerializer(data=request.data, context={'request': request})
         change_password_serializer.is_valid(raise_exception=True)
@@ -62,17 +60,3 @@ class AuthViewSet(viewsets.ViewSet):
         token, created = Token.objects.get_or_create(user=u)
         request.user.token = token.key
         return Response({"token": token.key})
-
-    @action(methods=['post'], permission_classes=[IsAdminOrIsSelf], url_path='update', detail=False)
-    def profile_update(self, request):
-        avatar_serializer = ChangeProfileSerializer(data=request.data, partial=True)
-        avatar_serializer.is_valid(raise_exception=True)
-        avatar_serializer.save()
-        return Response(status=status.HTTP_200_OK)
-
-    @action(methods=['put'], permission_classes=[IsAdminOrIsSelf], url_path='avatar', detail=False)
-    def avatar_update(self, request):
-        avatar_serializer = AvatarSerializer(data=request.data, context={'request': request})
-        avatar_serializer.is_valid(raise_exception=True)
-        avatar_serializer.save()
-        return Response(status=status.HTTP_200_OK)

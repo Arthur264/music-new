@@ -24,7 +24,7 @@ SECRET_KEY = 'r(5e_^(aa5k(%((g=hcf*p8s7)z=15^-ym_1!dt(yluea21*zi'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['music-artyr264.c9users.io']
+ALLOWED_HOSTS = ['music-artyr264.c9users.io', '127.0.0.1']
 
 # Application definition
 
