@@ -1,55 +1,50 @@
-import asyncio
 import os
-from multiprocessing.dummy import Pool as ThreadPool
 
-import numpy as np
 import pandas as pd
+from django.core.exceptions import ValidationError
 from django.core.management.base import BaseCommand
-from django.db.utils import IntegrityError
-
-from music.models import Song, Artist
-from music.serializers import ArtistSerializer, SimilarArtistSerializer
+from django.db import transaction
+from music.models import (
+    Song,
+    Artist,
+)
+from music.serializers import (
+    ArtistSerializer,
+    SimilarArtistSerializer,
+)
 
 
 class Command(BaseCommand):
-    num_partitions = 6
-    num_cores = 6
     folder_name = 'tmp'
 
     def add_arguments(self, parser):
         parser.add_argument('read_music_file', type=int, default=1)
 
     def handle(self, *args, **options):
-        read_music_file = options['read_music_file']
+        # read_music_file = options['read_music_file']
+        music_files, artist_files = self.get_files()
+        for df_music in self.get_chuck(music_files):
+            self.process(df_music)
 
-        music_files, artist_files = self.get_files(self.folder_name)
-        tasks = [self.get_chuck(self.load_artist, artist_files)]
-        if read_music_file:
-            tasks.append(self.get_chuck(self.load_music, music_files))
-
-        with ThreadPool(self.num_cores) as p:
-            result = [p.map(*list(task)) for task in tasks]
-
-    def get_chuck(self, action, files):
-        tasks = []
+    @staticmethod
+    def get_chuck(files):
         for file_name in files:
-            df = pd.read_json(file_name)
-            df = df.where((pd.notnull(df)), None)
-            tasks.extend(np.array_split(df, self.num_partitions))
-        return (action, tasks)
+            df = pd.read_json(file_name, lines=True)
+            yield df.where((pd.notnull(df)), None)
 
-    def get_files(self, folder_name):
+    def get_files(self):
         music_files = []
         artist_files = []
-        for path, subdirs, files in os.walk(self.folder_name):
+        for path, _, files in os.walk(self.folder_name):
             for file_name in files:
                 file_path = os.path.join(path, file_name)
-                if 'music' in file_path:
+                if 'song' in file_path:
                     music_files.append(file_path)
                 elif 'artist' in file_path:
                     artist_files.append(file_path)
                 else:
                     continue
+
         return music_files, artist_files
 
     def load_artist(self, df_artist):
@@ -62,7 +57,6 @@ class Command(BaseCommand):
                 artist = artist_serializer.save()
             else:
                 error = self.handler_error(artist_serializer)
-                print(error, index)
                 continue
 
             if not similars:
@@ -71,7 +65,11 @@ class Command(BaseCommand):
             for similar in similars:
                 similar_artist, _ = Artist.objects.get_or_create(name=similar['name'])
                 similar_serializer = SimilarArtistSerializer(
-                    data={"first_artist": artist.pk, "second_artist": similar_artist.pk})
+                    data={
+                        "first_artist": artist.pk,
+                        "second_artist": similar_artist.pk,
+                    },
+                )
                 if similar_serializer.is_valid():
                     similar_serializer.save()
                 else:
@@ -82,22 +80,25 @@ class Command(BaseCommand):
 
         return None
 
-    def load_music(self, df_music):
-        ioloop = asyncio.new_event_loop()
-        tasks = [ioloop.create_task(self.procces(index, row)) for index, row in df_music.iterrows()]
-        wait_tasks = asyncio.wait(tasks)
-        ioloop.run_until_complete(wait_tasks)
-        ioloop.close()
+    @staticmethod
+    def process(df_music):
+        with transaction.atomic():
+            for index, item in df_music.iterrows():
+                print(item['url'])
+                row_dict = item.to_dict()
+                artist, _ = Artist.objects.get_or_create(name=row_dict['artist'])
+                row_dict.update({'artist': artist})
+                song = Song(**row_dict)
+                import pdb; pdb.set_trace()
+                try:
+                    song.full_clean()
+                except ValidationError as e:
+                    print('2222', e)
+                    continue
 
-    async def procces(self, index, row):
-        row_dict = row.to_dict()
-        artist, _ = Artist.objects.get_or_create(name=row_dict['artist'])
-        row_dict.update({'artist': artist})
-        try:
-            Song.objects.create(**row_dict)
-        except IntegrityError as e:
-            pass
-        print('Song save: ', index)
+                song.save()
+
+
 
     @staticmethod
     def handler_error(serializer):
@@ -108,4 +109,5 @@ class Command(BaseCommand):
         name = serializer.errors.get('name')
         if name and name[0].code == 'max_length':
             return 'Name max_length'
+
         return 'Error'
