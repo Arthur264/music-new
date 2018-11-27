@@ -1,0 +1,19 @@
+version: '2'
+services:
+  app:
+    build: .
+    container_name: 'app'
+    hostname: app
+    depends_on:
+    - mysql
+    volumes:
+    - .:/code
+    ports:
+    - 8000:80
+    command: python manage.py runserver
+  mysql:
+    image: mysql:later
+    container_name: 'redis'
+    restart: always
+    ports:
+    - 3307
