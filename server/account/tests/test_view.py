@@ -1,8 +1,9 @@
 from django.test import TestCase
-from user.models import User
+from django.urls import reverse
 from rest_framework.exceptions import ErrorDetail
 from rest_framework.test import APIClient
-from django.urls import reverse
+
+from user.models import User
 
 
 class AccountViewTestCase(TestCase):
@@ -115,6 +116,3 @@ class AccountViewTestCase(TestCase):
 
     def get_user(self):
         self.user = User.objects.get(username='admin')
-
-
-

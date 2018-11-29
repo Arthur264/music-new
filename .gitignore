@@ -44,7 +44,17 @@ Thumbs.db
 #server
 .idea
 server/tmp
-venv
-server/venv
-__pycache__/
+venv/
 
+
+### Django ###
+*.log
+*.pot
+*.pyc
+local_settings.py
+
+
+### Python ###
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]

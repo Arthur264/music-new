@@ -24,7 +24,7 @@ SECRET_KEY = 'r(5e_^(aa5k(%((g=hcf*p8s7)z=15^-ym_1!dt(yluea21*zi'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['music-artyr264.c9users.io']
+ALLOWED_HOSTS = ['music-artyr264.c9users.io', '127.0.0.1']
 
 # Application definition
 
@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'corsheaders',
+    'phonenumber_field',
     'django_extensions',
     'django_filters',
     'rest_framework',
@@ -120,13 +121,13 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'musicdb',
-        'USER': 'artyr264',
-        'PASSWORD': '',
+        'USER': 'root',
+        'PASSWORD': 'admin123',
         'HOST': 'localhost',
         'TEST': {
             'NAME': 'test_musicdb',
             'OPTIONS': {
-                "init_command": "SET storage_engine=INNODB",
+                "init_command": "SET storage_engine=MEMORY",
             }
         },
     }
@@ -174,3 +175,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+MEDIA_URL = '/media/'

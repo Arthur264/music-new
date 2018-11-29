@@ -12,7 +12,11 @@ from rest_framework.response import Response
 from user.models import User
 from user.serializers import UserSerializer
 from .permissions import IsAdminOrIsSelf
-from .serializers import RegisterSerializer, LoginSerializer, ChangePasswordSerializer
+from .serializers import (
+    RegisterSerializer,
+    LoginSerializer,
+    ChangePasswordSerializer,
+)
 
 
 # Create your views here.
@@ -20,7 +24,7 @@ from .serializers import RegisterSerializer, LoginSerializer, ChangePasswordSeri
 class AuthViewSet(viewsets.ViewSet):
     queryset = User.objects.all()
 
-    @action(methods=['post'], permission_classes=[IsAuthenticated], url_path='change-password',  detail=False)
+    @action(methods=['post'], permission_classes=[IsAuthenticated], url_path='change-password', detail=False)
     def set_password(self, request):
         change_password_serializer = ChangePasswordSerializer(data=request.data, context={'request': request})
         change_password_serializer.is_valid(raise_exception=True)

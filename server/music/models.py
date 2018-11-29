@@ -6,13 +6,6 @@ from user.models import User
 from core.models import BaseModel
 
 
-# Create your models here.
-
-# @receiver(pre_save)
-# def pre_save_handler(sender, instance, *args, **kwargs):
-#     instance.full_clean()
-
-
 class Tag(models.Model):
     name = models.CharField(max_length=35, unique=True, validators=[MinLengthValidator(3)])
     slug = models.SlugField(max_length=35, unique=True)
@@ -48,7 +41,6 @@ class Artist(BaseModel):
 class Song(BaseModel):
     name = models.CharField(max_length=100, validators=[MinLengthValidator(3)])
     url = models.URLField(unique=True)
-    time = models.CharField(max_length=10)
     duration = models.IntegerField(null=True, blank=True)
     image = models.URLField(max_length=500, null=True, blank=True)
     listeners_fm = models.IntegerField(null=True, blank=True)
