@@ -87,7 +87,7 @@ class SongSerializer(serializers.ModelSerializer):
     class Meta:
         model = Song
         fields = (
-            'id', 'name', 'image', 'url', 'duration', 'time', 'listeners_fm', 'playcount_fm', 'artist',
+            'id', 'name', 'image', 'url', 'duration', 'listeners_fm', 'playcount_fm', 'artist',
             'artist_id', 'favorite'
         )
 
@@ -134,8 +134,4 @@ class PlaylistTrackSerializer(serializers.Serializer):
             else:
                 instance.song.remove(song_instance)
         return instance
-
-
-class SearchSerializer(serializers.Serializer):
-    pass
 

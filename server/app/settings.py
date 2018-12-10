@@ -121,8 +121,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'musicdb',
-        'USER': 'root',
-        'PASSWORD': 'admin123',
+        'USER': 'artyr264',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'TEST': {
             'NAME': 'test_musicdb',
