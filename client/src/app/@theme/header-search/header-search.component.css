@@ -10,3 +10,42 @@
 .sbibod:hover {
     box-shadow: 0 3px 8px 0 rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
+
+.search-select{
+    width: 230px;
+}
+
+.search-select.ng-select .ng-arrow-wrapper .ng-arrow {
+    display: none;
+}
+
+.form-group{
+    position: relative;
+    width: 300px;
+}
+.input-group{
+    width: 100%;
+}
+.dropdown-content{
+    position: absolute;
+    background-color: #f6f6f6;
+    border: 1px solid #ddd;
+    width: 100%;
+}
+.dropdown-item{
+    padding: 5px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    text-overflow: ellipsis;
+}
+.dropdown-item:hover {
+    background-color: #ddd;
+}
+.icon-playlist, .fa-male{
+    color: #23e080;
+}
+.fa-male{
+    margin-right: 5px;
+}
