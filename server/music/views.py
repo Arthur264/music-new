@@ -2,6 +2,8 @@ import numpy as np
 from django.db.models import Count
 from rest_framework import viewsets, response
 from rest_framework.decorators import action
+from rest_framework.views import APIView
+from rest_framework.authentication import TokenAuthentication
 
 from account.permissions import IsAdminOrIsSelf
 from core.pagination import InfoPagination
@@ -150,3 +152,24 @@ class ArtistViewSet(viewsets.ModelViewSet):
             result['similar'].append(similar_serializer.data)
 
         return response.Response(result)
+        
+        
+class SearchViewSet(viewsets.ViewSet):
+    permission_classes_by_action = {'list': [IsAdminOrIsSelf]}
+    
+    def list(self, request):
+        q_param = self.request.query_params.get('q')
+        if not q_param:
+            return
+        
+        serializer_context = {'request': request}
+        song_queryset = Song.objects.filter(name__contains=q_param)[:5]
+        artist_queryset = Artist.objects.filter(name__contains=q_param)[:5]
+        data = {
+            'song': SongSerializer(song_queryset, many=True, context=serializer_context).data,
+            'artist': ArtistSerializer(artist_queryset, many=True, context=serializer_context).data,
+        }
+        return response.Response(data)
+        
+        
+        
