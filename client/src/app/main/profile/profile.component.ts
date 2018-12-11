@@ -1,8 +1,11 @@
 import {Component, OnInit, ViewChild, TemplateRef} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormControl, FormGroup, Validators, FormBuilder} from '@angular/forms';
 import {UserInterface} from '../../_interfaces';
 import {AccountService, AppService} from '../../_services';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {FormsUtils} from '../../utils/forms';
+import {AlertService} from '../../_services/alert.service';
+import {PasswordValidation} from '../../utils/validations';
 
 @Component({
     selector: 'app-profile',
@@ -20,6 +23,8 @@ export class ProfileComponent implements OnInit {
         private accountService: AccountService,
         private appService: AppService,
         private modalService: BsModalService,
+        private alertService: AlertService,
+        private fb: FormBuilder,
     ) {
         this.user = this.accountService.user;
         this.profileForm = new FormGroup({
@@ -30,10 +35,12 @@ export class ProfileComponent implements OnInit {
             city: new FormControl(this.user.city, Validators.required),
             phone: new FormControl(this.user.phone, Validators.required),
         });
-        this.changePasswordForm = new FormGroup({
-            old_password: new FormControl('', Validators.required),
-            new_password: new FormControl('', Validators.required),
-            confirm_password: new FormControl('', Validators.required),
+        this.changePasswordForm = this.fb.group({
+            old_password: ['', Validators.required],
+            new_password: ['', Validators.required],
+            confirm_password: ['', Validators.required],
+        }, {
+            validator: PasswordValidation.MatchPassword
         });
     }
 
@@ -41,7 +48,11 @@ export class ProfileComponent implements OnInit {
     }
     public submitChangePassword(){
         if (this.changePasswordForm.valid) {
-
+            this.appService.post('auth/change-password', this.changePasswordForm.value).subscribe((res) => {
+                this.alertService.success('Password successfully changed!');
+            }, (err) => {
+                this.changePasswordForm.controls = FormsUtils.errorMessages(this.changePasswordForm.controls, err.json());
+            });
         }
     }
 

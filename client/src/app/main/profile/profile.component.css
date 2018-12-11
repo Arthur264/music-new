@@ -15,3 +15,11 @@
     padding-left: 15px;
     padding-right: 15px;
 }
+.form-error{
+    color: red;
+    position: absolute;
+}
+
+.btn{
+    margin-top: 10px;
+}
