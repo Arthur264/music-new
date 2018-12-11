@@ -20,7 +20,7 @@ class LoginSerializer(serializers.Serializer):
         password = self.validated_data['password']
         user = authenticate(username=username, password=password)
         if not user:
-            return serializers.ValidationError({"error": "Username or password incorrect"})
+            return serializers.ValidationError({'error': 'Username or password incorrect'})
 
         token, _ = Token.objects.get_or_create(user=user)
         user_serializer = UserSerializer(user)
@@ -43,9 +43,6 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class ChangePasswordSerializer(serializers.Serializer):
-    """
-    Serializer for password change endpoint.
-    """
     old_password = serializers.CharField(required=True, max_length=30)
     new_password = serializers.CharField(required=True, max_length=30)
     confirmed_password = serializers.CharField(required=True, max_length=30)

@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "local": "bash run_local.sh",
-    "start": "bash run_local.sh",
+    "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

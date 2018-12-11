@@ -105,7 +105,7 @@ class PlaylistSerializer(serializers.HyperlinkedModelSerializer):
         depth = 1
         lookup_field = 'slug'
         fields = ('id', 'name', 'slug', 'user', 'song')
-        
+
     def to_internal_value(self, attrs):
         attrs['slug'] = slugify(attrs.get('name'))
         return super(PlaylistSerializer, self).to_internal_value(attrs)
@@ -134,4 +134,3 @@ class PlaylistTrackSerializer(serializers.Serializer):
             else:
                 instance.song.remove(song_instance)
         return instance
-

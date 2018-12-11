@@ -1,17 +1,14 @@
-from django.core import serializers
-from django.db.models import Q
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from account.permissions import IsAdminOrIsSelf
+from .models import User
 from .serializers import (
     UserSerializer,
-    FriendSerializer,
     ProfileSerializer,
-    AvatarSerializer)
-
-from account.permissions import IsAdminOrIsSelf
-from .models import User, Friends
+    AvatarSerializer,
+)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -21,19 +18,6 @@ class UserViewSet(viewsets.ModelViewSet):
 
     class Meta:
         model = User
-
-    @action(methods=['get', 'post'], permission_classes=[IsAdminOrIsSelf], url_path='friends', detail=True)
-    def friends(self, request, _):
-        if request.method == 'GET':
-            user = request.user.pk
-            data = Friends.objects.filter(Q(user=user) | Q(friend=user)).filter(status=True)
-            return Response(serializers.serialize('json', data))
-        else:
-            serializer = FriendSerializer(data={'user': request.user.pk, 'friend': request.POST['friend']})
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors)
 
 
 class ProfileViewSet(viewsets.ModelViewSet):

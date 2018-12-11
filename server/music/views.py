@@ -2,8 +2,6 @@ import numpy as np
 from django.db.models import Count
 from rest_framework import viewsets, response
 from rest_framework.decorators import action
-from rest_framework.views import APIView
-from rest_framework.authentication import TokenAuthentication
 
 from account.permissions import IsAdminOrIsSelf
 from core.pagination import InfoPagination
@@ -43,7 +41,7 @@ class PlaylistViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Playlist.objects.filter(user=self.request.user)
 
-    def create(self, request):
+    def create(self, request, *args, **kwargs):
         serializer_context = {
             'request': request,
         }
@@ -66,7 +64,7 @@ class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.annotate(q_count=Count('artists')).order_by('artists')
     lookup_field = 'slug'
 
-    def retrieve(self, request, slug):
+    def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer_tag = self.get_serializer(instance).data
 
@@ -123,7 +121,7 @@ class ArtistViewSet(viewsets.ModelViewSet):
     queryset = Artist.objects.all()
     ordering_fields = '__all__'
 
-    def retrieve(self, request, pk):
+    def retrieve(self, request, *args):
         instance = self.get_object()
         serializer_artist = self.get_serializer(instance).data
 
@@ -136,7 +134,7 @@ class ArtistViewSet(viewsets.ModelViewSet):
         serializer_artist.update({'items': paginator.get_paginated_data(serializer_song.data)})
         return response.Response(serializer_artist)
 
-    def create(self, request):
+    def create(self, request, *args):
         result = {'similar': []}
         similars = request.data.get('similar', [])
         artist_serializer = ArtistSerializer(data=request.data, context={'request': request})
