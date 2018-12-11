@@ -19,8 +19,6 @@ from .serializers import (
 )
 
 
-# Create your views here.
-
 class AuthViewSet(viewsets.ViewSet):
     queryset = User.objects.all()
 
@@ -56,7 +54,7 @@ class AuthViewSet(viewsets.ViewSet):
 
     @action(permission_classes=[IsAdminOrIsSelf], url_path='token', detail=False)
     def token(self, request):
-        u = User.objects.get(username=request.user.username)
-        token, created = Token.objects.get_or_create(user=u)
+        user = User.objects.get(username=request.user.username)
+        token, created = Token.objects.get_or_create(user=user)
         request.user.token = token.key
         return Response({"token": token.key})

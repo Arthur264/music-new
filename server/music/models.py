@@ -7,7 +7,7 @@ from core.models import BaseModel
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=35, unique=True, validators=[MinLengthValidator(3)])
+    name = models.CharField(max_length=35, validators=[MinLengthValidator(3)])
     slug = models.SlugField(max_length=35, unique=True)
 
     def __str__(self):
