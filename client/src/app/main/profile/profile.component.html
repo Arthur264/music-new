@@ -16,7 +16,7 @@
                                 (change)="onAvatarChanged($event)"
                                 style="display: none;"
                                 accept="image"
-                                #fileInput >
+                                #fileInput>
                     </div>
                     <br>
                     <div class="panel panel-default">
@@ -41,7 +41,7 @@
                             <form class="form" [formGroup]="changePasswordForm">
                                 <div class="container-fluid">
                                     <div class="form-group">
-                                        <label><h4>Old password</h4></label>
+                                        <label><h4>Old password*</h4></label>
                                         <input type="password"
                                                class="form-control"
                                                name="old_password"
@@ -52,20 +52,29 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label><h4>New password</h4></label>
+                                        <label><h4>New password*</h4></label>
                                         <input type="password"
                                                class="form-control"
                                                name="new_password"
                                                formControlName="new_password"
                                                placeholder="new password">
+                                        <div class="form-error" invalidmessage="confirm_password">
+                                            <p *invalidType="'required'">Please provide confirm password</p>
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <label><h4>Confirm password</h4></label>
+                                        <label><h4>Confirm password*</h4></label>
                                         <input type="password"
                                                class="form-control"
                                                name="confirm_password"
                                                formControlName="confirm_password"
                                                placeholder="confirm password">
+                                        <div class="form-error" invalidmessage="confirm_password">
+                                            <p *invalidType="'required'">Please provide confirm password</p>
+                                        </div>
+                                        <div class="form-error" invalidmessage="confirm_password">
+                                            <p *invalidType="'match_password'">Passwords do not match!</p>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <button class="btn btn-success" type="submit" (click)="submitChangePassword()">

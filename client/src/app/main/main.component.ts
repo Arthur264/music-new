@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserInterface} from '../_interfaces';
 import {AccountService} from '../_services';
+import {SongInterface} from '../_interfaces/song.interface';
 
 @Component({
     selector: 'app-main',
@@ -10,6 +11,8 @@ import {AccountService} from '../_services';
 export class MainComponent implements OnInit {
     public user: UserInterface;
     public isDropup = true;
+    public mainComponent = true;
+    public arraySong: SongInterface[] = [];
 
     constructor(private accountService: AccountService) {
         this.user = this.accountService.user;
@@ -18,6 +21,10 @@ export class MainComponent implements OnInit {
 
     ngOnInit() {
 
+    }
+
+    public getSongItems(items: SongInterface[]){
+        this.arraySong = items;
     }
 
 }

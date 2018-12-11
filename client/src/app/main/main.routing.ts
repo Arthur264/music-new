@@ -6,6 +6,7 @@ import {PlaylistPageComponent} from './playlist-page/playlist-page.component';
 import {PlaylistPageDetailsComponent} from './playlist-page/playlist-page-details/playlist-page-details.component';
 import {FavoriteComponent} from './favorite/favorite.component';
 import {ProfileComponent} from './profile/profile.component';
+import {SearchComponent} from "./search/search.component";
 
 const MainRoutes: Routes = [
     {
@@ -33,6 +34,9 @@ const MainRoutes: Routes = [
             }, {
                 path: 'profile',
                 component: ProfileComponent,
+            }, {
+                path: 'search',
+                component: SearchComponent,
             }
         ]
     }

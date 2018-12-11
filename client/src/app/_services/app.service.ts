@@ -4,6 +4,13 @@ import 'rxjs/add/operator/map';
 import {AccountService} from './account.service';
 import {AppSettings} from '../app.settings';
 
+function login_redirect() {
+    return function (target, propertyKey: string, descriptor: PropertyDescriptor) {
+        console.log("g(): called");
+
+    }
+}
+
 @Injectable()
 export class AppService {
 
