@@ -29,6 +29,9 @@ class Artist(BaseModel):
 
     class Meta:
         ordering = ['-listeners_fm']
+        indexes = [
+            models.Index(fields=['id']),
+        ]
 
     @property
     def all_songs(self):
@@ -51,7 +54,9 @@ class Song(BaseModel):
     class Meta:
         unique_together = ('name', 'artist')
         ordering = ['-listeners_fm']
-
+        indexes = [
+            models.Index(fields=['id']),
+        ]
     @property
     def listeners(self):
         return ListenerSong.objects.filter(song_id=self.id).count()
