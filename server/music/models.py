@@ -4,6 +4,7 @@ from django.utils.text import slugify
 
 from user.models import User
 from core.models import BaseModel
+from .manager import BulkInsertManager
 
 
 class Tag(models.Model):
@@ -51,12 +52,15 @@ class Song(BaseModel):
     favorite = models.ManyToManyField(User, related_name='favorite')
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
 
+    objects = BulkInsertManager()
+
     class Meta:
         unique_together = ('name', 'artist')
         ordering = ['-listeners_fm']
         indexes = [
             models.Index(fields=['id']),
         ]
+
     @property
     def listeners(self):
         return ListenerSong.objects.filter(song_id=self.id).count()
