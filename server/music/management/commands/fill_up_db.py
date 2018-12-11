@@ -24,13 +24,16 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # read_music_file = options['read_music_file']
         music_files, artist_files = self.get_files()
-        for df_music in self.get_chuck(music_files):
-            self.process(df_music)
+        # for df_music in self.get_chuck(music_files):
+        #     self.process(df_music)
+
+        for df_artist in self.get_chuck(artist_files):
+            self.process_artist(df_artist)
 
     @staticmethod
     def get_chuck(files):
         for file_name in files:
-            df = pd.read_json(file_name, lines=True)
+            df = pd.read_json(file_name, lines=True, encoding='utf-8')
             yield df.where((pd.notnull(df)), None)
 
     def get_files(self):
@@ -48,9 +51,10 @@ class Command(BaseCommand):
 
         return music_files, artist_files
 
-    def load_artist(self, df_artist):
+    def process_artist(self, df_artist):
         for index, row in df_artist.iterrows():
             row_dict = row.to_dict()
+            row_dict = {k: v.encode("utf-8") if isinstance(v, str) else v for k, v in row_dict.items()}
             row_dict['tag'] = row_dict.get('tag', [])
             similars = row_dict.get('similar', [])
             artist_serializer = ArtistSerializer(data=row_dict)
@@ -74,14 +78,13 @@ class Command(BaseCommand):
                     error = self.handler_error(similar_serializer)
                     print(error, index)
                     continue
-            print('Artist save:', index)
-
         return None
 
     @staticmethod
     def process(df_music):
         for index, item in df_music.iterrows():
             row_dict = item.to_dict()
+            row_dict['name'] = row_dict['name'].encode('utf-8')
             artist, _ = Artist.objects.get_or_create(name=row_dict['artist'])
             row_dict.update({'artist': artist})
             try:
@@ -90,7 +93,6 @@ class Command(BaseCommand):
             except (DataError, IntegrityError) as e:
                 print(e)
                 pass
-            print('Song save: ', index)
 
     @staticmethod
     def handler_error(serializer):
