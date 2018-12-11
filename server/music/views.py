@@ -109,8 +109,8 @@ class SongViewSet(viewsets.ModelViewSet):
     @action(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='selection', detail=False)
     def selection(self, request):
         top_songs = np.random.choice(Song.objects.order_by('-listeners_fm')[:50], 40)
-        top_favorite_song_id = ListenerSong.objects.filter(user=request.user).values_list('song__artist__song', flat=True)[:50]
-        top_favorite_song = np.random.choice(Song.objects.filter(id__in=list(top_favorite_song_id)), 40)
+        top_favorite_song_id = ListenerSong.objects.filter(user=request.user).values_list('song__artist__song', flat=True)
+        top_favorite_song = np.random.choice(Song.objects.filter(id__in=list(top_favorite_song_id[:50])), 40)
         result = np.concatenate((top_songs, top_favorite_song), axis=0)
         res_data = SongSerializer(np.random.choice(result, 30), many=True, context={'request': request}).data
         return response.Response({'items': res_data})
@@ -154,16 +154,16 @@ class ArtistViewSet(viewsets.ModelViewSet):
             result['similar'].append(similar_serializer.data)
 
         return response.Response(result)
-        
-        
+
+
 class SearchViewSet(viewsets.ViewSet):
     permission_classes_by_action = {'list': [IsAdminOrIsSelf]}
-    
+
     def list(self, request):
         q_param = self.request.query_params.get('q')
         if not q_param:
             return
-        
+
         serializer_context = {'request': request}
         song_queryset = Song.objects.filter(name__contains=q_param)[:5]
         artist_queryset = Artist.objects.filter(name__contains=q_param)[:5]
@@ -172,6 +172,3 @@ class SearchViewSet(viewsets.ViewSet):
             'artist': ArtistSerializer(artist_queryset, many=True, context=serializer_context).data,
         }
         return response.Response(data)
-        
-        
-        

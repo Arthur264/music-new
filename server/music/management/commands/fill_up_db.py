@@ -1,9 +1,10 @@
 import os
 
 import pandas as pd
-from django.core.exceptions import ValidationError
 from django.core.management.base import BaseCommand
-from django.db import transaction
+from django.db import IntegrityError
+from django.db.utils import DataError
+
 from music.models import (
     Song,
     Artist,
@@ -55,9 +56,6 @@ class Command(BaseCommand):
             artist_serializer = ArtistSerializer(data=row_dict)
             if artist_serializer.is_valid():
                 artist = artist_serializer.save()
-            else:
-                error = self.handler_error(artist_serializer)
-                continue
 
             if not similars:
                 return None
@@ -82,23 +80,17 @@ class Command(BaseCommand):
 
     @staticmethod
     def process(df_music):
-        with transaction.atomic():
-            for index, item in df_music.iterrows():
-                print(item['url'])
-                row_dict = item.to_dict()
-                artist, _ = Artist.objects.get_or_create(name=row_dict['artist'])
-                row_dict.update({'artist': artist})
-                song = Song(**row_dict)
-                import pdb; pdb.set_trace()
-                try:
-                    song.full_clean()
-                except ValidationError as e:
-                    print('2222', e)
-                    continue
-
-                song.save()
-
-
+        for index, item in df_music.iterrows():
+            row_dict = item.to_dict()
+            artist, _ = Artist.objects.get_or_create(name=row_dict['artist'])
+            row_dict.update({'artist': artist})
+            try:
+                Song.objects.create(**row_dict)
+                print('Song save: ', index)
+            except (DataError, IntegrityError) as e:
+                print(e)
+                pass
+            print('Song save: ', index)
 
     @staticmethod
     def handler_error(serializer):
