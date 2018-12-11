@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import User, Friends
+from .models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -19,13 +19,6 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
-
-
-class FriendSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Friends
-        fields = ('id', 'user', 'friend')
-        lookup_field = 'pk'
 
 
 class AvatarSerializer(serializers.ModelSerializer):

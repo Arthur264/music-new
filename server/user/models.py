@@ -6,14 +6,12 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from phonenumber_field.modelfields import PhoneNumberField
 from rest_framework.authtoken.models import Token
 
-from phonenumber_field.modelfields import PhoneNumberField
 
-
-# This code is triggered whenever a new user has been created and saved to the database
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
+def create_auth_token(_, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
 
@@ -30,17 +28,3 @@ class User(AbstractUser):
 
     class Meta:
         db_table = 'user'
-
-
-class Friends(models.Model):
-    user = models.ForeignKey(User, related_name='user', on_delete=models.CASCADE)
-    friend = models.ForeignKey(User, related_name="friends", on_delete=models.CASCADE)
-    status = models.BooleanField(default=False)
-
-    class Meta:
-        db_table = 'friends'
-        unique_together = ('user', 'friend')
-
-    @classmethod
-    def make_friend(cls, user, friend):
-        friend, created = cls.objects.get_or_create(user=user, friend=friend)
