@@ -45,14 +45,14 @@ class RegisterSerializer(serializers.ModelSerializer):
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True, max_length=30)
     new_password = serializers.CharField(required=True, max_length=30)
-    confirmed_password = serializers.CharField(required=True, max_length=30)
+    confirm_password = serializers.CharField(required=True, max_length=30)
 
     def validate(self, validation_data):
         if not self.context['request'].user.check_password(validation_data.get('old_password')):
             raise serializers.ValidationError({'old_password': 'Wrong password.'})
 
-        if validation_data.get('confirmed_password') != validation_data.get('new_password'):
-            raise serializers.ValidationError({'confirmed_password': 'Password must be confirmed correctly.'})
+        if validation_data.get('confirm_password') != validation_data.get('new_password'):
+            raise serializers.ValidationError({'confirm_password': 'Password must be confirmed correctly.'})
 
         try:
             validate_password(validation_data.get('new_password'))

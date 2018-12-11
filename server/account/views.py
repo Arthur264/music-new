@@ -27,7 +27,7 @@ class AuthViewSet(viewsets.ViewSet):
         change_password_serializer = ChangePasswordSerializer(data=request.data, context={'request': request})
         change_password_serializer.is_valid(raise_exception=True)
         change_password_serializer.change_password()
-        return Response(status=status.HTTP_200_OK)
+        return self.logout_user(request)
 
     @action(methods=['post'], permission_classes=[AllowAny], url_path='login', detail=False)
     def login(self, request):
