@@ -13,6 +13,7 @@ class Cache(AbstractCache):
         cache_name = self.make_params(serializer, method)
         if cache_name in cache:
             return self.get(cache_name)
+
         cache.set(cache_name, queryset, self.timeout)
         return queryset
 

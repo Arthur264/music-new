@@ -98,4 +98,4 @@ class SimilarArtist(models.Model):
         unique_together = ('first_artist', 'second_artist')
 
     def __str__(self):
-        return f'{self.first_artist} {self.second_artist}'
+        return f'{self.first_artist}_{self.second_artist}'
