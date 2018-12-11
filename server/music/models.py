@@ -7,7 +7,7 @@ from core.models import BaseModel
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=35, unique=True, validators=[MinLengthValidator(3)])
+    name = models.CharField(max_length=35, validators=[MinLengthValidator(3)])
     slug = models.SlugField(max_length=35, unique=True)
 
     def __str__(self):
@@ -70,7 +70,7 @@ class Song(BaseModel):
 
 
 class Playlist(BaseModel):
-    name = models.CharField(max_length=100, validators=[MinLengthValidator(3)])
+    name = models.CharField(max_length=35, validators=[MinLengthValidator(3)])
     slug = models.SlugField(max_length=35, unique=True, default=None, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     song = models.ManyToManyField(Song, related_name='playlist', blank=True)
@@ -83,10 +83,11 @@ class Playlist(BaseModel):
         return super(Playlist, self).save(*args, **kwargs)
 
 
-class ListenerSong(BaseModel):
-    user = models.ForeignKey(User, related_name='listener', on_delete=models.CASCADE)
-    song = models.ForeignKey(Song, related_name='listener', on_delete=models.CASCADE)
-
+class ListenerSong(models.Model):
+    user = models.ForeignKey(User, related_name='user_listener', on_delete=models.CASCADE)
+    song = models.ForeignKey(Song, related_name='song_listener', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
     def __str__(self):
         return f'{self.user.id}_{self.song.id}'
         
