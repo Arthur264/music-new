@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
 from django.conf import settings
@@ -11,7 +10,7 @@ from rest_framework.authtoken.models import Token
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_auth_token(_, instance=None, created=False):
+def create_auth_token(_, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
 
