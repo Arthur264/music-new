@@ -1,16 +1,15 @@
-import os
 import json
+import os
 
 import requests
-
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase
 from django.urls import reverse
 
 from app.settings import MEDIA_ROOT
+from utils.test import UserTestCase
 
 
-class ChangeAvatarViewTestCase(TestCase):
+class ChangeAvatarViewTestCase(UserTestCase):
 
     def test_upload_avatar(self):
         file = requests.get('https://cdn.pixabay.com/photo/2013/07/13/10/07/man-156584_960_720.png')
@@ -29,11 +28,7 @@ class ChangeAvatarViewTestCase(TestCase):
         os.rmdir(MEDIA_ROOT)
 
 
-class ChangeProfileViewTestCase(TestCase):
-
-    def setUp(self):
-        self.user = User.objects.create_user(username='admin', password='12345')
-
+class ChangeProfileViewTestCase(UserTestCase):
     def test_change_profile(self):
         req_data = {
             'username': 'admin',

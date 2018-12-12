@@ -1,17 +1,13 @@
-from django.test import TestCase
 from django.urls import reverse
 from rest_framework.exceptions import ErrorDetail
 from rest_framework.test import APIClient
 
-from user.models import User
+from utils.test import UserTestCase
 
 
-class AccountViewTestCase(TestCase):
+class AccountViewTestCase(UserTestCase):
     token = ''
     factory = APIClient()
-
-    def setUp(self):
-        self.user = User.objects.create_user(username='admin', password='12345')
 
     def test_login_logout_user(self):
         response = self.client.post(
@@ -77,7 +73,7 @@ class AccountViewTestCase(TestCase):
             }
         )
         self.assertEqual(response_change_password.status_code, 200)
-        self.get_user()
+        self.set_up_user()
         self.assertEqual(self.user.check_password(new_password), True)
 
         response_change_password2 = self.factory.post(
@@ -113,6 +109,3 @@ class AccountViewTestCase(TestCase):
         )
         self.token = response.data['token']
         self.factory.credentials(HTTP_AUTHORIZATION=f"Token {self.token}")
-
-    def get_user(self):
-        self.user = User.objects.get(username='admin')
