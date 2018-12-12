@@ -11,7 +11,6 @@ class SongViewTestCase(UserTestCase):
         self.song = Song.objects.create(
             name="Sorry",
             url="http://zk.fm/song/21821432",
-            time='2:23',
             artist=self.artist,
         )
 

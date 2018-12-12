@@ -67,21 +67,22 @@ class AccountViewTestCase(UserTestCase):
         response_change_password = self.factory.post(
             reverse('auth-set-password'),
             {
-                'old_password': '12345',
+                'old_password': self.password,
                 'new_password': new_password,
-                'confirmed_password': new_password
+                'confirm_password': new_password
             }
         )
         self.assertEqual(response_change_password.status_code, 200)
         self.set_up_user()
         self.assertEqual(self.user.check_password(new_password), True)
 
+        new_password = 'x54qw52febuca9yq11'
         response_change_password2 = self.factory.post(
             reverse('auth-set-password'),
             {
                 'old_password': new_password,
-                'new_password': 'x54qw52febuca9yq11',
-                'confirmed_password': 'x54qw52febuca9yq1'
+                'new_password': new_password,
+                'confirm_password': new_password,
             }
         )
         self.assertEqual(response_change_password2.status_code, 400)

@@ -8,6 +8,7 @@ from .serializers import (
     UserSerializer,
     ProfileSerializer,
     AvatarSerializer,
+    SocialNetworkSerializer,
 )
 
 
@@ -35,4 +36,18 @@ class ProfileViewSet(viewsets.ModelViewSet):
         avatar_serializer = AvatarSerializer(data=request.data, context={'request': request})
         avatar_serializer.is_valid(raise_exception=True)
         avatar_serializer.save()
+        return Response(status=status.HTTP_200_OK)
+
+    @action(methods=['post'], permission_classes=[IsAdminOrIsSelf], url_path='social_link', detail=False)
+    def add_social_link(self, request):
+        avatar_serializer = SocialNetworkSerializer(data=request.data, context={'request': request})
+        avatar_serializer.is_valid(raise_exception=True)
+        avatar_serializer.save()
+        return Response(status=status.HTTP_200_OK)
+
+    @action(methods=['delete'], permission_classes=[IsAdminOrIsSelf], url_path='social_link', detail=True)
+    def remove_social_link(self, request):
+        avatar_serializer = SocialNetworkSerializer(data=request.data, context={'request': request})
+        avatar_serializer.is_valid(raise_exception=True)
+        avatar_serializer.delete()
         return Response(status=status.HTTP_200_OK)

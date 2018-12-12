@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import User
+from .models import User, SocialNetwork
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -37,3 +37,9 @@ class ProfileSerializer(serializers.ModelSerializer):
             setattr(instance, key, value)
         instance.save()
         return instance
+
+
+class SocialNetworkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SocialNetwork
+        fields = ('name', 'link')

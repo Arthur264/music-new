@@ -26,7 +26,6 @@ class User(AbstractUser):
     last_ip = models.GenericIPAddressField(protocol='IPv4', null=True, blank=True)
     social_network = models.ManyToManyField(
         'user.SocialNetwork',
-        null=True,
         blank=True,
     )
 
