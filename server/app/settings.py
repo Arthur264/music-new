@@ -11,10 +11,16 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import configparser
+
+config = configparser.ConfigParser()
+config.read('app/settings.ini')
+
+WORK_ENV = config['DEFAULT']['env']
+WORK_CONFIG = config[WORK_ENV]
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
@@ -22,7 +28,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'r(5e_^(aa5k(%((g=hcf*p8s7)z=15^-ym_1!dt(yluea21*zi'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = WORK_CONFIG['DEBUG']
 
 ALLOWED_HOSTS = ['music-artyr264.c9users.io', '127.0.0.1']
 
@@ -73,7 +79,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
-        # 'rest_framework.permissions.DjangoModelPermissions',
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_FILTER_BACKENDS': [
@@ -121,8 +126,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'musicdb',
-        'USER': 'artyr264',
-        'PASSWORD': '',
+        'USER': WORK_CONFIG['MYSQL_USER'],
+        'PASSWORD':  WORK_CONFIG['MYSQL_PASSWORD'],
         'HOST': 'localhost',
         'TEST': {
             'NAME': 'test_musicdb',
@@ -163,9 +168,6 @@ CORS_ALLOW_HEADERS = (
     'x-requested-with',
 )
 
-# CORS_ORIGIN_WHITELIST = (
-#     'http://music-artyr264.c9users.io',
-# )
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
