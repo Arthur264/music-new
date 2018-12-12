@@ -125,10 +125,10 @@ AUTH_USER_MODEL = 'user.User'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'musicdb',
+        'NAME': WORK_CONFIG['MYSQL_DB_NAME'],
         'USER': WORK_CONFIG['MYSQL_USER'],
         'PASSWORD':  WORK_CONFIG['MYSQL_PASSWORD'],
-        'HOST': 'localhost',
+        'HOST': WORK_CONFIG['MYSQL_HOST'],
         'TEST': {
             'NAME': 'test_musicdb',
             'OPTIONS': {
