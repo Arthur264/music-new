@@ -16,7 +16,7 @@ import configparser
 config = configparser.ConfigParser()
 config.read('app/settings.ini')
 
-WORK_ENV = config['DEFAULT']['env']
+WORK_ENV = config['DEFAULT'].pop('env')
 WORK_CONFIG = config[WORK_ENV]
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
