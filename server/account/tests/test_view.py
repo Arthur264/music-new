@@ -85,11 +85,7 @@ class AccountViewTestCase(UserTestCase):
                 'confirm_password': new_password,
             }
         )
-        self.assertEqual(response_change_password2.status_code, 400)
-        self.assertEqual(
-            response_change_password2.data['confirmed_password'][0].__str__(),
-            'Password must be confirmed correctly.'
-        )
+        self.assertEqual(response_change_password2.status_code, 401)
 
     def test_logout(self):
         self.login_user()

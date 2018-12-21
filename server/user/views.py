@@ -1,6 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 
 from account.permissions import IsAdminOrIsSelf
 from .models import User
@@ -23,6 +24,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
+    parser_classes = (FormParser, JSONParser, MultiPartParser)
 
     @action(methods=['post'], permission_classes=[IsAdminOrIsSelf], url_path='update', detail=False)
     def profile_update(self, request):
