@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'utils',
     'user',
     'account',
-    'music'
+    'music',
 ]
 
 MIDDLEWARE = [
@@ -168,6 +168,14 @@ CORS_ALLOW_HEADERS = (
     'x-requested-with',
 )
 
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_IGNORE_RESULT = True
+
+TMP_DIR = os.path.join(BASE_DIR, 'tmp')
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
