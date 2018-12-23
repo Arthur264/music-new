@@ -5,7 +5,7 @@ import {AlertInterface} from '../_interfaces';
 
 @Injectable()
 export class AlertService {
-    private _subject = new Subject<any>();
+    private _subject = new Subject<AlertInterface>();
     private _keepAfterNavigationChange = false;
     public alert: AlertInterface;
 

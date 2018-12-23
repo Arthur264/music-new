@@ -50,6 +50,9 @@
                                         <div class="form-error" invalidmessage="old_password">
                                             <p *invalidType="'required'">Please provide old password</p>
                                         </div>
+                                        <div class="form-error" invalidmessage="old_password">
+                                            <p *invalidType="'response'"></p>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label><h4>New password*</h4></label>
@@ -58,8 +61,11 @@
                                                name="new_password"
                                                formControlName="new_password"
                                                placeholder="new password">
-                                        <div class="form-error" invalidmessage="confirm_password">
-                                            <p *invalidType="'required'">Please provide confirm password</p>
+                                        <div class="form-error" invalidmessage="new_password">
+                                            <p *invalidType="'required'">Please provide new password</p>
+                                        </div>
+                                        <div class="form-error" invalidmessage="new_password">
+                                            <p *invalidType="'response'"></p>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -74,6 +80,9 @@
                                         </div>
                                         <div class="form-error" invalidmessage="confirm_password">
                                             <p *invalidType="'match_password'">Passwords do not match!</p>
+                                        </div>
+                                        <div class="form-error" invalidmessage="confirm_password">
+                                            <p *invalidType="'response'"></p>
                                         </div>
                                     </div>
                                     <div class="form-group">
