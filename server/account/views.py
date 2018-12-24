@@ -18,6 +18,8 @@ from .serializers import (
     ChangePasswordSerializer,
 )
 
+from django.http import JsonResponse
+
 
 class AuthViewSet(viewsets.ViewSet):
     queryset = User.objects.all()

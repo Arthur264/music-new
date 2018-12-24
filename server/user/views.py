@@ -26,7 +26,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     parser_classes = (FormParser, JSONParser, MultiPartParser)
 
-    @action(methods=['post'], permission_classes=[IsAdminOrIsSelf], url_path='update', detail=False)
+    @action(methods=['put'], permission_classes=[IsAdminOrIsSelf], url_path='update', detail=False)
     def profile_update(self, request):
         avatar_serializer = ProfileSerializer(data=request.data, partial=True)
         avatar_serializer.is_valid(raise_exception=True)

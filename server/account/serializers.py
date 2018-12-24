@@ -20,7 +20,7 @@ class LoginSerializer(serializers.Serializer):
         password = self.validated_data['password']
         user = authenticate(username=username, password=password)
         if not user:
-            return serializers.ValidationError({'error': 'Username or password incorrect'})
+            raise serializers.ValidationError({'username': ['Username or password incorrect']})
 
         token, _ = Token.objects.get_or_create(user=user)
         user_serializer = UserSerializer(user)
@@ -57,7 +57,7 @@ class ChangePasswordSerializer(serializers.Serializer):
         try:
             validate_password(validation_data.get('new_password'))
         except ValidationError as e:
-            raise serializers.ValidationError({'new_password': e})
+            raise serializers.ValidationError({'new_password': e.messages})
 
         return validation_data
 
