@@ -40,8 +40,14 @@ export class AppService {
     }
 
     public put(url, body) {
-        const options = this.getOptions();
+        const options = this.getOptions({}, body);
         return this.http.put(this.getUrl(url), body, options)
+            .map((res: Response) => res.json());
+    }
+
+    public patch(url, body) {
+        const options = this.getOptions({}, body);
+        return this.http.patch(this.getUrl(url), body, options)
             .map((res: Response) => res.json());
     }
 
