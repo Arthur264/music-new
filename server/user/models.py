@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
 from django.conf import settings
@@ -11,7 +10,7 @@ from rest_framework.authtoken.models import Token
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_auth_token(_, instance=None, created=False, **kwargs):
+def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
 
@@ -25,6 +24,20 @@ class User(AbstractUser):
     phone = PhoneNumberField(null=True, blank=True)
     timezone = models.CharField(null=True, blank=True, max_length=50)
     last_ip = models.GenericIPAddressField(protocol='IPv4', null=True, blank=True)
+    social_network = models.ManyToManyField(
+        'user.SocialNetwork',
+        blank=True,
+    )
 
     class Meta:
         db_table = 'user'
+
+
+class SocialNetwork(models.Model):
+    name = models.CharField(max_length=50)
+    slug = models.SlugField(max_length=50, unique=True)
+    link = models.URLField(unique=True)
+    create_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('create_at',)

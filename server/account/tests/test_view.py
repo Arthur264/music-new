@@ -1,17 +1,13 @@
-from django.test import TestCase
 from django.urls import reverse
 from rest_framework.exceptions import ErrorDetail
 from rest_framework.test import APIClient
 
-from user.models import User
+from utils.test import UserTestCase
 
 
-class AccountViewTestCase(TestCase):
+class AccountViewTestCase(UserTestCase):
     token = ''
     factory = APIClient()
-
-    def setUp(self):
-        self.user = User.objects.create_user(username='admin', password='12345')
 
     def test_login_logout_user(self):
         response = self.client.post(
@@ -71,28 +67,25 @@ class AccountViewTestCase(TestCase):
         response_change_password = self.factory.post(
             reverse('auth-set-password'),
             {
-                'old_password': '12345',
+                'old_password': self.password,
                 'new_password': new_password,
-                'confirmed_password': new_password
+                'confirm_password': new_password
             }
         )
         self.assertEqual(response_change_password.status_code, 200)
-        self.get_user()
+        self.set_up_user()
         self.assertEqual(self.user.check_password(new_password), True)
 
+        new_password = 'x54qw52febuca9yq11'
         response_change_password2 = self.factory.post(
             reverse('auth-set-password'),
             {
                 'old_password': new_password,
-                'new_password': 'x54qw52febuca9yq11',
-                'confirmed_password': 'x54qw52febuca9yq1'
+                'new_password': new_password,
+                'confirm_password': new_password,
             }
         )
-        self.assertEqual(response_change_password2.status_code, 400)
-        self.assertEqual(
-            response_change_password2.data['confirmed_password'][0].__str__(),
-            'Password must be confirmed correctly.'
-        )
+        self.assertEqual(response_change_password2.status_code, 401)
 
     def test_logout(self):
         self.login_user()
@@ -113,6 +106,3 @@ class AccountViewTestCase(TestCase):
         )
         self.token = response.data['token']
         self.factory.credentials(HTTP_AUTHORIZATION=f"Token {self.token}")
-
-    def get_user(self):
-        self.user = User.objects.get(username='admin')

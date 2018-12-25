@@ -11,10 +11,16 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+import configparser
+
+config = configparser.ConfigParser()
+config.read('app/settings.ini')
+
+WORK_ENV = config['DEFAULT'].pop('env')
+WORK_CONFIG = config[WORK_ENV]
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
@@ -22,7 +28,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'r(5e_^(aa5k(%((g=hcf*p8s7)z=15^-ym_1!dt(yluea21*zi'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = WORK_CONFIG['DEBUG']
 
 ALLOWED_HOSTS = ['music-artyr264.c9users.io', '127.0.0.1']
 
@@ -45,7 +51,7 @@ INSTALLED_APPS = [
     'utils',
     'user',
     'account',
-    'music'
+    'music',
 ]
 
 MIDDLEWARE = [
@@ -66,6 +72,11 @@ MIDDLEWARE_CLASSES = (
 )
 
 REST_FRAMEWORK = {
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+    ),
     'DEFAULT_PAGINATION_CLASS': 'core.pagination.InfoPagination',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
@@ -73,7 +84,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
-        # 'rest_framework.permissions.DjangoModelPermissions',
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_FILTER_BACKENDS': [
@@ -120,10 +130,10 @@ AUTH_USER_MODEL = 'user.User'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'musicdb',
-        'USER': 'root',
-        'PASSWORD': 'admin123',
-        'HOST': 'localhost',
+        'NAME': WORK_CONFIG['MYSQL_DB_NAME'],
+        'USER': WORK_CONFIG['MYSQL_USER'],
+        'PASSWORD':  WORK_CONFIG['MYSQL_PASSWORD'],
+        'HOST': WORK_CONFIG['MYSQL_HOST'],
         'TEST': {
             'NAME': 'test_musicdb',
             'OPTIONS': {
@@ -163,9 +173,14 @@ CORS_ALLOW_HEADERS = (
     'x-requested-with',
 )
 
-# CORS_ORIGIN_WHITELIST = (
-#     'http://music-artyr264.c9users.io',
-# )
+CELERY_BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_IGNORE_RESULT = True
+
+TMP_DIR = os.path.join(BASE_DIR, 'tmp')
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 

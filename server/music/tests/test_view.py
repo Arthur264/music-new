@@ -1,18 +1,16 @@
 from django.test import TestCase
 
 from music.models import Song, Artist
-from user.models import User
+from utils.test import UserTestCase
 
 
-class SongViewTestCase(TestCase):
+class SongViewTestCase(UserTestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username='admin', password='12345')
-        self.client.login(username='admin', password='12345')
+        super().setUp()
         self.artist = Artist.objects.create(name='Miyagi')
         self.song = Song.objects.create(
             name="Sorry",
             url="http://zk.fm/song/21821432",
-            time='2:23',
             artist=self.artist,
         )
 

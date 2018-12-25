@@ -1,6 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 
 from account.permissions import IsAdminOrIsSelf
 from .models import User
@@ -8,6 +9,7 @@ from .serializers import (
     UserSerializer,
     ProfileSerializer,
     AvatarSerializer,
+    SocialNetworkSerializer,
 )
 
 
@@ -22,8 +24,9 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
+    parser_classes = (FormParser, JSONParser, MultiPartParser)
 
-    @action(methods=['post'], permission_classes=[IsAdminOrIsSelf], url_path='update', detail=False)
+    @action(methods=['put'], permission_classes=[IsAdminOrIsSelf], url_path='update', detail=False)
     def profile_update(self, request):
         avatar_serializer = ProfileSerializer(data=request.data, partial=True)
         avatar_serializer.is_valid(raise_exception=True)
@@ -35,4 +38,18 @@ class ProfileViewSet(viewsets.ModelViewSet):
         avatar_serializer = AvatarSerializer(data=request.data, context={'request': request})
         avatar_serializer.is_valid(raise_exception=True)
         avatar_serializer.save()
+        return Response(status=status.HTTP_200_OK)
+
+    @action(methods=['post'], permission_classes=[IsAdminOrIsSelf], url_path='social_link', detail=False)
+    def add_social_link(self, request):
+        avatar_serializer = SocialNetworkSerializer(data=request.data, context={'request': request})
+        avatar_serializer.is_valid(raise_exception=True)
+        avatar_serializer.save()
+        return Response(status=status.HTTP_200_OK)
+
+    @action(methods=['delete'], permission_classes=[IsAdminOrIsSelf], url_path='social_link', detail=True)
+    def remove_social_link(self, request):
+        avatar_serializer = SocialNetworkSerializer(data=request.data, context={'request': request})
+        avatar_serializer.is_valid(raise_exception=True)
+        avatar_serializer.delete()
         return Response(status=status.HTTP_200_OK)

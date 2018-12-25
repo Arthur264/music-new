@@ -22,13 +22,14 @@ class Command(BaseCommand):
         parser.add_argument('read_music_file', type=int, default=1)
 
     def handle(self, *args, **options):
-        # read_music_file = options['read_music_file']
+        read_music_file = options['read_music_file']
         music_files, artist_files = self.get_files()
-        # for df_music in self.get_chuck(music_files):
-        #     self.process(df_music)
+        for df_music in self.get_chuck(music_files):
+            self.process(df_music)
 
-        for df_artist in self.get_chuck(artist_files):
-            self.process_artist(df_artist)
+        if not read_music_file:
+            for df_artist in self.get_chuck(artist_files):
+                self.process_artist(df_artist)
 
     @staticmethod
     def get_chuck(files):
