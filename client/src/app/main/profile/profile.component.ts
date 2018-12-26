@@ -32,8 +32,8 @@ export class ProfileComponent implements OnInit {
             last_name: new FormControl(this.user.last_name, Validators.required),
             username: new FormControl(this.user.username, Validators.required),
             email: new FormControl(this.user.email, Validators.required),
-            city: new FormControl(this.user.city, Validators.required),
-            phone: new FormControl(this.user.phone, Validators.required),
+            city: new FormControl(this.user.city),
+            phone: new FormControl(this.user.phone),
         });
         this.changePasswordForm = this.fb.group({
             old_password: ['', Validators.required],
@@ -58,7 +58,11 @@ export class ProfileComponent implements OnInit {
 
     public submitChangeProfile(){
         if (this.profileForm.valid) {
-
+            this.appService.post('user/me', this.profileForm.value).subscribe((res) => {
+                this.alertService.success('Profile info successfully changed!');
+            }, (err) => {
+                this.profileForm.controls = FormsUtils.errorMessages(this.profileForm.controls, err.json());
+            });
         }
     }
 

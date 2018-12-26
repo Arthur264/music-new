@@ -1,3 +1,6 @@
-<alert *ngIf="alert" class="animated {{alert.alertClass}}}" [type]="alert.type">
+<alert *ngIf="alert" class="app-alert animated {{alert.alertClass}}" [type]="alert.type">
+    <button type="button" class="close" (click)="removeAlert()">
+        <span>&times;</span>
+    </button>
     <span [innerHtml]="alert.message"></span>
 </alert>

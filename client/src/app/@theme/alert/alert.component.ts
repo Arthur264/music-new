@@ -6,7 +6,6 @@ import {AlertService} from '../../_services';
     selector: 'app-alert',
     templateUrl: './alert.component.html',
     styleUrls: ['./alert.component.css'],
-    providers: [AlertService]
 })
 export class AlertComponent implements OnInit {
     public alert: AlertInterface;
@@ -15,15 +14,18 @@ export class AlertComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.alertService.getAlert().subscribe((alert: AlertInterface) => {
-            console.log('alert', alert);
+        this.alertService.getAlert().subscribe((alert) => {
             this.alert = alert;
             this.alert.alertClass = 'bounceInRight';
-            setTimeout(this.fadeItOut, 5000);
+            // setTimeout(() => {
+            //     this.alert.alertClass = 'fadeOutDown';
+            // }, 5000);
         });
     }
 
-    private fadeItOut() {
-        this.alert.alertClass = 'fadeOutDown';
+    public removeAlert(){
+        this.alert = null;
     }
+
+
 }
