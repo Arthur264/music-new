@@ -4,7 +4,7 @@ from django.utils.text import slugify
 
 from user.models import User
 from core.models import BaseModel
-from .manager import BulkInsertManager
+from .manager import SongManager
 
 
 class Tag(models.Model):
@@ -52,7 +52,7 @@ class Song(BaseModel):
     favorite = models.ManyToManyField(User, related_name='favorite')
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
     hidden = models.BooleanField(default=False)
-    objects = BulkInsertManager()
+    objects = SongManager()
 
     class Meta:
         unique_together = ('name', 'artist')

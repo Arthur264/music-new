@@ -35,7 +35,6 @@ class User(AbstractUser):
 
 class SocialNetwork(models.Model):
     name = models.CharField(max_length=50)
-    slug = models.SlugField(max_length=50, unique=True)
     link = models.URLField(unique=True)
     create_at = models.DateTimeField(auto_now_add=True)
 

@@ -20,3 +20,9 @@ class BulkInsertManager(models.Manager):
         except Exception as e:
             print(e)
             return False
+
+
+class SongManager(models.Manager):
+
+    def get_queryset(self):
+        return super().get_queryset().filter(hidden=False)

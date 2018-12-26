@@ -1,7 +1,7 @@
 import abc
 
 
-class AbstractCache(mataclass=abc.ABCMeta):
+class AbstractCache(object):
 
     @abc.abstractclassmethod
     def add(cls, serializer, method, queryset):
