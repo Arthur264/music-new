@@ -1,7 +1,11 @@
 from rest_framework import routers
 
 from account.views import AuthViewSet
-from user.views import UserViewSet, ProfileViewSet, SocialNetworkViewSet
+from user.views import (
+    UserViewSet,
+    ProfileViewSet,
+    SocialNetworkViewSet,
+)
 from music.views import (
     SongViewSet,
     ArtistViewSet,

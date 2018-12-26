@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 
-from account.permissions import IsAdminOrIsSelf
+from core.permissions import IsAdminOrIsSelf
 from .models import User, SocialNetwork
 from .serializers import (
     UserSerializer,
@@ -28,13 +28,9 @@ class UserViewSet(viewsets.ModelViewSet):
 class ProfileViewSet(PatchMixin, viewsets.ModelViewSet):
     serializer_class = UserSerializer
     parser_classes = (FormParser, JSONParser, MultiPartParser)
-
-    def get_object(self):
-        self.kwargs['pk'] = self.request.user.pk
-        return super(ProfileViewSet, self).get_object()
-
+    
     def get_queryset(self):
-        return User.objects.filter(pk=self.request.user.pk)
+        return User.objects.get(pk=self.request.user.pk)
 
     @action(methods=['put'], permission_classes=[IsAdminOrIsSelf], url_path='update', detail=False)
     def profile_update(self, request):

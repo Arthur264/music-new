@@ -11,14 +11,12 @@ from rest_framework.response import Response
 
 from user.models import User
 from user.serializers import UserSerializer
-from .permissions import IsAdminOrIsSelf
+from core.permissions import IsAdminOrIsSelf
 from .serializers import (
     RegisterSerializer,
     LoginSerializer,
     ChangePasswordSerializer,
 )
-
-from django.http import JsonResponse
 
 
 class AuthViewSet(viewsets.ViewSet):
