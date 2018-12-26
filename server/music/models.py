@@ -51,7 +51,7 @@ class Song(BaseModel):
     playcount_fm = models.IntegerField(null=True, blank=True)
     favorite = models.ManyToManyField(User, related_name='favorite')
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
-
+    hidden = models.BooleanField(default=False)
     objects = BulkInsertManager()
 
     class Meta:

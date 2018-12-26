@@ -87,7 +87,6 @@ class SongViewSet(viewsets.ModelViewSet):
         artist, _ = Artist.objects.get_or_create(name=serializer_data.get('artist'))
         serializer_data.update({'artist_id': artist.pk})
         serializer_song = self.serializer_class(data=serializer_data, context={'request': request})
-
         serializer_song.is_valid(raise_exception=True)
         serializer_song.save()
         return response.Response(serializer_song.data)
@@ -121,7 +120,7 @@ class ArtistViewSet(viewsets.ModelViewSet):
     queryset = Artist.objects.all()
     ordering_fields = '__all__'
 
-    def retrieve(self, request, *args):
+    def retrieve(self, request, pk):
         instance = self.get_object()
         serializer_artist = self.get_serializer(instance).data
 
@@ -134,7 +133,7 @@ class ArtistViewSet(viewsets.ModelViewSet):
         serializer_artist.update({'items': paginator.get_paginated_data(serializer_song.data)})
         return response.Response(serializer_artist)
 
-    def create(self, request, *args):
+    def create(self, request, pk):
         result = {'similar': []}
         similars = request.data.get('similar', [])
         artist_serializer = ArtistSerializer(data=request.data, context={'request': request})
