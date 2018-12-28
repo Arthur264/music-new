@@ -3,7 +3,7 @@ from django.db.models import Count
 from rest_framework import viewsets, response
 from rest_framework.decorators import action
 
-from account.permissions import IsAdminOrIsSelf
+from core.permissions import IsAdminOrIsSelf
 from core.pagination import InfoPagination
 from .filters import SongFilter
 from .models import (

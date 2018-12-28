@@ -28,9 +28,14 @@ class UserViewSet(viewsets.ModelViewSet):
 class ProfileViewSet(PatchMixin, viewsets.ModelViewSet):
     serializer_class = UserSerializer
     parser_classes = (FormParser, JSONParser, MultiPartParser)
+
+    def dispatch(self, request, *args, **kwargs):
+        result = super().dispatch(request, *args, **kwargs)
+        print(result)
+        return result
     
     def get_queryset(self):
-        return User.objects.get(pk=self.request.user.pk)
+        return User.objects.filter(pk=self.request.user.pk)
 
     @action(methods=['put'], permission_classes=[IsAdminOrIsSelf], url_path='update', detail=False)
     def profile_update(self, request):
