@@ -5,10 +5,11 @@ django-filter
 django-redis
 djangorestframework==3.8.2
 djangotoolbox
+django-phonenumber-field
+phonenumbers
 ipython
 mysqlclient
 pandas==0.23.4
-redis
 requests
 celery==4.2.1
 redis==2.10.6

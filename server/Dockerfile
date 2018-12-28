@@ -1,10 +1,9 @@
 FROM python:3.6
-
 ENV PYTHONUNBUFFERED 1
-RUN mkdir -p /app
-WORKDIR /app
-
-ADD ./requirements.txt .
-RUN pip install -U -r requirements.txt
-
-ADD . .
+RUN mkdir /code
+WORKDIR /code
+ADD requirements.txt /code/
+RUN pip install -r requirements.txt
+RUN apt-get update && apt-get install -y mysql-client && rm -rf /var/lib/apt
+ADD . /code
+ENTRYPOINT ["sh", "./docker-entrypoint.sh"]
