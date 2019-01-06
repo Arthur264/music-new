@@ -297,11 +297,12 @@ div.progress {
 
 .volume-bar-value {
     height: 6px;
+    background-color: #4cb6cb;
 }
 
 .volume-bar {
     margin-top: 16px;
-    background-color: #4cb6cb;
+    background-color: #3dabc1;
     cursor: pointer;
 }
 
@@ -442,4 +443,7 @@ a.playlist-current:before {
         left: 0px;
         right: 0px;
     }
+}
+.controls .text-muted{
+    color: #232c32;
 }

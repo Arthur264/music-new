@@ -10,7 +10,6 @@ import {ArtistsComponent} from './artists/artists.component';
 import {WidgetModule} from '../widget/widget.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgSelectModule} from '@ng-select/ng-select';
-import {SearchComponent} from './search/search.component';
 import {PlaylistPageComponent} from './playlist-page/playlist-page.component';
 import {PlaylistPageDetailsComponent} from './playlist-page/playlist-page-details/playlist-page-details.component';
 import {FavoriteComponent} from './favorite/favorite.component';
@@ -37,7 +36,6 @@ import {ProfileComponent} from './profile/profile.component';
         MainComponent,
         MusicComponent,
         ArtistsComponent,
-        SearchComponent,
         PlayerComponent,
         PlaylistPageComponent,
         PlaylistPageDetailsComponent,
