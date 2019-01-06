@@ -28,6 +28,9 @@
         </a>
     </div>
     <div class="padder-v"><a class="text-ellipsis">{{music.name}}</a>
-        <a class="text-ellipsis text-xs text-muted">{{music.artist.name}}</a>
+        <a [routerLink]="['/dashboard/music', music.artist.id]"
+           class="text-ellipsis text-xs text-muted">
+            {{music.artist.name}}
+        </a>
     </div>
 </div>

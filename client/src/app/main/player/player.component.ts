@@ -24,6 +24,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
     arrayMusic: SongInterface[];
     randomArrayMusic: SongInterface[];
 
+    get audio_volume_width(){
+        return this.audio.volume * 100 + '%'
+    }
 
     constructor(
         private appService: AppService,
@@ -64,18 +67,17 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private changeSong(obj: SongInterface): void {
-        if (obj.play) {
-            this.appService.get('song/' + obj.id + '/addplay').subscribe().unsubscribe();
-            this.audio.src = obj.url;
-            this.currentSong = obj;
-            this.audio.id = String(obj.id);
-            this.audio.currentTime = 0;
-            this.audio.addEventListener('canplay', () => {
-                this.playSong();
-            });
-        } else {
-            this.stopSong();
-        }
+        this.appService.get(`song/${obj.id}/addplay`).subscribe().unsubscribe();
+        this.audio.src = obj.url;
+        this.currentSong = obj;
+        this.audio.id = String(obj.id);
+        this.audio.currentTime = 0;
+        this.audio.addEventListener('canplay', () => {
+            this.playSong();
+        });
+        this.audio.addEventListener('error', () => {
+            console.log(this.audio.error);
+        });
     }
 
     private getSong() {
@@ -102,13 +104,14 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         this.audio.addEventListener('ended', function () {
             if (!self.circle_play) {
-                self.nextSong();
+                return self.nextSong();
             }
+            return self.playSong();
         });
     }
 
-    private moveBack(curtime) {
-        this.progress.nativeElement.style.width = String((curtime / this.audio.duration) * 100 + '%');
+    private moveBack(current_time) {
+        this.progress.nativeElement.style.width = String((current_time / this.audio.duration) * 100 + '%');
     }
 
     private changeCurrentTime(currentTime) {
@@ -171,19 +174,30 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public changeVolume(ev) {
-        const profit = ev.offsetX / ev.target.clientWidth;
+        const volume_bar = ev.target.closest('.volume-bar') || ev.target;
+        let volume_bar_value = ev.target.querySelector('.volume-bar-value') || ev.target;
+        const profit = ev.offsetX / volume_bar.clientWidth;
         this.audio.volume = profit;
-        console.log(profit);
+        if(!profit){
+            this.offVolume()
+        }
+        // volume_bar_value.style.width = `${profit * 100}%`;
     }
 
     public onOffVolume() {
         if (this.volume) {
-            this.audio.volume = 0;
-            this.volume = false;
-        } else {
-            this.audio.volume = this.current_volume;
-            this.volume = true;
+            return this.offVolume();
         }
+        return this.onVolume()
     }
+    private offVolume(){
+        this.audio.volume = 0;
+        this.volume = false;
+    }
+    private onVolume(){
+        this.audio.volume = this.current_volume;
+        this.volume = true;
+    }
+
 }
 

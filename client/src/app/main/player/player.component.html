@@ -4,7 +4,7 @@
             <div class="interface">
                 <div class="controls">
                     <div>
-                        <a class="previous" (click)="prevSoung()" title="Previous song">
+                        <a class="previous" (click)="prevSong()" title="Previous song">
                             <i class="icon-control-rewind i-lg"></i>
                         </a>
                     </div>
@@ -17,7 +17,7 @@
                         </a>
                     </div>
                     <div>
-                        <a class="next" (click)="nextSoung()" title="Next song">
+                        <a class="next" (click)="nextSong()" title="Next song">
                             <i class="icon-control-forward i-lg"></i>
                         </a>
                     </div>
@@ -40,8 +40,9 @@
                         </a>
                     </div>
                     <div class="hidden-xs hidden-sm volume">
-                        <div class="volume-bar dk">
-                            <div class="volume-bar-value lter" (click)="changeVolume($event)"></div>
+                        <div class="volume-bar dk" (click)="changeVolume($event)">
+                            <div class="volume-bar-value lter"
+                                 [ngStyle]="{ 'width': audio_volume_width}"></div>
                         </div>
                     </div>
                     <div>
@@ -49,7 +50,7 @@
                             <i class="icon-shuffle text-white"></i>
                         </a>
                         <a class="shuffle-off" title="shuffle off" *ngIf="!random_play" (click)="changeRandomPlay()">
-                            <i class="icon-shuffle text-lt"></i>
+                            <i class="icon-shuffle text-muted"></i>
                         </a>
                     </div>
                     <div>
@@ -57,7 +58,7 @@
                             <i class="icon-loop text-white"></i>
                         </a>
                         <a class="repeat-off hid" title="repeat off" *ngIf="!circle_play" (click)="changeCirclePlay()">
-                            <i class="icon-loop text-lt"></i></a>
+                            <i class="icon-loop text-muted"></i></a>
                     </div>
                 </div>
             </div>
