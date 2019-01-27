@@ -2,7 +2,7 @@
     display: inline-block;
     cursor: pointer;
 }
-.social-link{
+.social-link-add{
     cursor: pointer;
 }
 #profile_form{
@@ -22,4 +22,17 @@
 
 .btn{
     margin-top: 10px;
+}
+.social-link{
+    display: block;
+    
+}
+.social-link:hover .remove-social-link{
+    display: inline-block;
+} 
+.remove-social-link{
+    display: none;
+    float: right;
+    transition: 0.3s;
+
 }

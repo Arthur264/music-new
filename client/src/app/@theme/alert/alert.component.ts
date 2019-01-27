@@ -17,9 +17,9 @@ export class AlertComponent implements OnInit {
         this.alertService.getAlert().subscribe((alert) => {
             this.alert = alert;
             this.alert.alertClass = 'bounceInRight';
-            // setTimeout(() => {
-            //     this.alert.alertClass = 'fadeOutDown';
-            // }, 5000);
+            setTimeout(() => {
+                this.alert.alertClass = 'fadeOutDown';
+            }, 5000);
         });
     }
 

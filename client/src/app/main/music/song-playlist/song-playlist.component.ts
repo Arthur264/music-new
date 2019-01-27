@@ -51,10 +51,11 @@ export class SongPlaylistComponent implements OnInit {
         if (!this.selectPlaylistForm.valid) {
             return false;
         }
-        const url = `playlist/${this.selectPlaylistForm.value.name}/tracks`;
-        this.appService.post(url, {'song_id': this.song.id}).subscribe((res) => {
+        const playlist_name =  this.selectPlaylistForm.value.name;
+        const url = `playlist/${playlist_name}/tracks`;
+        this.appService.post(url, {'tracks': [this.song.id]}).subscribe((res) => {
             this.modalRef.hide();
-            this.alertService.success('Playlist created!');
+            this.alertService.success(`Song added to playlist ${playlist_name}`);
         }, (err) => {
             this.selectPlaylistForm.controls = FormsUtils.errorMessages(this.selectPlaylistForm.controls, err.json());
         });

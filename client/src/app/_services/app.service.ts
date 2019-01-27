@@ -56,7 +56,9 @@ export class AppService {
     }
 
     private getHeaders(req_headers={}) {
-        let headers = new Headers({'Content-Type': 'application/json'});
+        let headers = new Headers({
+            'Content-Type': 'application/json',
+        });
         if (this.accountService.token) {
             headers.set('Authorization', 'Token ' + this.accountService.token);
         }
