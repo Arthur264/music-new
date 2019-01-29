@@ -1,39 +1,37 @@
-<section class="scrollable padder-lg pb-60">
-    <div class="tz-music-genre audio">
-        <div class="tz-list audio">
-            <div class="list-all">
-                <div class="list-item tz-col-3" *ngFor="let music of arrayMusic">
-                    <div class="item">
-                        <div class="pos-rlt">
-                            <div class="item-overlay opacity r r-2x bg-black">
-                                <div class="center text-center m-t-n">
-                                    <a (click)="playSong(music)"><i class="fa fa-play-circle i-2x"></i></a>
-                                </div>
+<section class="scrollable padder-lg pb-60 tz-music-genre">
+    <div class="tz-list audio">
+        <div class="list-all">
+            <div class="list-item tz-col-3" *ngFor="let music of arrayMusic">
+                <div class="item">
+                    <div class="pos-rlt">
+                        <div class="item-overlay opacity r r-2x bg-black">
+                            <div class="center text-center m-t-n">
+                                <a (click)="playSong(music)"><i class="fa fa-play-circle i-2x"></i></a>
                             </div>
-                            <a class="mp-img" [ngStyle]="{ 'background-image': 'url(' + music.image + ')'}"></a>
                         </div>
-                        <div class="content">
-                            <h3><a>{{music.name}}</a></h3>
-                            <div class="mp-get-artist">
-                                <a [routerLink]="['/dashboard/music', music.artist.id]">{{music.artist.name}}</a>
-                            </div>
-                            <div class="mp-button absolute">
-                                <div class="mp_song_add">
+                        <a class="mp-img" [ngStyle]="{ 'background-image': 'url(' + music.image + ')'}"></a>
+                    </div>
+                    <div class="content">
+                        <h3><a>{{music.name}}</a></h3>
+                        <div class="mp-get-artist">
+                            <a [routerLink]="['/dashboard/music', music.artist.id]">{{music.artist.name}}</a>
+                        </div>
+                        <div class="mp-button absolute">
+                            <div class="mp_song_add">
                                     <span class="button-item mp_btn_add_song" title="Wishlist">
                                         <i class="fa fa-heart"></i>
                                     </span>
-                                </div>
-                                <a href="{{music.url}}" class="button-item btn-download" title="Download"
-                                   target="_blank" download>
-                                    <i class="fa fa-download"></i>
-                                </a>
-                                <a class="button-item" title="Remove" (click)="removeSong(music.id)">
-                                    <i class="fa fa-times"></i>
-                                </a>
                             </div>
-                            <span class="song_plays"><i
-                                    class="fa fa-headphones"></i>{{music.listeners_fm | number}}</span>
+                            <a href="{{music.url}}" class="button-item btn-download" title="Download"
+                               target="_blank" download>
+                                <i class="fa fa-download"></i>
+                            </a>
+                            <a class="button-item" title="Remove" (click)="removeSong(music.id)">
+                                <i class="fa fa-times"></i>
+                            </a>
                         </div>
+                        <span class="song_plays"><i
+                                class="fa fa-headphones"></i>{{music.listeners_fm | number}}</span>
                     </div>
                 </div>
             </div>
