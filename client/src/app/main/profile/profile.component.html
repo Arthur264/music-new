@@ -6,10 +6,12 @@
         <div class="row">
             <div class="col-sm-3">
                 <div class="text-center">
-                    <img src="{{user.avatar}}"
-                         (click)="fileInput.click()"
-                         class="avatar img-circle img-thumbnail"
-                         alt="avatar">
+                    <div class="avatar" [class.image-preload]="image_preload">
+                        <img src="{{user.avatar}}"
+                             (click)="fileInput.click()"
+                             class="img-circle img-thumbnai"
+                             alt="avatar">
+                    </div>
                     <input type="file"
                            (change)="onAvatarChanged($event)"
                            style="display: none;"
@@ -185,6 +187,9 @@
                        placeholder="url">
                 <div class="form-error" invalidmessage="link">
                     <p *invalidType="'required'">Please provide url</p>
+                </div>
+                <div class="form-error" invalidmessage="link">
+                    <p *invalidType="'response'"></p>
                 </div>
             </div>
 

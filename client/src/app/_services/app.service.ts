@@ -89,7 +89,7 @@ export class AppService {
     }
 
     public uploadFormData(url, body: FormData) {
-        const options = this.getOptions({}, body, {'Accept': 'application/json'});
+        const options = this.getOptions({}, body=body, {'Accept': 'application/json'});
         return this.http.post(this.getUrl(url), body, options)
             .map((res: Response) => res.json());
     }

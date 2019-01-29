@@ -1,28 +1,26 @@
-export class ItemsPoll<T> {
-    private _items: T[] = [];
+export class ItemsPoll<T> extends Array<T> {
 
-    constructor() {
+    constructor(items?: Array<T>) {
+        super(...items);
+        Object.setPrototypeOf(this, ItemsPoll.prototype);
     }
 
-    get() {
-        return this._items;
-    }
-
-    set(items: T[]) {
-        return this.create(items);
-    }
-
-    public remove(value, remove_by: string = 'id') {
-        this._items = this._items.filter((item) => {
-            return item[remove_by] != value;
+    public create(items: Array<T>) {
+        while (this.length > 0) {
+            this.pop();
+        }
+        items.forEach((item) => {
+            this.push(item);
         });
     }
 
-    public create(items: T[]) {
-        this._items = items;
-    }
-
-    public put(item: T) {
-        this._items.push(item);
+    remove(value, remove_by: string = 'id') {
+        let arr = this;
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i][remove_by] == value) {
+                delete arr[i];
+                break;
+            }
+        }
     }
 }

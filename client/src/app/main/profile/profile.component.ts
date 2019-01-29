@@ -6,6 +6,7 @@ import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {FormsUtils} from '../../utils/forms';
 import {PasswordValidation, UrlPattern} from '../../utils/validations';
 import {ApiRouting} from '../../api.routing';
+import {AppMessage} from '../../app.message';
 import {ItemsPoll} from '../../_core/items_poll';
 
 @Component({
@@ -20,6 +21,7 @@ export class ProfileComponent implements OnInit {
     public user: UserInterface;
     public modalRef: BsModalRef;
     public socialLinkItems = new ItemsPoll<SocialLinkInterface>();
+    public image_preload = false;
     @ViewChild('modalTemplate') modalTemplate: TemplateRef<any>;
 
     constructor(private accountService: AccountService,
@@ -49,8 +51,6 @@ export class ProfileComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log(this.socialLinkItems);
-        console.log(this.socialLinkItems);
         this._getSocialLink();
 
     }
@@ -58,58 +58,70 @@ export class ProfileComponent implements OnInit {
     private _getSocialLink() {
         this.appService.get(ApiRouting.social_link).subscribe((res) => {
             this.socialLinkItems.create(res.items);
+
         });
     }
 
     public submitChangePassword() {
-        if (this.changePasswordForm.valid) {
-            this.appService.post(ApiRouting.change_password, this.changePasswordForm.value).subscribe((res) => {
-                this.alertService.success('Password successfully changed!');
+        let form = this.changePasswordForm;
+        if (form.valid) {
+            this.appService.post(ApiRouting.change_password, form.value).subscribe((res) => {
+                this.alertService.success(AppMessage.password_change_success);
             }, (err) => {
-                this.changePasswordForm.controls = FormsUtils.errorMessages(this.changePasswordForm.controls, err.json());
+                FormsUtils.errorMessages(form.controls, err.json());
             });
         }
     }
 
     public submitChangeProfile() {
-        if (this.profileForm.valid) {
-            this.appService.post(ApiRouting.user_me, this.profileForm.value).subscribe((res) => {
-                this.alertService.success('Profile info successfully changed!');
+        let form = this.profileForm;
+        if (form.valid) {
+            this.appService.post(ApiRouting.user_me, form.value).subscribe((res) => {
+                this.alertService.success(AppMessage.profile_info_success);
             }, (err) => {
-                this.profileForm.controls = FormsUtils.errorMessages(this.profileForm.controls, err.json());
+                FormsUtils.errorMessages(form.controls, err.json());
             });
         }
     }
 
     public openModal() {
-        this.modalRef = this.modalService.show(this.modalTemplate, {class: 'modal-sm'});
+        this.modalRef = this.modalService.show(this.modalTemplate, {'class': 'modal-sm'});
     }
 
     public submitSocialLink() {
-        if (this.socialLinkForm.valid) {
-            this.appService.post(ApiRouting.social_link, this.socialLinkForm.value).subscribe((res) => {
-                this.alertService.success('Social link successfully crated!');
+        let form = this.socialLinkForm;
+        if (form.valid) {
+            this.appService.post(ApiRouting.social_link, form.value).subscribe((res) => {
+                this.alertService.success(AppMessage.social_link_success);
+                this.socialLinkItems.unshift(res);
                 this.modalRef.hide();
             }, (err) => {
-                this.socialLinkForm.controls = FormsUtils.errorMessages(this.socialLinkForm.controls, err.json());
+                FormsUtils.errorMessages(form.controls, err.json());
             });
         }
     }
-    public removeSocialLink(social_link_id){
+
+    public removeSocialLink(social_link_id) {
         let url = `${ApiRouting.social_link}/${social_link_id}`;
         this.appService.delete(url).subscribe((res) => {
-            this.alertService.denger('Social link successfully deleted!');
+            this.alertService.denger(AppMessage.social_link_delete);
             this.socialLinkItems.remove(social_link_id);
         });
     }
 
     public onAvatarChanged(event) {
         const file = event.target.files[0];
-        if (!('image' in file.type)) {
+        if (!file.type.includes('image')) {
             return false;
         }
+        this.image_preload = true;
         const uploadData = new FormData();
         uploadData.append('avatar', file, file.name);
-        // this.appService.uploadFormData()
+        this.appService.uploadFormData(ApiRouting.user_avatar, uploadData).subscribe((res) => {
+            this.alertService.success(AppMessage.user_avatar_success);
+        }, (err) => {
+            this.alertService.error(AppMessage.user_avatar_error);
+        });
+        this.image_preload = false;
     }
 }
