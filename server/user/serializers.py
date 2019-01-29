@@ -42,4 +42,4 @@ class ProfileSerializer(serializers.ModelSerializer):
 class SocialNetworkSerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialNetwork
-        fields = ('name', 'link')
+        fields = ('id', 'link', )

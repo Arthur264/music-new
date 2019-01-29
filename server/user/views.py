@@ -44,7 +44,7 @@ class ProfileViewSet(PatchMixin, viewsets.ModelViewSet):
         avatar_serializer.save()
         return Response(status=status.HTTP_200_OK)
 
-    @action(methods=['put'], permission_classes=[IsAdminOrIsSelf], url_path='avatar', detail=False)
+    @action(methods=['post'], permission_classes=[IsAdminOrIsSelf], url_path='avatar', detail=False)
     def avatar_update(self, request):
         avatar_serializer = AvatarSerializer(data=request.data, context={'request': request})
         avatar_serializer.is_valid(raise_exception=True)
