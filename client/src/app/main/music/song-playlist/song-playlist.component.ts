@@ -1,9 +1,9 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FormsUtils} from '../../../utils/forms';
-import {AppService, CacheService, AlertService, SongService} from '../../../_services';
+import {AlertService, AppService, CacheService, SongService} from '../../../_services';
 import {PlaylistInterface, SongInterface} from '../../../_interfaces';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {FormGroup, FormControl, Validators} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
     selector: 'app-song-playlist',

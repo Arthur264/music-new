@@ -1,7 +1,7 @@
-import {Component, OnInit, ViewChild, TemplateRef} from '@angular/core';
-import {FormControl, FormGroup, Validators, FormBuilder} from '@angular/forms';
-import {UserInterface, SocialLinkInterface} from '../../_interfaces';
-import {AccountService, AppService, AlertService} from '../../_services';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {SocialLinkInterface, UserInterface} from '../../_interfaces';
+import {AccountService, AlertService, AppService} from '../../_services';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {FormsUtils} from '../../utils/forms';
 import {PasswordValidation, UrlPattern} from '../../utils/validations';
@@ -56,7 +56,7 @@ export class ProfileComponent implements OnInit {
     }
 
     private _getSocialLink() {
-        this.appService.get(ApiRouting.social_link).subscribe((res) => {
+        this.appService.get(ApiRouting.user_social_link).subscribe((res) => {
             this.socialLinkItems.create(res.items);
 
         });
@@ -91,7 +91,7 @@ export class ProfileComponent implements OnInit {
     public submitSocialLink() {
         let form = this.socialLinkForm;
         if (form.valid) {
-            this.appService.post(ApiRouting.social_link, form.value).subscribe((res) => {
+            this.appService.post(ApiRouting.user_social_link, form.value).subscribe((res) => {
                 this.alertService.success(AppMessage.social_link_success);
                 this.socialLinkItems.unshift(res);
                 this.modalRef.hide();
@@ -102,7 +102,7 @@ export class ProfileComponent implements OnInit {
     }
 
     public removeSocialLink(social_link_id) {
-        let url = `${ApiRouting.social_link}/${social_link_id}`;
+        let url = `${ApiRouting.user_social_link}/${social_link_id}`;
         this.appService.delete(url).subscribe((res) => {
             this.alertService.denger(AppMessage.social_link_delete);
             this.socialLinkItems.remove(social_link_id);

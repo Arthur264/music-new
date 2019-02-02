@@ -1,21 +1,15 @@
 import {Injectable} from '@angular/core';
-import {Headers, Http, RequestOptions, Response, URLSearchParams,} from '@angular/http';
+import {Response, URLSearchParams,} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {AccountService} from './account.service';
 import {AppSettings} from '../app.settings';
-
-function login_redirect() {
-    return function (target, propertyKey: string, descriptor: PropertyDescriptor) {
-        console.log("g(): called");
-
-    }
-}
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable()
 export class AppService {
 
     constructor(
-        private http: Http,
+        private http: HttpClient,
         private accountService: AccountService,
     ) {
     }
@@ -56,7 +50,7 @@ export class AppService {
     }
 
     private getHeaders(req_headers={}) {
-        let headers = new Headers({
+        let headers = new HttpHeaders({
             'Content-Type': 'application/json',
         });
         if (this.accountService.token) {
@@ -85,11 +79,15 @@ export class AppService {
         if (body) {
             options['body'] = body;
         }
-        return new RequestOptions(options);
+        return options;
     }
 
     public uploadFormData(url, body: FormData) {
-        const options = this.getOptions({}, body=body, {'Accept': 'application/json'});
+        const headers = {
+            // 'Accept': 'application/json',
+            'enctype': 'multipart/form-data',
+        };
+        const options = this.getOptions({}, body, headers);
         return this.http.post(this.getUrl(url), body, options)
             .map((res: Response) => res.json());
     }

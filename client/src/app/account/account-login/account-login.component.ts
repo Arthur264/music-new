@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AccountService, AppService} from '../../_services';
 import {Router} from '@angular/router';
 import {FormsUtils} from '../../utils/forms';
+import {ApiRouting} from '../../api.routing';
 
 @Component({
     selector: 'app-account-login',
@@ -24,14 +25,12 @@ export class AccountLoginComponent implements OnInit {
 
     public loginSubmit(loginData) {
         if (this.loginForm.valid) {
-            this.appService.post('auth/login', loginData.value).subscribe((res) => {
+            this.appService.post(ApiRouting.auth_login, loginData.value).subscribe((res) => {
                 this.accountService.save(res);
                 this.router.navigate(['dashboard', 'music']);
             }, (err) => {
-                this.loginForm.controls = FormsUtils.errorMessages(this.loginForm.controls, err.json());
+                FormsUtils.errorMessages(this.loginForm.controls, err.json());
             });
-        } else {
-            return false;
         }
     }
 }

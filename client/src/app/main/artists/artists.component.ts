@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ArtistInterface, SongInterface, TagInterface} from '../../_interfaces';
+import {ArtistInterface, TagInterface} from '../../_interfaces';
 import {AppService, RouterService} from '../../_services';
 import {ActivatedRoute, Params} from '@angular/router';
 

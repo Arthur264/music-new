@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges, EventEmitter, Output,} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges,} from '@angular/core';
 import {AppService, RouterService} from '../../_services';
 import {AppConfig} from '../../app.config';
 

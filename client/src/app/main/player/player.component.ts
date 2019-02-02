@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SongInterface} from '../../_interfaces';
 import {AppService, PlayerService} from '../../_services';
+import {ApiRouting} from '../../api.routing';
 
 @Component({
     selector: 'app-player',
@@ -67,7 +68,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private changeSong(obj: SongInterface): void {
-        this.appService.get(`song/${obj.id}/addplay`).subscribe().unsubscribe();
+        this.appService.get(ApiRouting.song_add_play.format(obj.id)).subscribe().unsubscribe();
         this.audio.src = obj.url;
         this.currentSong = obj;
         this.audio.id = String(obj.id);
@@ -76,7 +77,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
             this.playSong();
         });
         this.audio.addEventListener('error', () => {
-            console.log(this.audio.error);
+            if(this.audio.error.code === 4){
+                this.appService.get(ApiRouting.song_hidden.format(obj.id)).subscribe();
+            }
         });
     }
 
@@ -181,7 +184,6 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
         if(!profit){
             this.offVolume()
         }
-        // volume_bar_value.style.width = `${profit * 100}%`;
     }
 
     public onOffVolume() {
