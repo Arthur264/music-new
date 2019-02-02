@@ -8,10 +8,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 @Injectable()
 export class AppService {
 
-    constructor(
-        private http: HttpClient,
-        private accountService: AccountService,
-    ) {
+    constructor(private http: HttpClient,
+                private accountService: AccountService,) {
     }
 
     public get(url, params = {}) {
@@ -49,14 +47,14 @@ export class AppService {
         return `${AppSettings.API_URL}${url}/`;
     }
 
-    private getHeaders(req_headers={}) {
+    private getHeaders(req_headers = {}) {
         let headers = new HttpHeaders({
             'Content-Type': 'application/json',
         });
         if (this.accountService.token) {
             headers.set('Authorization', 'Token ' + this.accountService.token);
         }
-        for(let prop in req_headers){
+        for (let prop in req_headers) {
             headers.set(prop, req_headers[prop]);
         }
         return headers;
@@ -71,7 +69,7 @@ export class AppService {
         return params;
     }
 
-    private getOptions(params = {}, body = {}, headers={}) {
+    private getOptions(params = {}, body = {}, headers = {}) {
         let options = {headers: this.getHeaders(headers)};
         if (params) {
             options['params'] = this.getParams(params);

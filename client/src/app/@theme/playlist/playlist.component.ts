@@ -16,12 +16,10 @@ export class PlaylistComponent implements OnInit {
     public playlistItems: PlaylistInterface[] = [];
     public modalRef: BsModalRef;
 
-    constructor(
-        private modalService: BsModalService,
-        private appService: AppService,
-        private cacheService: CacheService,
-        private alertService: AlertService,
-    ) {
+    constructor(private modalService: BsModalService,
+                private appService: AppService,
+                private cacheService: CacheService,
+                private alertService: AlertService,) {
         this.playlistForm = new FormGroup({
             name: new FormControl('', Validators.required)
         });
@@ -46,7 +44,7 @@ export class PlaylistComponent implements OnInit {
                 this.playlistForm.reset();
             }, (err) => {
                 const errors = err.json();
-                if(errors.slug){
+                if (errors.slug) {
                     const errorMes = {'name': ['Playlist with this name already exists']};
                     this.playlistForm.controls = FormsUtils.errorMessages(this.playlistForm.controls, errorMes);
                 }

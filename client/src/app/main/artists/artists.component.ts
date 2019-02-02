@@ -16,11 +16,9 @@ export class ArtistsComponent implements OnInit {
     public api_page_url: string = 'artist';
     public paginationQueryParams: Params = Object.assign({}, this.route.snapshot.queryParams);
 
-    constructor(
-        private appService: AppService,
-        private routerService: RouterService,
-        private route: ActivatedRoute,
-    ) {
+    constructor(private appService: AppService,
+                private routerService: RouterService,
+                private route: ActivatedRoute,) {
     }
 
     ngOnInit() {
@@ -35,7 +33,8 @@ export class ArtistsComponent implements OnInit {
         this.routerService.updateQueryParams({'tag': tag.slug});
         this.paginationQueryParams = Object.assign({}, this.paginationQueryParams, {'tag': tag.slug});
     }
-    public getArtistItems(item: ArtistInterface[]){
+
+    public getArtistItems(item: ArtistInterface[]) {
         this.arrayArtist = item;
     }
 }

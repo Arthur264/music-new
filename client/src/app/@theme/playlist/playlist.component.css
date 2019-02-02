@@ -15,10 +15,11 @@ a {
 .form-error p {
     margin-bottom: 0;
 }
-.form-group{
+
+.form-group {
     position: relative;
 }
 
-a.active .icon-playlist{
+a.active .icon-playlist {
     color: #23e080;
 }

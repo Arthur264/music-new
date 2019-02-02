@@ -37,7 +37,8 @@ export class ImageDirective implements OnInit {
         return this.appImage.name;
     }
 
-    @HostListener('error', ['$event']) errorHandlerImage($event) {
+    @HostListener('error', ['$event'])
+    errorHandlerImage($event) {
         const artistInterface = instanseofInterface(this.appImage, 'Artist');
         $event.target.src = artistInterface ? AppConfig.DEFAULT_ARTIST_IMAGE : AppConfig.DEFAULT_SONG_IMAGE;
     }

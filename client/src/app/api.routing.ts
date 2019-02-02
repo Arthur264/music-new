@@ -1,4 +1,4 @@
-export class ApiRouting{
+export class ApiRouting {
     static user_me = 'user/me';
     static user = 'user';
     static user_avatar = 'user/me/avatar';

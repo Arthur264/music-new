@@ -9,7 +9,7 @@ import {AppConfig} from '../../app.config';
     providers: [RouterService]
 })
 
-export class PaginationComponent implements OnInit,  OnChanges {
+export class PaginationComponent implements OnInit, OnChanges {
     @Input() public url_page: string;
     @Input() public query_params = {};
     @Output('changeItems') emitChangeItem: EventEmitter<any> = new EventEmitter<any>();
@@ -18,10 +18,8 @@ export class PaginationComponent implements OnInit,  OnChanges {
     private max_page: number = 10;
     private count_page = 30;
 
-    constructor(
-        private appService: AppService,
-        private routerService: RouterService,
-    ) {
+    constructor(private appService: AppService,
+                private routerService: RouterService,) {
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -98,6 +96,7 @@ export class PaginationComponent implements OnInit,  OnChanges {
         }
         this.current_page = n;
     }
+
     private makeItems(params = {}) {
         let req_params = Object.assign({}, params);
         req_params = this.updateQueryPage(req_params);

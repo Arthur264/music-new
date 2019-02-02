@@ -10,18 +10,17 @@ export class CacheService {
     private _cache$ = {};
     private _cacheObservable: { [s: string]: Observable<any> } = {};
 
-    constructor(
-        private appService: AppService,
-        ) {
+    constructor(private appService: AppService,) {
     }
 
     public get(url, items = 'items'): Observable<any> {
         return this._make_request(url, items);
     }
-    public addToCache(param_key: string, param_value){
-        if(Array.isArray(this._cache$[param_key])){
+
+    public addToCache(param_key: string, param_value) {
+        if (Array.isArray(this._cache$[param_key])) {
             this._cache$[param_key].push(param_value);
-        }else{
+        } else {
             this._cache$[param_key] = param_value;
         }
     }

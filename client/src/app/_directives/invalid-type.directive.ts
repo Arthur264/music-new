@@ -9,12 +9,10 @@ export class InvalidTypeDirective implements OnInit {
     @Input('invalidType') type: string;
     private hasView = false;
 
-    constructor(
-        private invalidmessage: InvalidmessageDirective,
-        private templateRef: TemplateRef<any>,
-        private viewContainer: ViewContainerRef,
-        private _el: ElementRef,
-    ) {
+    constructor(private invalidmessage: InvalidmessageDirective,
+                private templateRef: TemplateRef<any>,
+                private viewContainer: ViewContainerRef,
+                private _el: ElementRef,) {
     }
 
     ngOnInit() {

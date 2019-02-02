@@ -23,7 +23,7 @@ export class AlertComponent implements OnInit {
         });
     }
 
-    public removeAlert(){
+    public removeAlert() {
         this.alert = null;
     }
 

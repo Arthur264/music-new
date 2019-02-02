@@ -25,14 +25,12 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
     arrayMusic: SongInterface[];
     randomArrayMusic: SongInterface[];
 
-    get audio_volume_width(){
-        return this.audio.volume * 100 + '%'
+    get audio_volume_width() {
+        return this.audio.volume * 100 + '%';
     }
 
-    constructor(
-        private appService: AppService,
-        private playerService: PlayerService,
-    ) {
+    constructor(private appService: AppService,
+                private playerService: PlayerService,) {
         this.audio = new Audio();
     }
 
@@ -77,7 +75,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
             this.playSong();
         });
         this.audio.addEventListener('error', () => {
-            if(this.audio.error.code === 4){
+            if (this.audio.error.code === 4) {
                 this.appService.get(ApiRouting.song_hidden.format(obj.id)).subscribe();
             }
         });
@@ -181,8 +179,8 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
         let volume_bar_value = ev.target.querySelector('.volume-bar-value') || ev.target;
         const profit = ev.offsetX / volume_bar.clientWidth;
         this.audio.volume = profit;
-        if(!profit){
-            this.offVolume()
+        if (!profit) {
+            this.offVolume();
         }
     }
 
@@ -190,13 +188,15 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.volume) {
             return this.offVolume();
         }
-        return this.onVolume()
+        return this.onVolume();
     }
-    private offVolume(){
+
+    private offVolume() {
         this.audio.volume = 0;
         this.volume = false;
     }
-    private onVolume(){
+
+    private onVolume() {
         this.audio.volume = this.current_volume;
         this.volume = true;
     }

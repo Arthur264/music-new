@@ -15,9 +15,10 @@ export class HeaderSearchComponent implements OnInit {
 
     ngOnInit() {
     }
+
     @HostListener('document:click', ['$event.target'])
     clickOut(e) {
-        if(!e.closest('#header-search')){
+        if (!e.closest('#header-search')) {
             this.showDropdown = false;
         }
     }
@@ -27,8 +28,8 @@ export class HeaderSearchComponent implements OnInit {
             this.appService.get('search', {'q': searchValue}).subscribe(res => {
                 this.searchItems = [];
                 this.showDropdown = true;
-                for(let prop in res){
-                    for(const index in res[prop]){
+                for (let prop in res) {
+                    for (const index in res[prop]) {
                         let item = res[prop][index];
                         item['type'] = prop;
                         this.searchItems.push(item);
@@ -40,7 +41,7 @@ export class HeaderSearchComponent implements OnInit {
 
     public onBlur(event) {
         console.log(event);
-        if(!event.target.closest('#header-search')){
+        if (!event.target.closest('#header-search')) {
             this.showDropdown = false;
         }
     }
