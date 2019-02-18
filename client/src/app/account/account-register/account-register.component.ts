@@ -30,7 +30,7 @@ export class AccountRegisterComponent implements OnInit {
                 this.accountService.save(res);
                 this.router.navigate(['/dashboard', 'music']);
             }, (err) => {
-                this.registerForm.controls = FormsUtils.errorMessages(this.registerForm.controls, err.json());
+                this.registerForm.controls = FormsUtils.errorMessages(this.registerForm.controls, err.error);
             });
         } else {
             return false;

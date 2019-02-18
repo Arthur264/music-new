@@ -56,7 +56,7 @@ export class SongPlaylistComponent implements OnInit {
             this.modalRef.hide();
             this.alertService.success(`Song added to playlist ${playlist_name}`);
         }, (err) => {
-            this.selectPlaylistForm.controls = FormsUtils.errorMessages(this.selectPlaylistForm.controls, err.json());
+            this.selectPlaylistForm.controls = FormsUtils.errorMessages(this.selectPlaylistForm.controls, err.error);
         });
     }
 

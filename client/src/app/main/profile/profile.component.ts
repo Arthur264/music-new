@@ -68,7 +68,7 @@ export class ProfileComponent implements OnInit {
             this.appService.post(ApiRouting.change_password, form.value).subscribe((res) => {
                 this.alertService.success(AppMessage.password_change_success);
             }, (err) => {
-                FormsUtils.errorMessages(form.controls, err.json());
+                FormsUtils.errorMessages(form.controls, err.error);
             });
         }
     }
@@ -79,7 +79,7 @@ export class ProfileComponent implements OnInit {
             this.appService.post(ApiRouting.user_me, form.value).subscribe((res) => {
                 this.alertService.success(AppMessage.profile_info_success);
             }, (err) => {
-                FormsUtils.errorMessages(form.controls, err.json());
+                FormsUtils.errorMessages(form.controls, err.error);
             });
         }
     }
@@ -96,7 +96,7 @@ export class ProfileComponent implements OnInit {
                 this.socialLinkItems.unshift(res);
                 this.modalRef.hide();
             }, (err) => {
-                FormsUtils.errorMessages(form.controls, err.json());
+                FormsUtils.errorMessages(form.controls, err.error);
             });
         }
     }

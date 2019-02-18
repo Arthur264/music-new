@@ -32,7 +32,7 @@ export class PlaylistComponent implements OnInit {
     }
 
     public openModal(template: TemplateRef<any>) {
-        this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
+        this.modalRef = this.modalService.show(template, {'class': 'modal-sm'});
     }
 
     public playlistSubmit() {
@@ -43,10 +43,10 @@ export class PlaylistComponent implements OnInit {
                 this.alertService.success('Playlist created!');
                 this.playlistForm.reset();
             }, (err) => {
-                const errors = err.json();
+                const errors = err.error;
                 if (errors.slug) {
                     const errorMes = {'name': ['Playlist with this name already exists']};
-                    this.playlistForm.controls = FormsUtils.errorMessages(this.playlistForm.controls, errorMes);
+                    FormsUtils.errorMessages(this.playlistForm.controls, errorMes);
                 }
             });
         } else {

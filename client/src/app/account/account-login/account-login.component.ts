@@ -29,7 +29,8 @@ export class AccountLoginComponent implements OnInit {
                 this.accountService.save(res);
                 this.router.navigate(['dashboard', 'music']);
             }, (err) => {
-                FormsUtils.errorMessages(this.loginForm.controls, err.json());
+                console.log(err);
+                FormsUtils.errorMessages(this.loginForm.controls, err.error);
             });
         }
     }
