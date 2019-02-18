@@ -10,10 +10,8 @@ import {AppService, SongService} from '../../_services';
 export class FavoriteComponent implements OnInit {
     public arraySong: SongInterface[] = [];
 
-    constructor(
-        private appService: AppService,
-        private songService: SongService,
-    ) {
+    constructor(private appService: AppService,
+                private songService: SongService,) {
     }
 
     ngOnInit() {
@@ -26,14 +24,15 @@ export class FavoriteComponent implements OnInit {
         });
     }
 
-    public getSongItems(item: SongInterface[]){
+    public getSongItems(item: SongInterface[]) {
         this.arraySong = item;
         this.songService.emitSongArray(item);
     }
-    public getSongArray(){
+
+    public getSongArray() {
         this.songService.getSongArray().subscribe((items) => {
             this.arraySong = items;
-        })
+        });
     }
 
     public deleteFavoriteItem(song_id) {

@@ -1,30 +1,21 @@
 import {Injectable} from '@angular/core';
-import {Headers, Http, RequestOptions, Response, URLSearchParams,} from '@angular/http';
+import {Response, URLSearchParams,} from '@angular/http';
 import 'rxjs/add/operator/map';
 import {AccountService} from './account.service';
 import {AppSettings} from '../app.settings';
-
-function login_redirect() {
-    return function (target, propertyKey: string, descriptor: PropertyDescriptor) {
-        console.log("g(): called");
-
-    }
-}
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable()
 export class AppService {
 
-    constructor(
-        private http: Http,
-        private accountService: AccountService,
-    ) {
+    constructor(private http: HttpClient,
+                private accountService: AccountService,) {
     }
 
     public get(url, params = {}) {
         const options = this.getOptions(params);
         return this.http.get(this.getUrl(url), options)
-            .map((res: Response) => res.json());
-
+            .map((res: Response) => res.json())
     }
 
     public post(url, body) {
@@ -55,14 +46,14 @@ export class AppService {
         return `${AppSettings.API_URL}${url}/`;
     }
 
-    private getHeaders(req_headers={}) {
-        let headers = new Headers({
+    private getHeaders(req_headers = {}) {
+        let headers = new HttpHeaders({
             'Content-Type': 'application/json',
         });
         if (this.accountService.token) {
             headers.set('Authorization', 'Token ' + this.accountService.token);
         }
-        for(let prop in req_headers){
+        for (let prop in req_headers) {
             headers.set(prop, req_headers[prop]);
         }
         return headers;
@@ -77,7 +68,7 @@ export class AppService {
         return params;
     }
 
-    private getOptions(params = {}, body = {}, headers={}) {
+    private getOptions(params = {}, body = {}, headers = {}) {
         let options = {headers: this.getHeaders(headers)};
         if (params) {
             options['params'] = this.getParams(params);
@@ -85,11 +76,15 @@ export class AppService {
         if (body) {
             options['body'] = body;
         }
-        return new RequestOptions(options);
+        return options;
     }
 
     public uploadFormData(url, body: FormData) {
-        const options = this.getOptions({}, body=body, {'Accept': 'application/json'});
+        const headers = {
+            // 'Accept': 'application/json',
+            'enctype': 'multipart/form-data',
+        };
+        const options = this.getOptions({}, body, headers);
         return this.http.post(this.getUrl(url), body, options)
             .map((res: Response) => res.json());
     }

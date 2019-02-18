@@ -9,14 +9,12 @@ import {SongInterface} from '../../../_interfaces';
 })
 export class SongItemComponent implements OnInit {
     @Input('item') music: SongInterface;
-    @Input('has_playlist') has_playlist: boolean  = true;
+    @Input('has_playlist') has_playlist: boolean = true;
     @Output('deleteFavorite') deleteFavorite: EventEmitter<number> = new EventEmitter<number>();
 
-    constructor(
-        private playerService: PlayerService,
-        private appService: AppService,
-        private songService: SongService,
-    ) {
+    constructor(private playerService: PlayerService,
+                private appService: AppService,
+                private songService: SongService,) {
     }
 
     ngOnInit() {
@@ -41,7 +39,7 @@ export class SongItemComponent implements OnInit {
         return true;
     }
 
-    public playlist(song){
+    public playlist(song) {
         this.songService.emitPlaylistSong(song);
     }
 

@@ -18,13 +18,11 @@ export class MusicComponent implements OnInit {
     public song_ordering;
     public paginationQueryParams: Params = Object.assign({}, this.route.snapshot.queryParams);
 
-    constructor(
-        private appService: AppService,
-        private activatedRoute: ActivatedRoute,
-        private route: ActivatedRoute,
-        private routerService: RouterService,
-        private songService: SongService,
-    ) {
+    constructor(private appService: AppService,
+                private activatedRoute: ActivatedRoute,
+                private route: ActivatedRoute,
+                private routerService: RouterService,
+                private songService: SongService,) {
         this.getArtistId();
     }
 
@@ -46,14 +44,16 @@ export class MusicComponent implements OnInit {
             this.api_page_url = `artist/${artist_id}`;
         }
     }
-    public getSongItems(item: SongInterface[]){
+
+    public getSongItems(item: SongInterface[]) {
         this.arraySong = item;
         this.songService.emitSongArray(item);
     }
-    public getSongArray(){
+
+    public getSongArray() {
         this.songService.getSongArray().subscribe((items) => {
             this.arraySong = items;
-        })
+        });
     }
 
     private getSongOrdering() {
@@ -62,8 +62,9 @@ export class MusicComponent implements OnInit {
             this.changeOrdering(song_ordering);
         }
     }
-    public getArtistInfo(res){
-        if (res.name){
+
+    public getArtistInfo(res) {
+        if (res.name) {
             this.page_title = res.name;
         }
     }

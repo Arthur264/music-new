@@ -13,11 +13,9 @@ export class PlaylistPageDetailsComponent implements OnInit {
     private send_music: boolean = false;
     private playlist_slug: string;
 
-    constructor(
-        private appService: AppService,
-        private activatedRoute: ActivatedRoute,
-        private playerService: PlayerService,
-    ) {
+    constructor(private appService: AppService,
+                private activatedRoute: ActivatedRoute,
+                private playerService: PlayerService,) {
         this.playlist_slug = this.activatedRoute.snapshot.params['slug'];
     }
 

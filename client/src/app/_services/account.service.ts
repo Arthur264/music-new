@@ -44,10 +44,7 @@ export class AccountService {
     }
 
     public is_login() {
-        if (this.user != null || this.token != null) {
-            return true;
-        }
-        return false;
+        return this.user != null || this.token != null;
     }
 
     public logout() {

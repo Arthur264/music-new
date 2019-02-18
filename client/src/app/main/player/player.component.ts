@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {SongInterface} from '../../_interfaces';
 import {AppService, PlayerService} from '../../_services';
+import {ApiRouting} from '../../api.routing';
 
 @Component({
     selector: 'app-player',
@@ -24,14 +25,12 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
     arrayMusic: SongInterface[];
     randomArrayMusic: SongInterface[];
 
-    get audio_volume_width(){
-        return this.audio.volume * 100 + '%'
+    get audio_volume_width() {
+        return this.audio.volume * 100 + '%';
     }
 
-    constructor(
-        private appService: AppService,
-        private playerService: PlayerService,
-    ) {
+    constructor(private appService: AppService,
+                private playerService: PlayerService,) {
         this.audio = new Audio();
     }
 
@@ -67,7 +66,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private changeSong(obj: SongInterface): void {
-        this.appService.get(`song/${obj.id}/addplay`).subscribe().unsubscribe();
+        this.appService.get(ApiRouting.song_add_play.format(obj.id)).subscribe().unsubscribe();
         this.audio.src = obj.url;
         this.currentSong = obj;
         this.audio.id = String(obj.id);
@@ -76,7 +75,9 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
             this.playSong();
         });
         this.audio.addEventListener('error', () => {
-            console.log(this.audio.error);
+            if (this.audio.error.code === 4) {
+                this.appService.get(ApiRouting.song_hidden.format(obj.id)).subscribe();
+            }
         });
     }
 
@@ -178,23 +179,24 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
         let volume_bar_value = ev.target.querySelector('.volume-bar-value') || ev.target;
         const profit = ev.offsetX / volume_bar.clientWidth;
         this.audio.volume = profit;
-        if(!profit){
-            this.offVolume()
+        if (!profit) {
+            this.offVolume();
         }
-        // volume_bar_value.style.width = `${profit * 100}%`;
     }
 
     public onOffVolume() {
         if (this.volume) {
             return this.offVolume();
         }
-        return this.onVolume()
+        return this.onVolume();
     }
-    private offVolume(){
+
+    private offVolume() {
         this.audio.volume = 0;
         this.volume = false;
     }
-    private onVolume(){
+
+    private onVolume() {
         this.audio.volume = this.current_volume;
         this.volume = true;
     }

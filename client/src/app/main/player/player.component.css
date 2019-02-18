@@ -444,6 +444,7 @@ a.playlist-current:before {
         right: 0px;
     }
 }
-.controls .text-muted{
+
+.controls .text-muted {
     color: #232c32;
 }

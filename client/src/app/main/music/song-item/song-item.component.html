@@ -11,7 +11,7 @@
                 </a>
             </div>
             <div class="bottom padder m-b-sm">
-                <a  (click)="favorite(music); $event.stopPropagation()"
+                <a (click)="favorite(music); $event.stopPropagation()"
                    class="pull-right favorite">
                     <i class="fa"
                        [ngClass]="{'fa-heart-o': !music.favorite, 'fa-heart text-danger': music.favorite}">

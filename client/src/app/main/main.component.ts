@@ -23,7 +23,7 @@ export class MainComponent implements OnInit {
 
     }
 
-    public getSongItems(items: SongInterface[]){
+    public getSongItems(items: SongInterface[]) {
         this.arraySong = items;
     }
 

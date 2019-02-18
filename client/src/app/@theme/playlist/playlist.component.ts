@@ -16,12 +16,10 @@ export class PlaylistComponent implements OnInit {
     public playlistItems: PlaylistInterface[] = [];
     public modalRef: BsModalRef;
 
-    constructor(
-        private modalService: BsModalService,
-        private appService: AppService,
-        private cacheService: CacheService,
-        private alertService: AlertService,
-    ) {
+    constructor(private modalService: BsModalService,
+                private appService: AppService,
+                private cacheService: CacheService,
+                private alertService: AlertService,) {
         this.playlistForm = new FormGroup({
             name: new FormControl('', Validators.required)
         });
@@ -34,7 +32,7 @@ export class PlaylistComponent implements OnInit {
     }
 
     public openModal(template: TemplateRef<any>) {
-        this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
+        this.modalRef = this.modalService.show(template, {'class': 'modal-sm'});
     }
 
     public playlistSubmit() {
@@ -45,10 +43,10 @@ export class PlaylistComponent implements OnInit {
                 this.alertService.success('Playlist created!');
                 this.playlistForm.reset();
             }, (err) => {
-                const errors = err.json();
-                if(errors.slug){
+                const errors = err.error;
+                if (errors.slug) {
                     const errorMes = {'name': ['Playlist with this name already exists']};
-                    this.playlistForm.controls = FormsUtils.errorMessages(this.playlistForm.controls, errorMes);
+                    FormsUtils.errorMessages(this.playlistForm.controls, errorMes);
                 }
             });
         } else {

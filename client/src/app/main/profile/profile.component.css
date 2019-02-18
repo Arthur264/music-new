@@ -1,43 +1,49 @@
-.avatar{
+.avatar {
     display: inline-block;
     cursor: pointer;
 }
-.social-link-add{
+
+.social-link-add {
     cursor: pointer;
 }
-#profile_form{
+
+#profile_form {
     display: flex;
     flex-wrap: wrap;
 }
 
-#profile_form .form-group{
+#profile_form .form-group {
     width: 50%;
     padding-left: 15px;
     padding-right: 15px;
 }
-.form-error{
+
+.form-error {
     color: red;
     position: absolute;
 }
 
-.btn{
+.btn {
     margin-top: 10px;
 }
-.social-link{
+
+.social-link {
     display: block;
-    
+
 }
-.social-link:hover .remove-social-link{
+
+.social-link:hover .remove-social-link {
     display: inline-block;
-} 
-.remove-social-link{
+}
+
+.remove-social-link {
     display: none;
     float: right;
     transition: 0.3s;
 
 }
 
-.image-preload:after{
+.image-preload:after {
     left: 0;
     top: 0;
     content: '';

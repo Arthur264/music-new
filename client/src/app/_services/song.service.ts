@@ -9,9 +9,7 @@ export class SongService {
     private emit_player_song: boolean = false;
     private _eventSong: EventEmitter<SongInterface[]> = new EventEmitter<SongInterface[]>();
 
-    constructor(
-        private playerService: PlayerService,
-    ) {
+    constructor(private playerService: PlayerService,) {
     }
 
     public getSongArray() {
