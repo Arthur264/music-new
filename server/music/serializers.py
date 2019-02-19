@@ -134,3 +134,7 @@ class PlaylistTrackSerializer(serializers.Serializer):
             else:
                 instance.song.remove(song_instance)
         return instance
+        
+class SearchSerializer(serializers.Serializer):
+    q = serializers.CharField(min_length=40)
+    type = serializers.SlugField()

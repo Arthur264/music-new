@@ -165,14 +165,15 @@ class SearchViewSet(viewsets.ViewSet):
 
     def list(self, request):
         q_param = self.request.query_params.get('q')
+        type_param = self.request.query_params.get('type')
         if not q_param:
-            return
-
+            return response.Response(status.HTTP_400_BAD_REQUEST)
+        
+        paginator = InfoPagination()
         serializer_context = {'request': request}
-        song_queryset = Song.objects.filter(name__contains=q_param)[:5]
-        artist_queryset = Artist.objects.filter(name__contains=q_param)[:5]
-        data = {
-            'song': SongSerializer(song_queryset, many=True, context=serializer_context).data,
-            'artist': ArtistSerializer(artist_queryset, many=True, context=serializer_context).data,
-        }
-        return response.Response(data)
+        model = Song if type_param == 'song' else Artist
+        serializer = SongSerializer if type_param == 'song' else ArtistSerializer
+        queryset = model.objects.filter(name__contains=q_param)
+        result = paginator.paginate_queryset(queryset, request)
+        serializer_data = serializer(result, many=True, context={'request': request}).data
+        return response.Response(serializer_data)
