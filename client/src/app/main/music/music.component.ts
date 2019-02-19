@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {SongInterface} from '../../_interfaces';
 import {ActivatedRoute, Params} from '@angular/router';
-import {RouterService, SearchService, SongService} from '../../_services';
+import {RouterService, SearchService, SongService, AppService} from '../../_services';
 import {FilterItems} from '../../_items';
 
 @Component({
@@ -20,6 +20,7 @@ export class MusicComponent implements OnInit {
 
     constructor(private activatedRoute: ActivatedRoute,
                 private route: ActivatedRoute,
+                private appService: AppService,
                 private routerService: RouterService,
                 private searchService: SearchService,
                 private cdRef: ChangeDetectorRef,
@@ -34,8 +35,11 @@ export class MusicComponent implements OnInit {
     }
 
     private getSearch() {
-        this.searchService.getSearch().subscribe((value: string) => {
-            console.log('value', value);
+        this.searchService.getSearch().subscribe((searchValue: string) => {
+            console.log('value', searchValue);
+            this.appService.get('search', {'q': searchValue, 'type': 'song'}).subscribe(res => {
+                console.log('res', res);
+            })
         });
     }
 
