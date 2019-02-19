@@ -26,10 +26,10 @@ export class AccountLoginComponent implements OnInit {
     public loginSubmit(loginData) {
         if (this.loginForm.valid) {
             this.appService.post(ApiRouting.auth_login, loginData.value).subscribe((res) => {
+                console.log(res);
                 this.accountService.save(res);
                 this.router.navigate(['dashboard', 'music']);
             }, (err) => {
-                console.log(err);
                 FormsUtils.errorMessages(this.loginForm.controls, err.error);
             });
         }

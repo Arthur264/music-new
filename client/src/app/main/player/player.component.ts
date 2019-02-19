@@ -125,7 +125,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
         this.audio.play();
     }
 
-    private nextSong(): void {
+    public nextSong(): void {
         for (let i = 0; i < this.arrayMusic.length; i++) {
             if (this.arrayMusic[i].id === Number(this.audio.id)) {
                 if (i !== (this.arrayMusic.length - 1)) {
@@ -137,7 +137,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
         return this.stopSong();
     }
 
-    private prevSoung(): void {
+    public prevSong(): void {
         for (let i = 0; i < this.arrayMusic.length; i++) {
             if (this.arrayMusic[i].id === Number(this.audio.id)) {
                 if (i !== 0) {

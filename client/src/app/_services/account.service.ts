@@ -6,7 +6,6 @@ import {Router} from '@angular/router';
 @Injectable()
 export class AccountService {
     constructor(private router: Router) {
-
     }
 
     private _user: UserInterface;

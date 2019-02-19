@@ -6,16 +6,7 @@
                    class="form-control input-sm no-border rounded sbibod"
                    (input)="onSearch($event.target.value)"
                    (focus)="showDropdown = true;"
-                   placeholder="Search songs, artist...">
-        </div>
-        <div class="dropdown-content" *ngIf="showDropdown">
-            <a [routerLink]="item.type == 'artist' ? ['/dashboard/music', item.id]: '/dashboard/music'"
-               class="dropdown-item"
-               *ngFor="let item of searchItems" title="{{item.name}}">
-                <i *ngIf="item.type == 'song'" class="icon-playlist icon"></i>
-                <i *ngIf="item.type == 'artist'" class="fa fa-male"></i>
-                {{item.name}}
-            </a>
+                   placeholder="Search ...">
         </div>
     </div>
 </form>

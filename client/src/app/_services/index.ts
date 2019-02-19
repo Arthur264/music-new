@@ -5,4 +5,4 @@ export * from './router.service';
 export * from './app.service';
 export * from './player.service';
 export * from './song.service';
-
+export * from './search.service';

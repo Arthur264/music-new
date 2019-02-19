@@ -15,7 +15,7 @@ export class PaginationComponent implements OnInit, OnChanges {
     @Output('changeItems') emitChangeItem: EventEmitter<any> = new EventEmitter<any>();
     @Output('response') emitResponse: EventEmitter<any> = new EventEmitter<any>();
     private current_page: number = 1;
-    private max_page: number = 10;
+    public max_page: number = 10;
     private count_page = 30;
 
     constructor(private appService: AppService,

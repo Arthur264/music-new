@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import {Response, URLSearchParams,} from '@angular/http';
+import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import {AccountService} from './account.service';
 import {AppSettings} from '../app.settings';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 
 @Injectable()
 export class AppService {
@@ -12,34 +12,29 @@ export class AppService {
                 private accountService: AccountService,) {
     }
 
-    public get(url, params = {}) {
+    public get(url, params = {}): Observable<any> {
         const options = this.getOptions(params);
-        return this.http.get(this.getUrl(url), options)
-            .map((res: Response) => res.json())
+        return this.http.get(this.getUrl(url), options);
     }
 
-    public post(url, body) {
+    public post(url, body): Observable<any> {
         const options = this.getOptions({}, body);
-        return this.http.post(this.getUrl(url), body, options)
-            .map((res: Response) => res.json());
+        return this.http.post(this.getUrl(url), body, options);
     }
 
-    public delete(url, body = {}) {
+    public delete(url, body = {}): Observable<any> {
         const options = this.getOptions({}, body);
-        return this.http.delete(this.getUrl(url), options)
-            .map((res: Response) => res.json());
+        return this.http.delete(this.getUrl(url), options);
     }
 
-    public put(url, body) {
+    public put(url, body): Observable<any> {
         const options = this.getOptions({}, body);
-        return this.http.put(this.getUrl(url), body, options)
-            .map((res: Response) => res.json());
+        return this.http.put(this.getUrl(url), body, options);
     }
 
-    public patch(url, body) {
+    public patch(url, body): Observable<any> {
         const options = this.getOptions({}, body);
-        return this.http.patch(this.getUrl(url), body, options)
-            .map((res: Response) => res.json());
+        return this.http.patch(this.getUrl(url), body, options);
     }
 
     public getUrl(url) {
@@ -47,23 +42,23 @@ export class AppService {
     }
 
     private getHeaders(req_headers = {}) {
-        let headers = new HttpHeaders({
+        let headers = {
             'Content-Type': 'application/json',
-        });
+        };
         if (this.accountService.token) {
-            headers.set('Authorization', 'Token ' + this.accountService.token);
+            headers['Authorization'] = `Token ${this.accountService.token}`;
         }
         for (let prop in req_headers) {
-            headers.set(prop, req_headers[prop]);
+            headers[prop] = req_headers[prop];
         }
-        return headers;
+        return new HttpHeaders(headers);
     }
 
     private getParams(req_params) {
-        let params = new URLSearchParams();
+        let params = new HttpParams();
         params.append('format', 'json');
         for (const prop in req_params) {
-            params.append(String(prop), req_params[prop]);
+            params.set(String(prop), req_params[prop]);
         }
         return params;
     }
@@ -85,7 +80,6 @@ export class AppService {
             'enctype': 'multipart/form-data',
         };
         const options = this.getOptions({}, body, headers);
-        return this.http.post(this.getUrl(url), body, options)
-            .map((res: Response) => res.json());
+        return this.http.post(this.getUrl(url), body, options);
     }
 }

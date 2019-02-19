@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {SongInterface} from '../../_interfaces';
 import {ActivatedRoute, Params} from '@angular/router';
-import {AppService, RouterService, SongService} from '../../_services';
+import {RouterService, SearchService, SongService} from '../../_services';
 import {FilterItems} from '../../_items';
 
 @Component({
@@ -18,17 +18,25 @@ export class MusicComponent implements OnInit {
     public song_ordering;
     public paginationQueryParams: Params = Object.assign({}, this.route.snapshot.queryParams);
 
-    constructor(private appService: AppService,
-                private activatedRoute: ActivatedRoute,
+    constructor(private activatedRoute: ActivatedRoute,
                 private route: ActivatedRoute,
                 private routerService: RouterService,
-                private songService: SongService,) {
-        this.getArtistId();
+                private searchService: SearchService,
+                private cdRef: ChangeDetectorRef,
+                private songService: SongService) {
+        this._getArtistId();
     }
 
     ngOnInit() {
-        this.getSongOrdering();
+        this._getSongOrdering();
         this.getSongArray();
+        this.getSearch();
+    }
+
+    private getSearch() {
+        this.searchService.getSearch().subscribe((value: string) => {
+            console.log('value', value);
+        });
     }
 
     public changeOrdering(param) {
@@ -38,25 +46,26 @@ export class MusicComponent implements OnInit {
         this.paginationQueryParams = Object.assign({}, this.paginationQueryParams, {'ordering': order_id});
     }
 
-    private getArtistId() {
+    private _getArtistId() {
         const artist_id = this.activatedRoute.snapshot.params['id'];
         if (artist_id) {
             this.api_page_url = `artist/${artist_id}`;
         }
     }
 
-    public getSongItems(item: SongInterface[]) {
-        this.arraySong = item;
-        this.songService.emitSongArray(item);
+    public getSongItems(items: SongInterface[]) {
+        this.arraySong = items;
+        this.songService.emitSongArray(items);
     }
 
     public getSongArray() {
         this.songService.getSongArray().subscribe((items) => {
             this.arraySong = items;
+            this.cdRef.detectChanges();
         });
     }
 
-    private getSongOrdering() {
+    private _getSongOrdering() {
         const song_ordering = this.activatedRoute.snapshot.queryParams['ordering'];
         if (song_ordering) {
             this.changeOrdering(song_ordering);

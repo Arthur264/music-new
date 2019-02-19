@@ -22,7 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
                         this.accountService.logout();
                     }
                 }
-                return Observable.throw(err)
+                return Observable.throw(err);
             });
     }
 }
