@@ -1,6 +1,6 @@
 import numpy as np
 from django.db.models import Count
-from rest_framework import viewsets, response
+from rest_framework import viewsets, response, status
 from rest_framework.decorators import action
 
 from core.permissions import IsAdminOrIsSelf
@@ -78,7 +78,7 @@ class TagViewSet(viewsets.ModelViewSet):
 
 class SongViewSet(viewsets.ModelViewSet):
     serializer_class = SongSerializer
-    queryset = Song.objects.all()
+    queryset = Song.objects.filter(hidden=False)
     filter_class = SongFilter
     ordering_fields = '__all__'
 
@@ -113,6 +113,11 @@ class SongViewSet(viewsets.ModelViewSet):
         result = np.concatenate((top_songs, top_favorite_song), axis=0)
         res_data = SongSerializer(np.random.choice(result, 30), many=True, context={'request': request}).data
         return response.Response({'items': res_data})
+        
+    @action(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='hidden', detail=True)
+    def song_hidden(self, request, pk):
+        Song.objects.filter(pk=pk).update(hidden=True)
+        return response.Response(status=status.HTTP_200_OK)
 
 
 class ArtistViewSet(viewsets.ModelViewSet):

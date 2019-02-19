@@ -29,11 +29,6 @@ class ProfileViewSet(PatchMixin, viewsets.ModelViewSet):
     serializer_class = UserSerializer
     parser_classes = (FormParser, JSONParser, MultiPartParser)
 
-    def dispatch(self, request, *args, **kwargs):
-        result = super().dispatch(request, *args, **kwargs)
-        print(result)
-        return result
-    
     def get_queryset(self):
         return User.objects.filter(pk=self.request.user.pk)
 
@@ -46,7 +41,7 @@ class ProfileViewSet(PatchMixin, viewsets.ModelViewSet):
 
     @action(methods=['post'], permission_classes=[IsAdminOrIsSelf], url_path='avatar', detail=False)
     def avatar_update(self, request):
-        avatar_serializer = AvatarSerializer(data=request.data, context={'request': request})
+        avatar_serializer = AvatarSerializer(data=request.FILES, context={'request': request})
         avatar_serializer.is_valid(raise_exception=True)
         avatar_serializer.save()
         return Response(status=status.HTTP_200_OK)
