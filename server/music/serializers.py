@@ -134,7 +134,19 @@ class PlaylistTrackSerializer(serializers.Serializer):
             else:
                 instance.song.remove(song_instance)
         return instance
-        
+
+
 class SearchSerializer(serializers.Serializer):
-    q = serializers.CharField(min_length=40)
-    type = serializers.SlugField()
+    q = serializers.CharField(min_length=3, max_length=20)
+    type = serializers.CharField(max_length=10)
+
+    @staticmethod
+    def validate_type(field_type):
+        all_types = ['song', 'artist']
+        if field_type not in all_types:
+            raise serializers.ValidationError(f'Type field should one from {all_types}')
+
+        return field_type
+
+    def to_representation(self, instance):
+        return super().to_representation(instance)

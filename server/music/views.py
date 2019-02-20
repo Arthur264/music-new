@@ -22,6 +22,7 @@ from .serializers import (
     ListenerArtistSerializer,
     PlaylistTrackSerializer,
     FavoriteSerializer,
+    SearchSerializer,
 )
 
 
@@ -108,12 +109,13 @@ class SongViewSet(viewsets.ModelViewSet):
     @action(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='selection', detail=False)
     def selection(self, request):
         top_songs = np.random.choice(Song.objects.order_by('-listeners_fm')[:50], 40)
-        top_favorite_song_id = ListenerSong.objects.filter(user=request.user).values_list('song__artist__song', flat=True)
+        top_favorite_song_id = ListenerSong.objects.filter(user=request.user).values_list('song__artist__song',
+                                                                                          flat=True)
         top_favorite_song = np.random.choice(Song.objects.filter(id__in=list(top_favorite_song_id[:50])), 40)
         result = np.concatenate((top_songs, top_favorite_song), axis=0)
         res_data = SongSerializer(np.random.choice(result, 30), many=True, context={'request': request}).data
         return response.Response({'items': res_data})
-        
+
     @action(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='hidden', detail=True)
     def song_hidden(self, request, pk):
         Song.objects.filter(pk=pk).update(hidden=True)
@@ -164,16 +166,12 @@ class SearchViewSet(viewsets.ViewSet):
     permission_classes_by_action = {'list': [IsAdminOrIsSelf]}
 
     def list(self, request):
-        q_param = self.request.query_params.get('q')
-        type_param = self.request.query_params.get('type')
-        if not q_param:
-            return response.Response(status.HTTP_400_BAD_REQUEST)
-        
+        serializer = SearchSerializer(self.request.query_params)
+        serializer.is_valid(raise_exception=True)
         paginator = InfoPagination()
-        serializer_context = {'request': request}
-        model = Song if type_param == 'song' else Artist
-        serializer = SongSerializer if type_param == 'song' else ArtistSerializer
-        queryset = model.objects.filter(name__contains=q_param)
+        model = Song if serializer.data.type == 'song' else Artist
+        serializer = SongSerializer if serializer.data.type == 'song' else ArtistSerializer
+        queryset = model.objects.filter(name__contains=serializer.data.q)
         result = paginator.paginate_queryset(queryset, request)
         serializer_data = serializer(result, many=True, context={'request': request}).data
         return response.Response(serializer_data)

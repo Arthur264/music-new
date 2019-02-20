@@ -6,4 +6,3 @@ ADD requirements.txt /code/
 RUN pip install -r requirements.txt
 RUN apt-get update && apt-get install -y mysql-client && rm -rf /var/lib/apt
 ADD . /code
-#ENTRYPOINT ["sh", "./docker-entrypoint.sh"]
