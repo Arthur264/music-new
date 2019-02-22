@@ -12,11 +12,13 @@
                 <song-item [item]="song"></song-item>
             </div>
         </div>
-        <app-pagination
-                [url_page]="api_page_url"
-                (response)="getArtistInfo($event)"
-                (changeItems)='getSongItems($event)'
-                [query_params]='paginationQueryParams'
-        ></app-pagination>
+        <ng-container *ngIf="showPagination">
+            <app-pagination
+                    [url_page]="api_page_url"
+                    (response)="getArtistInfo($event)"
+                    (changeItems)='getSongItems($event)'
+                    [query_params]='paginationQueryParams'
+            ></app-pagination>
+        </ng-container>
     </section>
 </section>

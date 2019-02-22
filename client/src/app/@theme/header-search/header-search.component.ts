@@ -1,4 +1,4 @@
-import {Component, HostListener} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SearchService} from '../../_services';
 
 @Component({
@@ -6,28 +6,33 @@ import {SearchService} from '../../_services';
     templateUrl: './header-search.component.html',
     styleUrls: ['./header-search.component.css']
 })
-export class HeaderSearchComponent {
-    public showDropdown = false;
+export class HeaderSearchComponent implements OnInit {
+    public showSearch = false;
+    public inputValue: string = '';
 
     constructor(private searchService: SearchService) {
     }
 
-    @HostListener('document:click', ['$event.target'])
-    clickOut(e) {
-        if (!e.closest('#header-search')) {
-            this.showDropdown = false;
-        }
+    ngOnInit() {
+        this._getSearchText();
+        this._getActiveSearch();
+    }
+
+    private _getActiveSearch() {
+        this.searchService.getTurn().subscribe((value: boolean) => {
+            this.showSearch = value;
+        });
+    }
+
+    private _getSearchText() {
+        this.searchService.getSearch().subscribe((value: string) => {
+            this.inputValue = value;
+        });
     }
 
     public onSearch(searchValue: string) {
         if (searchValue && searchValue.length > 3) {
             this.searchService.setValue(searchValue);
-        }
-    }
-
-    public onBlur(event) {
-        if (!event.target.closest('#header-search')) {
-            this.showDropdown = false;
         }
     }
 }

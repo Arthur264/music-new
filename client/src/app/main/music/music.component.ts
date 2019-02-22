@@ -1,8 +1,10 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {SongInterface} from '../../_interfaces';
 import {ActivatedRoute, Params} from '@angular/router';
-import {RouterService, SearchService, SongService, AppService} from '../../_services';
+import {AppService, RouterService, SearchService, SongService} from '../../_services';
 import {FilterItems} from '../../_items';
+import {AutoUnsubscribe} from '../../utils/unsubscribe';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-music',
@@ -10,12 +12,17 @@ import {FilterItems} from '../../_items';
     styleUrls: ['./music.component.css'],
     providers: [RouterService]
 })
-export class MusicComponent implements OnInit {
+@AutoUnsubscribe(['_$searchSub', '_$searchServerSub', '_$songSub'])
+export class MusicComponent implements OnInit, OnDestroy {
+    private _$searchSub: Subscription;
+    private _$searchServerSub: Subscription;
+    private _$songSub: Subscription;
     public arraySong: SongInterface[] = [];
     public page_title: string = 'Songs';
     public api_page_url = 'song';
     public filterItems = FilterItems;
     public song_ordering;
+    public showPagination = true;
     public paginationQueryParams: Params = Object.assign({}, this.route.snapshot.queryParams);
 
     constructor(private activatedRoute: ActivatedRoute,
@@ -30,16 +37,21 @@ export class MusicComponent implements OnInit {
 
     ngOnInit() {
         this._getSongOrdering();
-        this.getSongArray();
-        this.getSearch();
+        this._getSongArray();
+        this._getSearch();
     }
 
-    private getSearch() {
-        this.searchService.getSearch().subscribe((searchValue: string) => {
-            console.log('value', searchValue);
-            this.appService.get('search', {'q': searchValue, 'type': 'song'}).subscribe(res => {
-                console.log('res', res);
-            })
+    private _getSearch() {
+        this.searchService.turnOn();
+        this._$searchSub = this.searchService.getSearch().subscribe((searchValue: string) => {
+            this.showPagination = false;
+            this._$searchServerSub = this.appService.get('search', {
+                'q': searchValue,
+                'type': 'song'
+            }).subscribe(res => {
+                this.page_title = searchValue;
+                this.getSongItems(res);
+            });
         });
     }
 
@@ -60,10 +72,11 @@ export class MusicComponent implements OnInit {
     public getSongItems(items: SongInterface[]) {
         this.arraySong = items;
         this.songService.emitSongArray(items);
+        this.cdRef.detectChanges();
     }
 
-    public getSongArray() {
-        this.songService.getSongArray().subscribe((items) => {
+    private _getSongArray() {
+        this._$songSub = this.songService.getSongArray().subscribe((items) => {
             this.arraySong = items;
             this.cdRef.detectChanges();
         });
@@ -80,5 +93,9 @@ export class MusicComponent implements OnInit {
         if (res.name) {
             this.page_title = res.name;
         }
+    }
+
+    ngOnDestroy() {
+        this.searchService.turnOff();
     }
 }

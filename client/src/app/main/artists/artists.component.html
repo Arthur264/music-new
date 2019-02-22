@@ -14,7 +14,7 @@
         </aside>
         <section class="vbox pb-40">
             <section class="scrollable padder-lg">
-                <h2 class="font-thin m-b">Artists</h2>
+                <h2 class="font-thin m-b">{{page_title}}</h2>
                 <div class="row row-sm">
                     <a class="col-xs-6 col-sm-4 col-md-3 col-lg-2"
                        [routerLink]="['/dashboard/music', artist.id]"
@@ -35,11 +35,13 @@
                         </div>
                     </a>
                 </div>
-                <app-pagination
-                        [url_page]="api_page_url"
-                        (changeItems)='getArtistItems($event)'
-                        [query_params]='paginationQueryParams'
-                ></app-pagination>
+                <ng-container *ngIf="showPagination">
+                    <app-pagination
+                            [url_page]="api_page_url"
+                            (changeItems)='getArtistItems($event)'
+                            [query_params]='paginationQueryParams'
+                    ></app-pagination>
+                </ng-container>
             </section>
         </section>
     </section>

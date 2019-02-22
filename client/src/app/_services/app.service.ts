@@ -55,12 +55,7 @@ export class AppService {
     }
 
     private getParams(req_params) {
-        let params = new HttpParams();
-        params.append('format', 'json');
-        for (const prop in req_params) {
-            params.set(String(prop), req_params[prop]);
-        }
-        return params;
+        return new HttpParams({fromObject: {...req_params, 'format': 'json'}});
     }
 
     private getOptions(params = {}, body = {}, headers = {}) {

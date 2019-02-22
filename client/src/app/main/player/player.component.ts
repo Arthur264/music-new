@@ -67,7 +67,7 @@ export class PlayerComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private changeSong(obj: SongInterface): void {
         this.appService.get(ApiRouting.song_add_play.format(obj.id)).subscribe().unsubscribe();
-        this.audio.src = obj.url;
+        this.audio.src = obj.url + '?play=on';
         this.currentSong = obj;
         this.audio.id = String(obj.id);
         this.audio.currentTime = 0;
