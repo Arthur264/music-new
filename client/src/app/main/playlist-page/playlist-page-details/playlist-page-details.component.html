@@ -1,7 +1,14 @@
 <section class="scrollable padder-lg pb-60 tz-music-genre">
-    <div class="tz-list audio">
+    <div class="tz-list audio" *ngIf="playlist">
+        <div class="header-group">
+            <h2 class="font-thin m-b">{{playlist.name}}</h2>
+            <div class="audio-button">
+                <button class="btn btn-s-md btn-success btn-rounded">Play</button>
+                <button class="btn btn-s-md btn-danger btn-rounded">Remove</button>
+            </div>
+        </div>
         <div class="list-all">
-            <div class="list-item tz-col-3" *ngFor="let music of arrayMusic">
+            <div class="list-item tz-col-3" *ngFor="let music of playlist['song']">
                 <div class="item">
                     <div class="pos-rlt">
                         <div class="item-overlay opacity r r-2x bg-black">

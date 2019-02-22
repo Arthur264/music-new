@@ -1,17 +1,19 @@
 <section id="main-content">
     <section class="hbox stretch">
-        <aside class="aside bg-light dk" id="sidebar">
-            <section class="vbox animated fadeInUp">
-                <section class="scrollable hover">
-                    <div class="list-group no-radius no-border no-bg m-t-n-xxs m-b-none auto">
-                        <a class="list-group-item tag-item"
-                           (click)='changeTag(tag, i)'
-                           [class.active]="activeTagIndex === i"
-                           *ngFor="let tag of arrayTag; let i = index">{{tag.name}}</a>
-                    </div>
+        <ng-container *ngIf="showPagination">
+            <aside class="aside bg-light dk" id="sidebar">
+                <section class="vbox animated fadeInUp">
+                    <section class="scrollable hover">
+                        <div class="list-group no-radius no-border no-bg m-t-n-xxs m-b-none auto">
+                            <a class="list-group-item tag-item"
+                               (click)='changeTag(tag, i)'
+                               [class.active]="activeTagIndex === i"
+                               *ngFor="let tag of arrayTag; let i = index">{{tag.name}}</a>
+                        </div>
+                    </section>
                 </section>
-            </section>
-        </aside>
+            </aside>
+        </ng-container>
         <section class="vbox pb-40">
             <section class="scrollable padder-lg">
                 <h2 class="font-thin m-b">{{page_title}}</h2>

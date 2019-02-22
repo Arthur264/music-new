@@ -1,10 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterContentChecked, Component, OnDestroy, OnInit} from '@angular/core';
 import {ArtistInterface, TagInterface} from '../../_interfaces';
-import {AppService, RouterService} from '../../_services';
+import {AppService, RouterService, SearchService} from '../../_services';
 import {ActivatedRoute, Params} from '@angular/router';
 import {AutoUnsubscribe} from '../../utils/unsubscribe';
 import {Subscription} from 'rxjs';
-import {SearchService} from '../../_services/search.service';
+import {ApiRouting} from '../../api.routing';
 
 @Component({
     selector: 'app-artists',
@@ -13,7 +13,7 @@ import {SearchService} from '../../_services/search.service';
     providers: [RouterService]
 })
 @AutoUnsubscribe(['_$tagSub', '_$searchSub', '_$searchServerSub'])
-export class ArtistsComponent implements OnInit, OnDestroy {
+export class ArtistsComponent implements OnInit, OnDestroy, AfterContentChecked {
     private _$tagSub: Subscription;
     private _$searchSub: Subscription;
     private _$searchServerSub: Subscription;
@@ -36,14 +36,14 @@ export class ArtistsComponent implements OnInit, OnDestroy {
         this._getSearch();
     }
 
-    private _getSearch() {
+    ngAfterContentChecked() {
         this.searchService.turnOn();
+    }
+
+    private _getSearch() {
         this._$searchSub = this.searchService.getSearch().subscribe((searchValue: string) => {
             this.showPagination = false;
-            this._$searchServerSub = this.appService.get('search', {
-                'q': searchValue,
-                'type': 'artist'
-            }).subscribe(res => {
+            this._$searchServerSub = this.searchService.search(searchValue, 'artist').subscribe(res => {
                 this.page_title = searchValue;
                 this.getArtistItems(res);
             });
@@ -51,14 +51,14 @@ export class ArtistsComponent implements OnInit, OnDestroy {
     }
 
     private _getTag() {
-        this._$tagSub = this.appService.get('tag').subscribe((res) => {
+        this._$tagSub = this.appService.get(ApiRouting.tag).subscribe((res) => {
             this.arrayTag = res.items;
         });
     }
 
     public changeTag(tag, index) {
         this.activeTagIndex = index;
-        this.api_page_url = `tag/${tag.slug}`;
+        this.api_page_url = ApiRouting.tag_details.format(tag.slug);
         this.routerService.updateQueryParams({'tag': tag.slug});
         this.paginationQueryParams = Object.assign({}, this.paginationQueryParams, {'tag': tag.slug});
     }

@@ -1,19 +1,20 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterContentChecked, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {SongInterface} from '../../_interfaces';
 import {ActivatedRoute, Params} from '@angular/router';
-import {AppService, RouterService, SearchService, SongService} from '../../_services';
+import {RouterService, SearchService, SongService} from '../../_services';
 import {FilterItems} from '../../_items';
 import {AutoUnsubscribe} from '../../utils/unsubscribe';
 import {Subscription} from 'rxjs';
+import {ApiRouting} from '../../api.routing';
 
 @Component({
     selector: 'app-music',
     templateUrl: './music.component.html',
     styleUrls: ['./music.component.css'],
-    providers: [RouterService]
+    providers: [RouterService],
 })
 @AutoUnsubscribe(['_$searchSub', '_$searchServerSub', '_$songSub'])
-export class MusicComponent implements OnInit, OnDestroy {
+export class MusicComponent implements OnInit, OnDestroy, AfterContentChecked {
     private _$searchSub: Subscription;
     private _$searchServerSub: Subscription;
     private _$songSub: Subscription;
@@ -27,7 +28,6 @@ export class MusicComponent implements OnInit, OnDestroy {
 
     constructor(private activatedRoute: ActivatedRoute,
                 private route: ActivatedRoute,
-                private appService: AppService,
                 private routerService: RouterService,
                 private searchService: SearchService,
                 private cdRef: ChangeDetectorRef,
@@ -41,14 +41,14 @@ export class MusicComponent implements OnInit, OnDestroy {
         this._getSearch();
     }
 
-    private _getSearch() {
+    ngAfterContentChecked() {
         this.searchService.turnOn();
+    }
+
+    private _getSearch() {
         this._$searchSub = this.searchService.getSearch().subscribe((searchValue: string) => {
             this.showPagination = false;
-            this._$searchServerSub = this.appService.get('search', {
-                'q': searchValue,
-                'type': 'song'
-            }).subscribe(res => {
+            this._$searchServerSub = this.searchService.search(searchValue).subscribe(res => {
                 this.page_title = searchValue;
                 this.getSongItems(res);
             });
@@ -65,7 +65,7 @@ export class MusicComponent implements OnInit, OnDestroy {
     private _getArtistId() {
         const artist_id = this.activatedRoute.snapshot.params['id'];
         if (artist_id) {
-            this.api_page_url = `artist/${artist_id}`;
+            this.api_page_url = ApiRouting.artist_details.format(artist_id);
         }
     }
 

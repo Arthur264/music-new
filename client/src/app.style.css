@@ -5,14 +5,17 @@
 html, body {
     overflow: hidden;
 }
-.pb-60{
+
+.pb-60 {
     padding-bottom: 60px;
 }
-#main-content{
+
+#main-content {
     height: 100vh;
     overflow: auto;
 }
-alert{
+
+alert {
     position: fixed;
     right: 30px;
     bottom: 0;
@@ -157,6 +160,7 @@ alert{
 .alert-dark .alert-link {
     color: #040505
 }
+
 .custom-select {
     display: inline-block;
     width: 100%;
@@ -177,7 +181,7 @@ alert{
 .custom-select:focus {
     border-color: #80bdff;
     outline: 0;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,.075),0 0 5px rgba(128,189,255,.5)
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .075), 0 0 5px rgba(128, 189, 255, .5)
 }
 
 .custom-select:focus::-ms-value {
@@ -185,7 +189,7 @@ alert{
     background-color: #fff
 }
 
-.custom-select[multiple],.custom-select[size]:not([size="1"]) {
+.custom-select[multiple], .custom-select[size]:not([size="1"]) {
     height: auto;
     padding-right: .75rem;
     background-image: none
@@ -213,15 +217,17 @@ alert{
     padding-bottom: .375rem;
     font-size: 125%
 }
-.modal-header{
+
+.modal-header {
     display: flex;
     justify-content: space-between;
 }
-.ng-select .ng-clear-wrapper{
+
+.ng-select .ng-clear-wrapper {
     display: none;
 }
 
-.modal-sm .modal-footer{
+.modal-sm .modal-footer {
     padding: 10px 20px 10px;
     margin-top: 0;
 }
