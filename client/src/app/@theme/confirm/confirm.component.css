@@ -1,0 +1,14 @@
+.modal-footer {
+    border: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal-footer::before, .modal-footer::after {
+    content: none;
+    display: none;
+}
+
+.modal-header {
+    justify-content: center;
+}

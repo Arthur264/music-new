@@ -1,0 +1,19 @@
+<ng-template #modalTemplate>
+    <div class="modal-header text-center">
+        <h4 class="modal-title">Confirm</h4>
+    </div>
+    <div class="modal-footer">
+        <button
+                type="button"
+                class="btn btn-danger"
+                (click)="submitSocialLink()"
+        >Cancel
+        </button>
+        <button
+                type="button"
+                class="btn btn-success"
+                (click)="submitSocialLink()"
+        >Ok
+        </button>
+    </div>
+</ng-template>

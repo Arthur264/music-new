@@ -3,7 +3,7 @@
         <span class="pull-right">
             <a (click)="openModal(template)"><i class="icon-plus i-lg"></i></a>
         </span>
-        Playlist
+        <a [routerLink]="['/dashboard/playlist']">Playlists</a>
     </li>
     <li *ngFor="let playlistItem of playlistItems">
         <a [routerLink]="['/dashboard/playlist', playlistItem.slug]" routerLinkActive="active">

@@ -14,6 +14,7 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {MyFavoriteComponent} from './my-favorite/my-favorite.component';
 import {WidgetModule} from '../widget/widget.module';
+import {ConfirmComponent} from './confirm/confirm.component';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import {WidgetModule} from '../widget/widget.module';
         AsideComponent,
         AlertComponent,
         MyFavoriteComponent,
+        ConfirmComponent,
     ],
     exports: [
         HeaderSearchComponent,
@@ -45,6 +47,7 @@ import {WidgetModule} from '../widget/widget.module';
         MainMenuComponent,
         AsideComponent,
         AlertComponent,
+        ConfirmComponent,
     ]
 })
 export class ThemeModule {
