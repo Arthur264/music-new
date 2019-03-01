@@ -9,6 +9,7 @@ import {SearchService} from '../../_services';
 export class HeaderSearchComponent implements OnInit {
     public showSearch = false;
     public inputValue: string = '';
+    private _timeoutSearch = null;
 
     constructor(private searchService: SearchService) {
     }
@@ -31,8 +32,12 @@ export class HeaderSearchComponent implements OnInit {
     }
 
     public onSearch(searchValue: string) {
+        let self = this;
         if (searchValue && searchValue.length > 3) {
-            this.searchService.setValue(searchValue);
+            clearTimeout(this._timeoutSearch);
+            this._timeoutSearch = setTimeout(function () {
+                self.searchService.setValue(searchValue);
+            }, 1000);
         }
     }
 }

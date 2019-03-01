@@ -5,7 +5,7 @@
             <input type="search"
                    [value]="inputValue"
                    class="form-control input-sm no-border rounded sbibod"
-                   (input)="onSearch($event.target.value)"
+                   (keyup)="onSearch($event.target.value)"
                    (focus)="showDropdown = true;"
                    placeholder="Search ...">
         </div>

@@ -30,7 +30,7 @@ export class ImageDirective implements OnInit {
                 return AppConfig.DEFAULT_SONG_IMAGE;
             }
         }
-        return item.image ? item.image : item.artist.image;
+        return item.image || item.artist.image;
     }
 
     private getAlt() {

@@ -50,4 +50,8 @@ export class PlaylistPageDetailsComponent implements OnInit {
         });
     }
 
+    public removePlaylist(){
+
+    }
+
 }
