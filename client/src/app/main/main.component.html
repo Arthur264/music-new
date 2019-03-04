@@ -18,20 +18,22 @@
             </section>
         </aside>
         <!-- /.aside -->
-
-        <!--<section id="main-content" *ngIf="mainComponent">-->
-        <!--<section class="vboxv scrollable padder-lg pb-60">-->
-        <!--<div class="row row-sm main-list">-->
-        <!--<div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let song of arraySong">-->
-        <!--<song-item [item]="song"></song-item>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<app-pagination-->
-        <!--[url_page]="'song/selection'"-->
-        <!--(changeItems)='getSongItems($event)'-->
-        <!--&gt;</app-pagination>-->
-        <!--</section>-->
-        <!--</section>-->
+        <div>
+            <section id="main-content" *ngIf="mainComponent">
+                <section class="vboxv scrollable padder-lg pb-60">
+                    <h2 class="font-thin m-b">Trends</h2>
+                    <div class="row row-sm main-list">
+                        <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let song of arraySong">
+                            <song-item [item]="song"></song-item>
+                        </div>
+                    </div>
+                    <app-pagination
+                            [url_page]="'song/selection'"
+                            (changeItems)='getSongItems($event)'
+                    ></app-pagination>
+                </section>
+            </section>
+        </div>
 
         <router-outlet></router-outlet>
         <app-song-playlist></app-song-playlist>

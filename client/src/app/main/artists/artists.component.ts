@@ -1,4 +1,4 @@
-import {AfterContentChecked, Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterContentChecked, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {ArtistInterface, TagInterface} from '../../_interfaces';
 import {AppService, RouterService, SearchService} from '../../_services';
 import {ActivatedRoute, Params} from '@angular/router';
@@ -28,6 +28,7 @@ export class ArtistsComponent implements OnInit, OnDestroy, AfterContentChecked 
     constructor(private appService: AppService,
                 private routerService: RouterService,
                 private searchService: SearchService,
+                private cdRef: ChangeDetectorRef,
                 private route: ActivatedRoute) {
     }
 
@@ -65,6 +66,7 @@ export class ArtistsComponent implements OnInit, OnDestroy, AfterContentChecked 
 
     public getArtistItems(items: ArtistInterface[]) {
         this.arrayArtist = items;
+        this.cdRef.detectChanges();
     }
 
     ngOnDestroy() {
