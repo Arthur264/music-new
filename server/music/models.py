@@ -20,7 +20,7 @@ class Tag(models.Model):
 
 
 class Artist(BaseModel):
-    name = models.CharField(max_length=100, unique=True, validators=[MinLengthValidator(3)])
+    name = models.CharField(max_length=100, unique=True, validators=[MinLengthValidator(3)], db_index=True)
     image = models.URLField(max_length=500, null=True, blank=True)
     listeners_fm = models.IntegerField(null=True, blank=True)
     playcount_fm = models.IntegerField(null=True, blank=True)
@@ -30,9 +30,6 @@ class Artist(BaseModel):
 
     class Meta:
         ordering = ['-listeners_fm']
-        indexes = [
-            models.Index(fields=['id']),
-        ]
 
     @property
     def all_songs(self):
@@ -43,7 +40,7 @@ class Artist(BaseModel):
 
 
 class Song(BaseModel):
-    name = models.CharField(max_length=100, validators=[MinLengthValidator(3)])
+    name = models.CharField(max_length=100, validators=[MinLengthValidator(3)], db_index=True)
     url = models.URLField(unique=True)
     duration = models.IntegerField(null=True, blank=True)
     image = models.URLField(max_length=500, null=True, blank=True)
@@ -56,10 +53,6 @@ class Song(BaseModel):
 
     class Meta:
         unique_together = ('name', 'artist')
-        ordering = ['-listeners_fm']
-        indexes = [
-            models.Index(fields=['id']),
-        ]
 
     @property
     def listeners(self):

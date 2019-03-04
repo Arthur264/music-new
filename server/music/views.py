@@ -1,5 +1,5 @@
 import numpy as np
-from django.db.models import Count
+from django.db.models import Count, Q
 from rest_framework import viewsets, response, status
 from rest_framework.decorators import action
 
@@ -27,8 +27,6 @@ from .serializers import (
 
 
 class FavoriteViewSet(viewsets.ViewSet):
-    permission_classes_by_action = {'list': [IsAdminOrIsSelf]}
-
     def list(self, request):
         user = request.user
         serializer = SongSerializer(user.favorite.all(), many=True, context={'request': request})
@@ -51,7 +49,7 @@ class PlaylistViewSet(viewsets.ModelViewSet):
         serializer.save(user=request.user)
         return response.Response(serializer.data)
 
-    @action(methods=['post', 'delete'], permission_classes=[IsAdminOrIsSelf], url_path='tracks', detail=True)
+    @action(methods=['post', 'delete'], url_path='tracks', detail=True)
     def add_track_to_playlist(self, request, slug):
         tracks = request.data.pop('tracks', [])
         serializer = PlaylistTrackSerializer(data={'tracks': tracks, 'slug': slug})
@@ -62,7 +60,7 @@ class PlaylistViewSet(viewsets.ModelViewSet):
 
 class TagViewSet(viewsets.ModelViewSet):
     serializer_class = TagSerializer
-    queryset = Tag.objects.annotate(q_count=Count('artists')).order_by('artists')
+    queryset = Tag.objects.prefetch_related('artists').annotate(q_count=Count('artists')).order_by('q_count')
     lookup_field = 'slug'
 
     def retrieve(self, request, *args, **kwargs):
@@ -79,9 +77,13 @@ class TagViewSet(viewsets.ModelViewSet):
 
 class SongViewSet(viewsets.ModelViewSet):
     serializer_class = SongSerializer
-    queryset = Song.objects.filter(hidden=False)
     filter_class = SongFilter
     ordering_fields = '__all__'
+    
+    def get_queryset(self):
+        return Song.objects.filter(hidden=False).prefetch_related('artist', 'artist__tag', 'favorite').annotate(
+            favorite_count=Count('favorite', filter=Q(favorite__pk=self.request.user.pk))
+        )
 
     def create(self, request, *args, **kwargs):
         serializer_data = request.data
@@ -92,21 +94,21 @@ class SongViewSet(viewsets.ModelViewSet):
         serializer_song.save()
         return response.Response(serializer_song.data)
 
-    @action(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='addplay', detail=True)
+    @action(methods=['get'], url_path='addplay', detail=True)
     def add_play(self, request, pk):
         serializer = ListenerArtistSerializer(data={'song': pk, 'user': request.user.pk})
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return response.Response(serializer.data)
 
-    @action(methods=['get', 'delete'], permission_classes=[IsAdminOrIsSelf], url_path='favorite', detail=True)
+    @action(methods=['get', 'delete'], url_path='favorite', detail=True)
     def favorite(self, request, pk):
         serializer = FavoriteSerializer(data={'song': pk}, context={'request': request})
         serializer.is_valid(raise_exception=True)
         serializer.operation(request.method == 'DELETE')
         return response.Response(serializer.data)
 
-    @action(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='selection', detail=False)
+    @action(methods=['get'], url_path='selection', detail=False)
     def selection(self, request):
         top_songs = np.random.choice(Song.objects.order_by('-listeners_fm')[:50], 40)
         top_favorite_song_id = ListenerSong.objects.filter(user=request.user).values_list('song__artist__song',
@@ -116,7 +118,7 @@ class SongViewSet(viewsets.ModelViewSet):
         res_data = SongSerializer(np.random.choice(result, 30), many=True, context={'request': request}).data
         return response.Response({'items': res_data})
 
-    @action(methods=['get'], permission_classes=[IsAdminOrIsSelf], url_path='hidden', detail=True)
+    @action(methods=['get'], url_path='hidden', detail=True)
     def song_hidden(self, request, pk):
         Song.objects.filter(pk=pk).update(hidden=True)
         return response.Response(status=status.HTTP_200_OK)
@@ -124,7 +126,7 @@ class SongViewSet(viewsets.ModelViewSet):
 
 class ArtistViewSet(viewsets.ModelViewSet):
     serializer_class = ArtistSerializer
-    queryset = Artist.objects.all()
+    queryset = Artist.objects.all().prefetch_related('tag')
     ordering_fields = '__all__'
 
     def retrieve(self, request, pk):
@@ -163,15 +165,18 @@ class ArtistViewSet(viewsets.ModelViewSet):
 
 
 class SearchViewSet(viewsets.ViewSet):
-    permission_classes_by_action = {'list': [IsAdminOrIsSelf]}
 
     def list(self, request):
-        serializer = SearchSerializer(self.request.query_params)
+        serializer = SearchSerializer(data=self.request.query_params)
         serializer.is_valid(raise_exception=True)
         paginator = InfoPagination()
-        model = Song if serializer.data.type == 'song' else Artist
-        serializer = SongSerializer if serializer.data.type == 'song' else ArtistSerializer
-        queryset = model.objects.filter(name__contains=serializer.data.q)
+        if self.request.query_params['type'] == 'song':
+            model = Song
+            serializer = SongSerializer
+        else:
+            model = Artist
+            serializer = ArtistSerializer
+        queryset = model.objects.filter(name__contains=self.request.query_params['q'])
         result = paginator.paginate_queryset(queryset, request)
         serializer_data = serializer(result, many=True, context={'request': request}).data
         return response.Response(serializer_data)

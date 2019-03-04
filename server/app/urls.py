@@ -16,9 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from .router import router
-
+from app.settings import DEBUG
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),
     path('api/v1/api-auth/', include('rest_framework.urls'))
 ]
+
+if DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path(r'debug/', include(debug_toolbar.urls)),
+    ] + urlpatterns
+    
+    from django.urls import reverse
+    # print(reverse('sql_explain'))

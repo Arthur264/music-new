@@ -21,7 +21,7 @@ from .serializers import (
 class AuthViewSet(viewsets.ViewSet):
     queryset = User.objects.all()
 
-    @action(methods=['post'], permission_classes=[IsAuthenticated], url_path='change-password', detail=False)
+    @action(methods=['post'], url_path='change-password', detail=False)
     def set_password(self, request):
         change_password_serializer = ChangePasswordSerializer(data=request.data, context={'request': request})
         change_password_serializer.is_valid(raise_exception=True)
@@ -45,15 +45,20 @@ class AuthViewSet(viewsets.ViewSet):
             'token': model_to_dict(user.auth_token)['key']
         }, status=status.HTTP_201_CREATED)
 
-    @action(permission_classes=[IsAdminOrIsSelf], url_path='logout', detail=False)
+    @action(url_path='logout', detail=False)
     def logout_user(self, request):
         request.user.auth_token.delete()
         logout(request)
         return Response(status=status.HTTP_200_OK)
 
-    @action(permission_classes=[IsAdminOrIsSelf], url_path='token', detail=False)
+    @action(url_path='token', detail=False)
     def token(self, request):
         user = User.objects.get(username=request.user.username)
         token, created = Token.objects.get_or_create(user=user)
         request.user.token = token.key
         return Response({"token": token.key})
+        
+    @action(url_path='user', detail=False)
+    def user(self, request):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)

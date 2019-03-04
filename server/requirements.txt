@@ -14,3 +14,4 @@ pandas==0.23.4
 requests
 celery==4.2.1
 redis==2.10.6
+django-debug-toolbar

@@ -81,18 +81,16 @@ class ArtistSerializer(serializers.ModelSerializer):
 class SongSerializer(serializers.ModelSerializer):
     name = serializers.CharField(min_length=3)
     artist = ArtistSerializer(read_only=True)
-    artist_id = serializers.PrimaryKeyRelatedField(source='artist', queryset=Artist.objects.all())
     favorite = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Song
         fields = (
-            'id', 'name', 'image', 'url', 'duration', 'listeners_fm', 'playcount_fm', 'artist',
-            'artist_id', 'favorite'
+            'id', 'name', 'image', 'url', 'duration', 'listeners_fm', 'playcount_fm', 'artist', 'favorite'
         )
 
     def get_favorite(self, obj):
-        return obj.favorite.filter(pk=self.context['request'].user.pk).exists()
+        return obj.favorite_count > 0
 
 
 class PlaylistSerializer(serializers.HyperlinkedModelSerializer):

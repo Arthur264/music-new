@@ -33,6 +33,7 @@ DEBUG = WORK_CONFIG['DEBUG']
 
 ALLOWED_HOSTS = ['music-artyr264.c9users.io', '127.0.0.1']
 
+INTERNAL_IPS = ['music-artyr264.c9users.io', '127.0.0.1', '::1']
 # Application definition
 
 INSTALLED_APPS = [
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'phonenumber_field',
     'django_extensions',
+    'debug_toolbar',
     'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
@@ -64,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 MIDDLEWARE_CLASSES = (
@@ -71,6 +74,36 @@ MIDDLEWARE_CLASSES = (
     'app.middleware.DisableBrowserCacheMiddleware',
     'app.middleware.LastUserIP',
 )
+
+def custom_show_toolbar(request):
+     return True
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': 'app.settings.custom_show_toolbar',
+}
+
+DEBUG_TOOLBAR_PANELS = [
+    'debug_toolbar.panels.versions.VersionsPanel',
+    'debug_toolbar.panels.timer.TimerPanel',
+    'debug_toolbar.panels.settings.SettingsPanel',
+    'debug_toolbar.panels.headers.HeadersPanel',
+    'debug_toolbar.panels.request.RequestPanel',
+    'debug_toolbar.panels.sql.SQLPanel',
+    'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+    'debug_toolbar.panels.templates.TemplatesPanel',
+    'debug_toolbar.panels.cache.CachePanel',
+    'debug_toolbar.panels.signals.SignalsPanel',
+    'debug_toolbar.panels.logging.LoggingPanel',
+    'debug_toolbar.panels.redirects.RedirectsPanel',
+]
+
+CONFIG_DEFAULTS = {
+    # Toolbar options
+    'RESULTS_CACHE_SIZE': 3,
+    'SHOW_COLLAPSED': True,
+    # Panel options
+    'SQL_WARNING_THRESHOLD': 100,   # milliseconds
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_PARSER_CLASSES': (
@@ -90,7 +123,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.OrderingFilter',
-        'rest_framework.filters.SearchFilter'
+        'rest_framework.filters.SearchFilter',
     ]
 }
 
@@ -199,6 +232,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
